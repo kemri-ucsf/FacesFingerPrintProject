@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import com.digitalpersona.uareu.*;
 import java.util.List;
+import java.util.Map;
 import javax.swing.JOptionPane;
 /**
  *
@@ -134,8 +135,14 @@ public class Identification {
                            {
                                 Registration.cboGender.setSelectedIndex(1);
                            }
-                           
-                           Registration.cboLocation.setSelectedItem(p.getBeachName());
+                           //get the participant beach name and county
+                           //the hash map contains the key of the beach and the value which is of type Beach
+                           //This allow me to get the be Beach Id and all the related info abt a given beach
+                           Map beachMap=db.getBeachMap();
+                           Beach b;
+                           b=(Beach)beachMap.get(p.getBeachId());
+                           Registration.cboLocation.setSelectedItem(b.getName());
+                           Registration.cboCty.setSelectedItem(b.getCounty());
                            Registration.txt_Identifier.setText(p.getIdentifier());
                            found=true;
                        }

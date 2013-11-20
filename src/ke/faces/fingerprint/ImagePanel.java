@@ -15,9 +15,6 @@ import javax.swing.JPanel;
 
 import com.digitalpersona.uareu.*;
 import com.digitalpersona.uareu.Fid.Fiv;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public class ImagePanel 
 	extends JPanel
@@ -36,16 +33,7 @@ public class ImagePanel
 		g.drawImage(m_image, 0, 0, null);
 	}
         
-        public void loadImage()
-        {
-            try{
-                m_image=ImageIO.read(new File("images/fingerprintimageLarge.jpg"));
-            }
-            catch(IOException ex)
-            {
-                ex.printStackTrace();
-            }
-        }
+       
         
 
 }

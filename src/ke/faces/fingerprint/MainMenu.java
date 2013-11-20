@@ -66,7 +66,7 @@ public class MainMenu extends JFrame implements ActionListener{
          //title.setAlignmentX(TOP_ALIGNMENT);
          menuDialog.add(title);
          
-         btnEnroll=new JButton("Enroll Participant");
+         btnEnroll=new JButton("Find/Create Participant");
          btnEnroll.setBounds(10, 50, 200, 60);
          btnEnroll.setActionCommand(ACT_ENROLL);
          btnEnroll.addActionListener(this);
@@ -171,8 +171,10 @@ public class MainMenu extends JFrame implements ActionListener{
 	}
         else if(e.getActionCommand().equals(ACT_ENROLL)){
                         
-                Registration registration=new Registration();
-                registration.createAndShowGUI();            
+               // Registration registration=new Registration();
+              //  registration.createAndShowGUI();   
+            FindCreateDialog find=new FindCreateDialog();
+            find.createAndShowGUI();
             
 	}
         else if(e.getActionCommand().equals(ACT_IDENTIFY)){

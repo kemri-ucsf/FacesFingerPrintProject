@@ -42,6 +42,7 @@ public class Registration extends JPanel implements ActionListener{
     public static JTextField txt_Mname;
     public static JTextField txt_Fname;
     public static JTextField txt_Gname;
+    public static JTextField txt_Nname;
     public static JTextField txt_Age;
     public static JTextField txt_Beachname;
     public static JTextField txt_Identifier;
@@ -54,13 +55,14 @@ public class Registration extends JPanel implements ActionListener{
     private JLabel lbl_Mname;
     private JLabel lbl_Fname;
     private JLabel lbl_Gname;
+    private JLabel lbl_Nname;
     private JLabel lbl_Gender;
     private JLabel lbl_Age;
     private JLabel lbl_Beachname;
     private JLabel lbl_title;
     private JLabel lbl_Identifier;
     private JLabel lbl_County;
-     private JLabel lbl_FingerTaken;
+    private JLabel lbl_FingerTaken;
     
     //Command Buttons
     public static JButton btnSave;
@@ -77,7 +79,7 @@ public class Registration extends JPanel implements ActionListener{
     public static List<String> locations;
     
     private List<String> selectLocations;
-    private HashMap<String,Integer> accessList;
+    public static HashMap<String,Integer> accessList;
     
     private Reader  reader;
     private ReaderCollection readerCollection;
@@ -157,66 +159,75 @@ public class Registration extends JPanel implements ActionListener{
         txt_Gname.setFont(font);
         dlgRegistration.add(txt_Gname);
         
+        lbl_Nname=new JLabel();
+        lbl_Nname.setBounds(50, 200, 100, 20);         
+        lbl_Nname.setText("Nick Name:");     
+        lbl_Nname.setFont(font);
+        dlgRegistration.add(lbl_Nname);
+        
+        txt_Nname=new JTextField();
+        txt_Nname.setBounds(200, 200, 200, 25);          
+        txt_Nname.setFont(font);
+        dlgRegistration.add(txt_Nname);
+        
         lbl_Gender=new JLabel();
-        lbl_Gender.setBounds(50, 200, 100, 20);         
+        lbl_Gender.setBounds(50, 240, 100, 20);         
         lbl_Gender.setText("Gender:");    
         lbl_Gender.setFont(font);
         dlgRegistration.add(lbl_Gender);
         
         cboGender=new JComboBox(gender);
-        cboGender.setBounds(200, 200, 200, 25);          
+        cboGender.setBounds(200, 240, 200, 25);          
         cboGender.setFont(font);
         dlgRegistration.add(cboGender);
         
         
         lbl_Age=new JLabel();
-        lbl_Age.setBounds(50, 240, 100, 20);         
+        lbl_Age.setBounds(50, 280, 100, 20);         
         lbl_Age.setText("Age:"); 
         lbl_Age.setFont(font);
         dlgRegistration.add(lbl_Age);
         
         txt_Age=new JTextField();
-        txt_Age.setBounds(200, 240, 100, 25);          
+        txt_Age.setBounds(200, 280, 100, 25);          
         txt_Age.setFont(font);
         dlgRegistration.add(txt_Age);
         
         lbl_County=new JLabel();
-        lbl_County.setBounds(50, 280, 100, 20);         
-        lbl_County.setText("Couty:");    
+        lbl_County.setBounds(50, 320, 100, 20);         
+        lbl_County.setText("County:");    
         lbl_County.setFont(font);
         dlgRegistration.add(lbl_County);
         
         cboCty=new JComboBox(locations.toArray());
-        cboCty.setBounds(200, 280, 200, 25);   
+        cboCty.setBounds(200, 320, 200, 25);   
         cboCty.setActionCommand(ACT_COUNTY);
         cboCty.addActionListener(this);
         cboCty.setFont(font);
         dlgRegistration.add(cboCty);
         
         lbl_Beachname=new JLabel();
-        lbl_Beachname.setBounds(50, 320, 100, 20);         
+        lbl_Beachname.setBounds(50, 360, 100, 20);         
         lbl_Beachname.setText("Beach Name:");                 
         lbl_Beachname.setFont(font);
         dlgRegistration.add(lbl_Beachname);
         
         cboLocation=new JComboBox();
-        cboLocation.setBounds(200, 320, 200, 25); 
-        //cboLocation.addi
-        
+        cboLocation.setBounds(200, 360, 200, 25);            
         cboLocation.setFont(font);
         dlgRegistration.add(cboLocation);
         
         lbl_FingerTaken=new JLabel();
-        lbl_FingerTaken.setBounds(50, 360, 120, 20);         
+        lbl_FingerTaken.setBounds(50, 380, 120, 20);         
         lbl_FingerTaken.setText("FingerPrint Taken:");                 
         lbl_FingerTaken.setFont(font);
-        dlgRegistration.add(lbl_FingerTaken);
+        //dlgRegistration.add(lbl_FingerTaken);
         
         chkfingerTaken=new JCheckBox();
-        chkfingerTaken.setBounds(200, 360, 120, 20);         
+        chkfingerTaken.setBounds(200, 380, 120, 20);         
         //lbl_FingerTaken.setText("FingerPrint Taken:");                 
         chkfingerTaken.setFont(font);
-        dlgRegistration.add(chkfingerTaken);
+       // dlgRegistration.add(chkfingerTaken);
         
         btnEnroll=new JButton("Enroll/Identify Finger");
         btnEnroll.setBounds(500, 40, 150, 40);
@@ -235,9 +246,7 @@ public class Registration extends JPanel implements ActionListener{
         btnCancel.setBounds(500, 160, 150, 40);
         btnCancel.setActionCommand(ACT_CANCEL);
         btnCancel.addActionListener(this);
-        dlgRegistration.add(btnCancel);
-        
-        
+        dlgRegistration.add(btnCancel);      
         
         btnFind=new JButton("Find");
         btnFind.setBounds(500, 220, 150, 40);
@@ -374,7 +383,7 @@ public class Registration extends JPanel implements ActionListener{
                {
                   participant.setGender('F'); 
                }
-               participant.setBeachName(locations.get(cboLocation.getSelectedIndex()));
+               participant.setBeachId(accessList.get((String)cboLocation.getSelectedItem()));
                
                participant.saveParticipant();
               // JOptionPane.showMessageDialog(null, "Participant Record Successfully Saved... ");

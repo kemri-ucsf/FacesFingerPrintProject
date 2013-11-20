@@ -12,6 +12,8 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JOptionPane;
 /**
  *
@@ -100,7 +102,7 @@ public class Sql {
     
     public void insertParticipant(Participant p) throws SQLException
     {
-            preppedStmtInsert="INSERT INTO participant (identifier,fname,mname,gname,age,gender,beach,dateCreated) VALUES(?,?,?,?,?,?,?,?)";
+            preppedStmtInsert="INSERT INTO participant (identifier,fname,mname,gname,nname,age,gender,beach,dateCreated) VALUES(?,?,?,?,?,?,?,?,?)";
             //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
             
 		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
@@ -108,11 +110,12 @@ public class Sql {
                 pst.setString(2, p.getFamilyName());
                 pst.setString(3, p.getMiddleName());
                 pst.setString(4, p.getGivenName());
-                pst.setInt(5, p.getAge());
+                pst.setString(5, p.getNickName());
+                pst.setInt(6, p.getAge());
                 pst.setString(6, Character.toString(p.getGender()));//convert xter to string
-                pst.setString(7, p.getBeachName());
+                pst.setInt(8, p.getBeachId());
 		//pst.setBytes(8, p.getlMiddleFmd());
-                pst.setTimestamp(8, timestamp);
+                pst.setTimestamp(9, timestamp);
                 
 		pst.execute();
                 Close();//ensure all records are persisted on the db before saving prints
@@ -208,7 +211,7 @@ public class Sql {
     {
         List<Beach> locationList=new ArrayList<Beach>();
         //String sqlStmt="Select * from fingerprint";
-		String sqlStmt="Select beachid,name,county from beach where voided=0"; //for testing first
+		String sqlStmt="Select beachid,name,county,description from beach where voided=0"; //for testing first
 		ResultSet rs = executeQuery(sqlStmt);
 		while(rs.next())
 		{
@@ -216,8 +219,28 @@ public class Sql {
                     Beach b =new Beach();
                     b.setBeachId(rs.getInt("beachid"));
                     b.setName(rs.getString("name"));
+                    b.setDescription(rs.getString("description"));
                     b.setCounty(rs.getString("county"));
                     locationList.add(b);                  
+		}	
+        
+        return locationList;
+    }
+    
+    public Map<Integer, Beach> getBeachMap() throws SQLException
+    {
+        Map<Integer, Beach> locationList=new HashMap<Integer,Beach>();
+        //String sqlStmt="Select * from fingerprint";
+		String sqlStmt="Select beachid,name,county from beach where voided=0"; //for testing first
+		ResultSet rs = executeQuery(sqlStmt);
+		while(rs.next())
+		{
+                    System.out.println("DB Read sucess: Loading Beach names Map");
+                    Beach b =new Beach();
+                    b.setBeachId(rs.getInt("beachid"));
+                    b.setName(rs.getString("name"));
+                    b.setCounty(rs.getString("county"));
+                    locationList.put(b.getBeachId(),b);                  
 		}	
         
         return locationList;
@@ -282,13 +305,16 @@ public class Sql {
     public void updateBeach(Beach b) throws SQLException
      {
                     
-         preppedStmtUpdate="updated beach set name=?, description=?, county=?, dateChanged=? WHERE beachid=?";
-         PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+         preppedStmtUpdate="update beach set name=?, description=?, county=?, dateChanged=? WHERE beachid=?";
+         PreparedStatement pst= c.prepareStatement(preppedStmtUpdate);
 		pst.setString(1,b.getName());
                 pst.setString(2,b.getDescription());
                 pst.setString(3,b.getCounty());	
                 pst.setTimestamp(4, timestamp);
+                pst.setInt(5, b.getBeachId());
 		pst.executeUpdate();
+                
+                System.out.println(preppedStmtUpdate);
     }
          
      
@@ -316,7 +342,7 @@ public class Sql {
     public Participant getParticipant(int participantID) throws SQLException
     {
         Participant p=new Participant();
-	String sqlStmt="Select PTID,fname,mname,gname, gender, age, identifier, beach from participant WHERE " + participantColumn + "=" + participantID + "";
+	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beach from participant WHERE " + participantColumn + "=" + participantID + "";
 	ResultSet rs=executeQuery(sqlStmt);
 	while (rs.next())
         {
@@ -324,13 +350,39 @@ public class Sql {
               p.setFamilyName(rs.getString("fname"));
               p.setGivenName(rs.getString("gname"));
               p.setMiddleName(rs.getString("mname"));
+              p.setNickName(rs.getString("nname"));
               p.setGender((rs.getString("gender").charAt(0)));//get string from the db and convert to char type
               p.setAge(rs.getInt("age"));
-              p.setBeachName(rs.getString("beach"));
+              p.setBeachId(rs.getInt("beachid"));
               p.setParticipant_Id(rs.getInt("PTID"));
         }
         
         return p;
+    }
+    
+    public List<Participant> findParticipant(String search) throws SQLException
+    {
+        List<Participant> pList=new ArrayList<Participant>();
+	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE identifier like '%" + search + "%' or "; //
+        sqlStmt=sqlStmt+" fname like '%" + search + "%' or gname like '%" + search + "%' or mname like '%" + search + "%'  or nname like '%" + search + "%'";
+	ResultSet rs=executeQuery(sqlStmt);
+	while (rs.next())
+        {
+            Participant p = new Participant();
+              p.setIdentifier(rs.getString("identifier"));  
+              p.setFamilyName(rs.getString("fname"));
+              p.setGivenName(rs.getString("gname"));
+              p.setMiddleName(rs.getString("mname"));
+              p.setNickName(rs.getString("nname"));
+              p.setGender((rs.getString("gender").charAt(0)));//get string from the db and convert to char type
+              p.setAge(rs.getInt("age"));
+              p.setBeachId(rs.getInt("beachid"));
+              p.setParticipant_Id(rs.getInt("PTID"));
+              
+              pList.add(p);
+        }
+        
+        return pList;
     }
     
      public void voidParticipant(Participant p) throws SQLException

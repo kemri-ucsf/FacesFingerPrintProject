@@ -4,7 +4,9 @@
  */
 package ke.faces.fingerprint;
 
+import java.sql.SQLException;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -75,7 +77,105 @@ public class Beach {
         return "Beach{" + "name=" + name + ", description=" + description + '}';
     }
    
+    public void saveBeach()
+    {
+        
+        //validate fields
+        
+        if (this.getName()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Beach Name cannot be blank");
+            return;
+        }
+         if (this.getDescription()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Description cannot be blank");
+            return;
+        }
+               
+        if (this.getCounty()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Select the County");
+            return;
+        }
+           //Save participant
+           Sql db=new Sql();
+           try
+           {
+               db.Open();//open/create connection to the db
+               db.insertBeach(this);
+               db.Close();
+           }
+           catch(SQLException e)
+           {
+               e.printStackTrace();
+           }           
+        
+    }
+    public void deleteBeach()
+    {
+        //Void Beach
+        if (this.getName()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Beach Name cannot be blank");
+            return;
+        }
+        if (this.getDescription()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Description cannot be blank");
+            return;
+        }
+               
+        if (this.getCounty()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Select the County");
+            return;
+        }
+        
+        Sql db=new Sql();
+           try
+           {
+               db.Open();//open/create connection to the db
+               db.voidBeach(this);
+               db.Close();
+           }
+           catch(SQLException e)
+           {
+               e.printStackTrace();
+           }
+        }
     
-    
+    public void updateBeach()
+    {
+        //Void Beach
+        if (this.getName()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Beach Name cannot be blank");
+            return;
+        }
+        if (this.getDescription()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Description cannot be blank");
+            return;
+        }
+               
+        if (this.getCounty()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Select the County");
+            return;
+        }
+        
+        Sql db=new Sql();
+           try
+           {
+               db.Open();//open/create connection to the db
+               db.updateBeach(this);
+               db.Close();
+           }
+           catch(SQLException e)
+           {
+               e.printStackTrace();
+           }
+        }
     
 }

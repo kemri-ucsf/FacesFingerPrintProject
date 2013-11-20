@@ -21,8 +21,9 @@ public class Participant {
     private String familyName;
     private String middleName;
     private String givenName;
+    private String nickName;
     private int age;
-    private String beachName;
+    private int beachId;
     private char gender;
     private int participant_Id;
     private FingerPrint fingerPrint;
@@ -43,15 +44,24 @@ public class Participant {
     }
 
     
-    public Participant(String identifier, String familyName, String middleName, String givenName, int age, String beachName, char gender) {
+    public Participant(String identifier, String familyName, String middleName, String givenName,String nickName, int age, int beachId, char gender) {
         this.identifier = identifier;
         this.familyName = familyName;
         this.middleName = middleName;
         this.givenName = givenName;
+        this.nickName = nickName;
         this.age = age;
-        this.beachName = beachName;
+        this.beachId = beachId;
         this.gender = gender;
         //fingerPrint=new FingerPrint[10];
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public FingerPrint getFingerPrint2() {
@@ -96,8 +106,8 @@ public class Participant {
         return age;
     }
 
-    public String getBeachName() {
-        return beachName;
+    public int getBeachId() {
+        return beachId;
     }
 
     public char getGender() {
@@ -124,8 +134,8 @@ public class Participant {
         this.age = age;
     }
 
-    public void setBeachName(String beachName) {
-        this.beachName = beachName;
+    public void setBeachId(int beachId) {
+        this.beachId = beachId;
     }
 
     public void setGender(char gender) {
@@ -139,7 +149,7 @@ public class Participant {
 
     @Override
     public String toString() {
-        return "Participant{" + "identifier=" + identifier + ", familyName=" + familyName + ", middleName=" + middleName + ", givenName=" + givenName + ", age=" + age + ", beachName=" + beachName + ", gender=" + gender + ", participant_Id=" + participant_Id + '}';
+        return "Participant{" + "identifier=" + identifier + ", familyName=" + familyName + ", middleName=" + middleName + ", givenName=" + givenName + ", age=" + age + ", beachName=" + beachId + ", gender=" + gender + ", participant_Id=" + participant_Id + '}';
     }
     private static final Logger LOG = Logger.getLogger(Participant.class.getName());
 
@@ -173,7 +183,7 @@ public class Participant {
         if (this.age != other.age) {
             return false;
         }
-        if (!Objects.equals(this.beachName, other.beachName)) {
+        if (!Objects.equals(this.beachId, other.beachId)) {
             return false;
         }
         if (this.gender != other.gender) {
@@ -204,7 +214,7 @@ public class Participant {
             return;
         }
         
-           if (this.getBeachName()==null)
+           if ((Integer)this.getBeachId()==null)
         {
             JOptionPane.showMessageDialog(null, "Beach Name cannot be blank");
             return;
@@ -215,6 +225,7 @@ public class Participant {
            {
                db.Open();//open/create connection to the db
                db.insertParticipant(this);
+               db.Close();
            }
            catch(SQLException e)
            {
@@ -230,6 +241,7 @@ public class Participant {
            {
                db.Open();//open/create connection to the db
                db.voidParticipant(this);
+               db.Close();
            }
            catch(SQLException e)
            {
