@@ -1,0 +1,351 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package ke.faces.fingerprint;
+
+/**
+ *
+ * @author LENOVO USER
+ */
+import java.sql.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Calendar;
+import javax.swing.JOptionPane;
+/**
+ *
+ * @author Eric
+ */
+public class Sql {
+    private static final String tableName="users";
+    private static final String participantColumn="PTID";
+    private static final String print1Column="print1";
+    private static final String print2Column="print2";
+    private static final String genderColumn="gender";
+    private static final String ageColumn="age";
+    private static final String familyNameColumn="lName";
+    private static final String URL="jdbc:mysql://localhost:3308/fingerPrintTest?autoReconnect=true";
+    private static final String PASSWORD="openmrs";
+    private static final String USERNAME="openmrs";
+    
+    // 1) create a java calendar instance        
+    private static final Calendar calendar = Calendar.getInstance();
+    // 2) get a java.util.Date from the calendar instance.
+    // this date will represent the current instant, or "now".
+    private static final java.util.Date date = calendar.getTime();
+    // 3) a java current time (now) instance
+    private static final Timestamp timestamp = new Timestamp(date.getTime());
+    private static Connection c=null;
+    private String preppedStmtInsert=null;
+    private String preppedStmtUpdate=null;
+    
+    public class Record 
+    {
+	int PTID;
+	byte[] fmdBinary;
+		
+	Record(int ID,byte[] fmd)
+	{
+            PTID=ID;
+	   fmdBinary=fmd;
+	}
+
+        public int getPTID() {
+            return PTID;
+        }
+
+        public byte[] getFmdBinary() {
+            return fmdBinary;
+        }
+        
+    }
+    public static void Open() throws SQLException
+    {
+	c=DriverManager.getConnection(URL, USERNAME, PASSWORD);
+    }
+    public static Statement createStatement() throws SQLException {
+        //c = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        Open();
+        Statement statement = c.createStatement();
+        return statement;
+    }
+    public static ResultSet executeQuery(String query) throws SQLException {
+        Statement statement = createStatement();
+        ResultSet rs=statement.executeQuery(query);
+        //statement.
+        //rs.next();
+        return rs;
+    }
+    
+    public static int executeUpdate(String query) throws SQLException {
+        Statement statement = createStatement();
+        return statement.executeUpdate(query);
+    }
+    
+    public void Close() throws SQLException
+    {
+	 c.close();	
+    }
+    
+    public void finalize()
+    {
+        try {
+                c.close();
+	} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+    public void insertParticipant(Participant p) throws SQLException
+    {
+            preppedStmtInsert="INSERT INTO participant (identifier,fname,mname,gname,age,gender,beach,dateCreated) VALUES(?,?,?,?,?,?,?,?)";
+            //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
+            
+		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+		pst.setString(1, p.getIdentifier());
+                pst.setString(2, p.getFamilyName());
+                pst.setString(3, p.getMiddleName());
+                pst.setString(4, p.getGivenName());
+                pst.setInt(5, p.getAge());
+                pst.setString(6, Character.toString(p.getGender()));//convert xter to string
+                pst.setString(7, p.getBeachName());
+		//pst.setBytes(8, p.getlMiddleFmd());
+                pst.setTimestamp(8, timestamp);
+                
+		pst.execute();
+                Close();//ensure all records are persisted on the db before saving prints
+                Open();
+                
+                //save all the taken finger prints for this participant
+                int ptid=getLastParticipantId();
+                if (ptid!=0)
+                {
+                    insertFingerPrint(p,ptid);
+                }
+                JOptionPane.showMessageDialog(null, "Participant Record Successfully Saved... ");
+    }
+    
+    public void insertFingerPrint(Participant p,int ptid) throws SQLException
+    {       
+            
+        if(!p.getLstFingerPrints().isEmpty())
+        {
+            for(FingerPrint fp: p.getLstFingerPrints())
+            {
+                 preppedStmtInsert="INSERT INTO fingerprint (PTID,print1,printIndex,dateCreated) VALUES(?,?,?,?)";
+                //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
+                
+		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+		pst.setInt(1, ptid);
+               	pst.setBytes(2, fp.getFmd());
+                pst.setInt(3, fp.getIndex());
+                pst.setTimestamp(4, timestamp);
+                pst.execute();
+            }
+            
+        }
+        if (p.getFingerPrint()!=null)
+            {
+                 preppedStmtInsert="INSERT INTO fingerprint (PTID,print1,printIndex,dateCreated) VALUES(?,?,?,?)";
+            //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
+            
+		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+		pst.setInt(1, ptid);
+               	pst.setBytes(2, p.getFingerPrint().getFmd());
+                pst.setInt(3, p.getFingerPrint().getIndex());
+                pst.setTimestamp(4, timestamp);
+                pst.execute();
+            }
+            
+             if (p.getFingerPrint2()!=null)
+            {
+                 preppedStmtInsert="INSERT INTO fingerprint (PTID,print1,printIndex,dateCreated) VALUES(?,?,?,?)";
+            //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
+            
+		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+		pst.setInt(1, ptid);
+               	pst.setBytes(2, p.getFingerPrint2().getFmd());
+                pst.setInt(3, p.getFingerPrint2().getIndex());
+                pst.setTimestamp(4, timestamp);
+                pst.execute();
+            }
+        
+       
+                
+		
+    }
+    public void InsertUser(Participant p) throws SQLException
+    {
+            preppedStmtInsert="INSERT INTO " + tableName + "(" + familyNameColumn + "," + print1Column + ") VALUES(?,?)";
+            //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
+		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+		pst.setString(1, p.getFamilyName());
+		//pst.setBytes(2, p.getlMiddleFmd());
+		pst.execute();
+    }
+    
+    public List<Sql.Record> GetAllFPData() throws SQLException
+    {
+		List<Sql.Record> listParticipants=new ArrayList<Sql.Record>();
+		String sqlStmt="Select * from fingerprint";
+		//String sqlStmt="Select * from users"; //for testing first
+		ResultSet rs = executeQuery(sqlStmt);
+		while(rs.next())
+		{
+                    if(rs.getBytes(print1Column)!=null)
+                    {
+                        System.out.println("DB Read sucess: Loading Finger Prints ");
+                        listParticipants.add(new Sql.Record(rs.getInt("PTID"),rs.getBytes(print1Column)));
+                    }
+                    
+		}	
+		return listParticipants;
+    }
+    
+    public List<Beach> getAllBeachData() throws SQLException
+    {
+        List<Beach> locationList=new ArrayList<Beach>();
+        //String sqlStmt="Select * from fingerprint";
+		String sqlStmt="Select beachid,name,county from beach where voided=0"; //for testing first
+		ResultSet rs = executeQuery(sqlStmt);
+		while(rs.next())
+		{
+                    System.out.println("DB Read sucess: Loading Beach names");
+                    Beach b =new Beach();
+                    b.setBeachId(rs.getInt("beachid"));
+                    b.setName(rs.getString("name"));
+                    b.setCounty(rs.getString("county"));
+                    locationList.add(b);                  
+		}	
+        
+        return locationList;
+    }
+    
+    public List<String> getCounty() throws SQLException
+    {
+        List<String> locationList=new ArrayList<String>();
+        //String sqlStmt="Select * from fingerprint";
+		String sqlStmt="Select distinct county from beach where voided=0"; //for testing first
+		ResultSet rs = executeQuery(sqlStmt);
+		while(rs.next())
+		{
+                    System.out.println("DB Read sucess: Loading County names");
+                    locationList.add(rs.getString("county"));                  
+		}	
+        
+        return locationList;
+    }
+    
+    public void insertBeach(Beach beach)throws SQLException
+    {
+        preppedStmtInsert="INSERT INTO beach (name,description,county,dateCreated) VALUES(?,?,?,?)";
+            //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
+		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+		pst.setString(1,beach.getName());
+                pst.setString(2,beach.getDescription());
+                pst.setString(3,beach.getCounty());
+                pst.setTimestamp(4, timestamp);
+		pst.execute();
+    }
+    
+    public Beach getBeach(int id) throws SQLException
+    {
+        Beach b=new Beach();
+	String sqlStmt="Select name,description,county from beach WHERE beachid=" + id + "";
+	ResultSet rs=executeQuery(sqlStmt);
+	while (rs.next())
+        {
+              b.setName(rs.getString("name"));  
+              b.setDescription(rs.getString("description"));
+              b.setCounty(rs.getString("county"));              
+              b.setBeachId(rs.getInt("beachid"));
+        }
+        
+        return b;
+    }
+    public void voidBeach(Beach b) throws SQLException
+     {
+         
+         String sqlStmt="updated beach set voided=1,dateVoided=now() WHERE beachid=" + b.getBeachId() + "";
+         int rs=executeUpdate(sqlStmt);
+         
+                  
+         if (rs>0)
+         {
+             JOptionPane.showMessageDialog(null, "Participant Record delete...");
+         }
+         
+     }
+    
+    public void updateBeach(Beach b) throws SQLException
+     {
+                    
+         preppedStmtUpdate="updated beach set name=?, description=?, county=?, dateChanged=? WHERE beachid=?";
+         PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+		pst.setString(1,b.getName());
+                pst.setString(2,b.getDescription());
+                pst.setString(3,b.getCounty());	
+                pst.setTimestamp(4, timestamp);
+		pst.executeUpdate();
+    }
+         
+     
+    
+    public boolean ParticipantExists(int userID) throws SQLException
+    {
+	//this statement uses
+        String sqlStmt="Select * from participant  WHERE " + participantColumn + "=" + userID + "";
+	ResultSet rs=executeQuery(sqlStmt);
+	return rs.next();
+    }
+    
+    public int getLastParticipantId() throws SQLException
+    {
+        int ptid=0;
+        String sqlStmt="Select max(PTID) as ptid from participant;";
+	ResultSet rs=executeQuery(sqlStmt);
+	while (rs.next())
+        {
+            ptid=rs.getInt("ptid");
+        }
+        return ptid;
+    }
+    
+    public Participant getParticipant(int participantID) throws SQLException
+    {
+        Participant p=new Participant();
+	String sqlStmt="Select PTID,fname,mname,gname, gender, age, identifier, beach from participant WHERE " + participantColumn + "=" + participantID + "";
+	ResultSet rs=executeQuery(sqlStmt);
+	while (rs.next())
+        {
+              p.setIdentifier(rs.getString("identifier"));  
+              p.setFamilyName(rs.getString("fname"));
+              p.setGivenName(rs.getString("gname"));
+              p.setMiddleName(rs.getString("mname"));
+              p.setGender((rs.getString("gender").charAt(0)));//get string from the db and convert to char type
+              p.setAge(rs.getInt("age"));
+              p.setBeachName(rs.getString("beach"));
+              p.setParticipant_Id(rs.getInt("PTID"));
+        }
+        
+        return p;
+    }
+    
+     public void voidParticipant(Participant p) throws SQLException
+     {
+         
+         String sqlStmt="updated participant set voided=1 WHERE PTID=" + p.getParticipant_Id() + "";
+         int rs=executeUpdate(sqlStmt);
+         
+         sqlStmt="updated participant set voided=1 WHERE PTID=" + p.getParticipant_Id() + "";
+         rs=executeUpdate(sqlStmt);
+         
+         if (rs>0)
+         {
+             JOptionPane.showMessageDialog(null, "Participant Record delete...");
+         }
+         
+     }
+}
