@@ -5,9 +5,12 @@
 package ke.faces.fingerprint;
 
 import java.awt.Font;
+import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,6 +20,8 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -49,25 +54,18 @@ public class BeachForm extends JPanel implements ActionListener{
     private JDialog dlgBeachForm;
     private JList lstLocations;
     public static List<String> locations;
+    public static List<Beach> beachList;
     private Sql db;
     private Beach beach;
+    private Beach oldBeach;
     private JComboBox cboCounty;
     
     public static String[] county;
     BeachForm()
     {
-         //beach = new Beach();
+        oldBeach = new Beach();
         county=new String[]{"Select County","Kisumu","Homabay","Migori","Busia","Siaya"};
-         db=new Sql();
-        try
-        {
-           locations=db.getCounty(); 
-        }
-        catch(SQLException ex)
-        {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            ex.printStackTrace();  
-        }
+        loadBeach();
         dlgBeachForm= new JDialog((JDialog)null, "BEACH DETAILS FORM", true);
         dlgBeachForm.setLayout(null);
         dlgBeachForm.setBounds(200, 0,450, 400);
@@ -123,9 +121,53 @@ public class BeachForm extends JPanel implements ActionListener{
         dlgBeachForm.add(lbl_Title2);
         
         lstLocations=new JList(locations.toArray());
-        lstLocations.setBounds(10, 170, 170, 170);          
+        lstLocations.setBounds(10, 170, 250, 170);          
         lstLocations.setFont(font);
+        lstLocations.addListSelectionListener(new ListSelectionListener() {
+        public void valueChanged(ListSelectionEvent e)
+        {
+          int indices = lstLocations.getSelectedIndex();
+          Object  selectedItem = lstLocations.getSelectedValue();
+          String display = (String)selectedItem;
+          //get the selected item and split it inot two i.e. beach and county
+          //The split methos splits a string into an array given the regex (i.e. what to look at so as to split)
+          
+          if (!display.isEmpty())
+          {
+             String[] output=display.split("-", 2);
+          
+                for(Beach b: beachList)
+                {
+                    if(output[0].equalsIgnoreCase(b.getName())&& output[1].equalsIgnoreCase(b.getCounty()))
+                    {
+                        oldBeach.setBeachId(b.getBeachId());
+                        oldBeach.setCounty(b.getCounty());
+                        oldBeach.setName(b.getName());
+                        oldBeach.setDescription(b.getDescription());
+                        
+                        txt_Description.setText(b.getDescription());
+                        txt_Bname.setText(b.getName());
+                        //List lstCounty=Arrays.asList(county); //good Idea but failed to work for me
+                        for(int i=0;i<county.length;i++)
+                        {
+                            if (county[i].equalsIgnoreCase(b.getCounty()))
+                            {
+                                cboCounty.setSelectedIndex(i);
+                            }
+                        }
+                                             
+                    }
+                } 
+          }
+          
+             
+        }
+      });
+        ScrollPane pane = new ScrollPane();
+        pane.add(lstLocations);
+        dlgBeachForm.add(pane);
         dlgBeachForm.add(lstLocations);
+        
         
         btnSave=new JButton("Add");
         btnSave.setBounds(320, 40, 100, 40);
@@ -150,7 +192,7 @@ public class BeachForm extends JPanel implements ActionListener{
         btnDelete.setBounds(320, 220, 100, 40);
         btnDelete.setActionCommand(ACT_DELETE);
         btnDelete.addActionListener(this);
-        btnDelete.setEnabled(false);
+        //btnDelete.setEnabled(false);
         dlgBeachForm.add(btnDelete);
         
         btnBack=new JButton("Back");
@@ -161,6 +203,30 @@ public class BeachForm extends JPanel implements ActionListener{
        
     }
     
+    private void loadBeach()
+    {
+        locations =new ArrayList<String>();
+        db=new Sql();
+        try
+        {
+            beachList=db.getAllBeachData();            
+            
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            ex.printStackTrace();  
+        }
+        
+            for(Beach b:beachList)
+            {
+                if(b.getName()!=null)
+                {
+                   locations.add(b.getName()+"-"+b.getCounty()); 
+                }
+                
+            }
+    }
     public void createAndShowGUI()
      {
          dlgBeachForm.setVisible(true);          
@@ -171,6 +237,28 @@ public class BeachForm extends JPanel implements ActionListener{
         if(e.getActionCommand().equals(ACT_BACK))
         {
             dlgBeachForm.setVisible(false);
+            return;
+	}
+        else if(e.getActionCommand().equals(ACT_CANCEL))
+        {
+            //enable this buttons
+            txt_Bname.setText("");
+            txt_Description.setText("");
+            cboCounty.setSelectedIndex(0);
+            txt_Bname.requestFocus();
+            btnUpdate.setEnabled(true);
+            btnDelete.setEnabled(true);
+            btnSave.setText("Add");
+            return;
+	}
+        if(e.getActionCommand().equals(ACT_UPDATE))
+        {
+            if(validFields()==true)
+            {
+                beach = new Beach(txt_Bname.getText(),txt_Description.getText(),(String)cboCounty.getSelectedItem());
+                //compare fields to note changes for audit trail
+                oldBeach.updateBeach();
+            }
             return;
 	}
         else if(e.getActionCommand().equals(ACT_SAVE))
@@ -191,30 +279,55 @@ public class BeachForm extends JPanel implements ActionListener{
             else if (btnSave.getText().equalsIgnoreCase("Save"))
             {
                 //validate entries
-                if(txt_Bname.getText()==null)
+                if(validFields()==true)
                 {
-                    JOptionPane.showMessageDialog(null, "Enter The Beach Name");
+                    //enable this buttons
+                    btnUpdate.setEnabled(true);
+                    btnDelete.setEnabled(true);
+                    btnSave.setText("Add");
+                 
+                    beach = new Beach(txt_Bname.getText(),txt_Description.getText(),(String)cboCounty.getSelectedItem());
+                    beach.saveBeach();
                     return;
-                }
-                if(txt_Description.getText()==null)
-                {
-                    JOptionPane.showMessageDialog(null, "Enter The Beach Description");
-                    return;
-                }
-                if (cboCounty.getSelectedIndex()==0)    
-                {
-                     JOptionPane.showMessageDialog(null, "Select the County Name");
-                    return;
+                
                 }
                 
-                //enable this buttons
-                 btnUpdate.setEnabled(true);
-                 btnDelete.setEnabled(true);
-                 btnSave.setText("Add");
-                 beach = new Beach(txt_Bname.getText(),txt_Description.getText(),(String)cboCounty.getSelectedItem());
-                 return;
             }
            
 	}
+        else if(e.getActionCommand().equals(ACT_DELETE))
+        {
+            //validate entries
+            if(validFields()==true)
+            {
+                if (oldBeach!=null)
+                {
+                    oldBeach.deleteBeach();
+                }
+            }
+                
+                return;
+	}
+     }
+     
+     public boolean validFields()
+     {
+         boolean b_ok=true;
+         if(txt_Bname.getText()==null)
+         {
+            JOptionPane.showMessageDialog(null, "Enter The Beach Name");
+            b_ok=false;
+         }
+         if(txt_Description.getText()==null)
+         {
+             JOptionPane.showMessageDialog(null, "Enter The Beach Description");
+             b_ok=false;
+         }
+         if (cboCounty.getSelectedIndex()==0)    
+         {
+            JOptionPane.showMessageDialog(null, "Select the County Name");
+            b_ok=false;
+         }
+         return b_ok;
      }
 }
