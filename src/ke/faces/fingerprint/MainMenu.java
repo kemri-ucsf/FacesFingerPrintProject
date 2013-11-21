@@ -12,6 +12,10 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -49,12 +53,16 @@ public class MainMenu extends JFrame implements ActionListener{
     private JButton btnReport;
     private ReaderCollection readerCollection;
     
-   
+   public static List<String> counties; //store preloaded county details
+   public static List<Beach> beachList; // store preloaded beach infomation
+   public static Map<Integer,Beach> beachMap; // store preloaded beach Map infomation
+   public static List<String> locations; // store preloaded beach Map infomation
+   private Sql db=new Sql();
     public MainMenu()
     {
          
-        menuDialog= new JDialog((JDialog)null, "FISHERMEN FINGERPRINTING PROJECT", true);
-        //menuDialog= new JPanle "FISHERMEN FINGERPRINTING PROJECT", true);
+        loadBeach();
+        menuDialog= new JDialog((JDialog)null, "FISHERMEN FINGERPRINTING PROJECT", true);        
          menuDialog.setLayout(null);
          menuDialog.setBounds(200, 0,750, 600);
 //        identify=new Identification();
@@ -122,6 +130,35 @@ public class MainMenu extends JFrame implements ActionListener{
     }
     private static final Logger LOG = Logger.getLogger(MainMenu.class.getName());
     
+    /*
+     * Load all beach details and count information into memory
+     */
+    private void loadBeach()
+    {
+        locations =new ArrayList<String>();
+        db=new Sql();
+        try
+        {
+            beachList=db.getAllBeachData();            
+            beachMap=db.getBeachMap();
+            counties=db.getCounty();
+        }
+        catch(SQLException ex)
+        {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+            ex.printStackTrace();  
+        }
+        
+            for(Beach b:beachList)
+            {
+                if(b.getName()!=null)
+                {
+                   locations.add(b.getName()+"-"+b.getCounty()); 
+                }
+                
+            }
+    }
+     
     public Reader getSelectedReader()
     { /*
             * Get the plugged in U n U Digital Persona Read
@@ -178,7 +215,7 @@ public class MainMenu extends JFrame implements ActionListener{
             
 	}
         else if(e.getActionCommand().equals(ACT_IDENTIFY)){
-                        
+                FindTable.selectedParticipant=null;         
                 Registration registration=new Registration();
                 registration.createAndShowGUI();            
             

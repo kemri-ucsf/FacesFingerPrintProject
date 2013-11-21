@@ -233,21 +233,61 @@ public class Participant {
            }           
         
     }
-    public void deleteParticipant()
+     public void updateParticipant()
+    {
+        
+        //validate fields
+        
+        if (this.getGivenName()==null)
         {
-            //Save participant
+            JOptionPane.showMessageDialog(null, "Given/Christian Name cannot be blank");
+            return;
+        }
+         if (this.getFamilyName()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Family/Last Name cannot be blank");
+            return;
+        }
+          if ((Integer)this.getAge()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Given/Christian Name cannot be blank");
+            return;
+        }
+        
+           if ((Integer)this.getBeachId()==null)
+        {
+            JOptionPane.showMessageDialog(null, "Beach Name cannot be blank");
+            return;
+        }
+           //Save participant
            Sql db=new Sql();
            try
            {
                db.Open();//open/create connection to the db
-               db.voidParticipant(this);
+               db.updateParticipant(this);
                db.Close();
            }
            catch(SQLException e)
            {
                e.printStackTrace();
-           }
+           }           
+        
+    }
+    public void deleteParticipant()
+    {
+        //Save participant
+        Sql db=new Sql();
+        try
+        {
+            db.Open();//open/create connection to the db
+            db.voidParticipant(this);
+            db.Close();
         }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
     
     
 }

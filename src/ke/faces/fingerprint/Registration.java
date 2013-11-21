@@ -75,17 +75,16 @@ public class Registration extends JPanel implements ActionListener{
     //Display panel
     JDialog dlgRegistration;
     public static String[] gender;
-    private List<Beach> beachList=new ArrayList<Beach>();
-    public static List<String> locations;
+   
     
     private List<String> selectLocations;
     public static HashMap<String,Integer> accessList;
     
     private Reader  reader;
     private ReaderCollection readerCollection;
-    public static Participant participant;
+    public static Participant participant; //the new partarticipant or new new details of the selected participant
+    public static Participant oldParticipant; //currently selected participant
     
-    private Sql db;
     
     public Registration()
     {
@@ -95,18 +94,7 @@ public class Registration extends JPanel implements ActionListener{
         dlgRegistration.setBounds(200, 0,700, 500);
         participant = new Participant();
         
-        db=new Sql();
-        try
-        {
-           locations=db.getCounty();
-           beachList=db.getAllBeachData();
-        }
-        catch(SQLException ex)
-        {
-            ex.printStackTrace();  
-        }
-        
-        
+               
         lbl_title=new JLabel();
         lbl_title.setBounds(100, 10, 400, 20);         
         lbl_title.setText("PARTICIPANT REGISTRATION DETAILS");
@@ -199,7 +187,7 @@ public class Registration extends JPanel implements ActionListener{
         lbl_County.setFont(font);
         dlgRegistration.add(lbl_County);
         
-        cboCty=new JComboBox(locations.toArray());
+        cboCty=new JComboBox(MainMenu.counties.toArray());
         cboCty.setBounds(200, 320, 200, 25);   
         cboCty.setActionCommand(ACT_COUNTY);
         cboCty.addActionListener(this);
@@ -248,21 +236,21 @@ public class Registration extends JPanel implements ActionListener{
         btnCancel.addActionListener(this);
         dlgRegistration.add(btnCancel);      
         
-        btnFind=new JButton("Find");
-        btnFind.setBounds(500, 220, 150, 40);
-        btnFind.setActionCommand(ACT_FIND);
-        btnFind.addActionListener(this);
-        dlgRegistration.add(btnFind);
+       // btnFind=new JButton("Find");
+       // btnFind.setBounds(500, 220, 150, 40);
+       // btnFind.setActionCommand(ACT_FIND);
+       // btnFind.addActionListener(this);
+       // dlgRegistration.add(btnFind);
         
         btnDelete=new JButton("Delete");
-        btnDelete.setBounds(500, 280, 150, 40);
+        btnDelete.setBounds(500, 220, 150, 40);
         btnDelete.setActionCommand(ACT_DELETE);
         btnDelete.addActionListener(this);
         btnDelete.setEnabled(false);
         dlgRegistration.add(btnDelete);
         
         btnBack=new JButton("Back");
-        btnBack.setBounds(500, 340, 150, 40);
+        btnBack.setBounds(500, 280, 150, 40);
         btnBack.setActionCommand(ACT_BACK);
         btnBack.addActionListener(this);
         dlgRegistration.add(btnBack);
@@ -270,8 +258,37 @@ public class Registration extends JPanel implements ActionListener{
     
      public void createAndShowGUI()
      {
-         dlgRegistration.setVisible(true);          
-         dlgRegistration.dispose(); //close the app once soen
+         if(FindTable.selectedParticipant!=null)
+         {
+             oldParticipant=new Participant();
+             oldParticipant=FindTable.selectedParticipant;
+             txt_Gname.setText(oldParticipant.getGivenName());
+             txt_Fname.setText(oldParticipant.getFamilyName());
+             txt_Mname.setText(oldParticipant.getMiddleName());
+             txt_Nname.setText(oldParticipant.getNickName());
+             txt_Identifier.setText(oldParticipant.getIdentifier());
+             txt_Age.setText(Integer.toString(oldParticipant.getAge()));
+             
+             if(oldParticipant.getGender()=='M')
+             {
+                 cboGender.setSelectedIndex(0);
+             }
+             else
+             {
+                 cboGender.setSelectedIndex(1);
+             }
+             
+             //get the county and beach
+             Beach b=MainMenu.beachMap.get(oldParticipant.getBeachId());
+             cboCty.setSelectedItem((Object)b.getCounty());
+             cboLocation.setSelectedItem(b.getName());
+             
+             
+         }
+         dlgRegistration.setVisible(true);  
+         
+         
+         dlgRegistration.dispose(); //close the app once done
      }
      
      private Reader getSelectedReader()
@@ -404,13 +421,36 @@ public class Registration extends JPanel implements ActionListener{
         {
             if(btnCancel.getText()=="Update")
             {
-                
+                if (oldParticipant!=null)
+                {
+                    if(!validateFields())//check if all fields are correctly filled
+                    {
+                        participant.setIdentifier(txt_Identifier.getText());
+                        participant.setAge(Integer.parseInt(txt_Age.getText())); 
+                        participant.setFamilyName(txt_Fname.getText());
+                        participant.setGivenName(txt_Gname.getText());
+                        participant.setMiddleName(txt_Mname.getText());
+                        if (cboGender.getSelectedIndex()==0)
+                        {
+                            participant.setGender('M');
+                        }
+                        else
+                        {
+                            participant.setGender('F'); 
+                        }
+                        participant.setBeachId(accessList.get((String)cboLocation.getSelectedItem()));
+                        participant.setParticipant_Id(oldParticipant.getParticipant_Id());
+                        participant.updateParticipant();
+              // JOptionPane.showMessageDialog(null, "Participant Record Successfully Saved... ");
+                    }
+                }
                 return;
                 
             }
             else if(btnCancel.getText()=="Cancel")
             {
-                
+                btnCancel.setText("Update");
+                btnSave.setEnabled(false);
                 return;
                 
             }
@@ -421,7 +461,7 @@ public class Registration extends JPanel implements ActionListener{
             selectLocations=new ArrayList<String>();
             accessList=new HashMap<String,Integer>();
             cboLocation.removeAllItems();//clear the locations combobox
-            for(Beach b:beachList)
+            for(Beach b:MainMenu.beachList)
             {
                 if(b.getCounty().equalsIgnoreCase((String)cboCty.getSelectedItem()))
                 {

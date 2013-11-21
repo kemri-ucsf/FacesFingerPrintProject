@@ -10,6 +10,7 @@ import com.digitalpersona.uareu.Reader;
 import com.digitalpersona.uareu.UareUException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -110,6 +111,7 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
         //image panel display
         imagePanel = new ImagePanel();        
         imagePanel.setBounds(10,50,300,350);//some random value that I know is in my dialog
+        imagePanel.setBorder(BorderFactory.createTitledBorder(""));
         dlgFingerPrintDialog.add(imagePanel);
         
         //display image quality

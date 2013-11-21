@@ -36,9 +36,9 @@ public class FindCreateDialog extends JPanel implements ActionListener{
     public static final String ACT_FIND="find_search";
     public static final String ACT_CREATE="creat_new";
     public static final String ACT_BACK="exit";
+     public static final String ACT_VIEW="view_participant";
     
-    
-    private JDialog dlgFindCreate;
+    public static JDialog dlgFindCreate;
     public static final Font font = new Font("Times New Roman", Font.BOLD, 14);
      public static final Font font2 = new Font("Times New Roman", Font.PLAIN, 14);
     private JTextField txt_Name;
@@ -53,15 +53,11 @@ public class FindCreateDialog extends JPanel implements ActionListener{
     private JButton btnBack;
     private JButton btnFind;
     private JButton btnCreate;
-    private JTable jTable;
+     private JButton btnView;
+   
    
     
-    String[] columnTitle=new String[]{"Identifier","Name","County","Beach"};
-    private static DefaultTableModel model ;
-    private List<Participant> findList;
-    private Map beachMap;
-    private Object[][] data={{"Identifier","Name","County","Beach"}};//since the column headers are not visible am using row 0 as my header for now
-    
+    FindTable findTable;
     FindCreateDialog()
     {
         dlgFindCreate= new JDialog((JDialog)null, "FIND/CREATE PARTICIPANT FORM", true);
@@ -122,32 +118,22 @@ public class FindCreateDialog extends JPanel implements ActionListener{
        // btnSave.setEnabled(false);
         dlgFindCreate.add(btnFind);
         
-        model = new DefaultTableModel(data,columnTitle);
-        jTable = new JTable(model);
-        jTable.setBounds(10, 80, 500, 300); 
-        jTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        jTable.setRowHeight(25);
-        jTable.setBorder(BorderFactory.createTitledBorder(""));
         
-        JScrollPane scrollPane = new JScrollPane(jTable);
-        jTable.setFillsViewportHeight(true);
-        //set column heights
-        TableColumn column = null;
         
-        column = jTable.getColumnModel().getColumn(0);
-	column.setPreferredWidth(45);
-        column = jTable.getColumnModel().getColumn(1);
-	column.setPreferredWidth(90);
+        findTable=new FindTable();
+        findTable.setBounds(10, 80, 550, 300);
+        dlgFindCreate.add(findTable);
         
-        dlgFindCreate.add(jTable.getTableHeader());
-        add(new JScrollPane(jTable));
-        //JScrollPane scrollPane = new JScrollPane(jTable);
-        //dlgFindCreate.add(scrollPane);
-        dlgFindCreate.add(jTable);
-        
+       btnView=new JButton("View Participant");
+       btnView.setBounds(10, 400, 150, 35); 
+       btnView.setActionCommand(ACT_VIEW);
+       btnView.addActionListener(this);
+       // btnSave.setEnabled(false);
+       dlgFindCreate.add(btnView);
+       
        btnCreate=new JButton("Create Participant");
        btnCreate.setBounds(200, 400, 150, 35); 
-       btnCreate.setActionCommand(ACT_FIND);
+       btnCreate.setActionCommand(ACT_CREATE);
        btnCreate.addActionListener(this);
        // btnSave.setEnabled(false);
        dlgFindCreate.add(btnCreate);
@@ -173,51 +159,42 @@ public class FindCreateDialog extends JPanel implements ActionListener{
 	}
         else if(e.getActionCommand().equals(ACT_CREATE))
         {
-                      
+              FindTable.selectedParticipant=null;       
               Registration registration=new Registration();
               registration.createAndShowGUI();
 	}
-        else  if(e.getActionCommand().equals(ACT_FIND))
+        else if(e.getActionCommand().equals(ACT_VIEW))
         {
+            if (findTable.getRowCount()==0)
+            {
+                    return;
+            }
+             else
+             {
+                    if(FindTable.selectedParticipant!=null)
+                    {
+                        FindCreateDialog.dlgFindCreate.setVisible(false); //close find create dialog
+                        Registration registration=new Registration();
+                        registration.createAndShowGUI();                                    
+                     }
+                    
+                }
+            return;
+	}
+        else  if(e.getActionCommand().equals(ACT_FIND))
+        {           
             String search;
             search=txt_Search.getText();
             if (search.length()>=3)
             {
-                jTable.removeAll();
-                    Sql db=new Sql();
-                    try
-                    {
-                        db.Open();//open/create connection to the db
-                      findList=  db.findParticipant(search);
-                      beachMap=db.getBeachMap();
-                        db.Close();
-                    }
-                    catch(SQLException ex)
-                    {
-                        ex.printStackTrace();
-                    }  
-                   // int i=1;
-                    if(!findList.isEmpty())
-                    {
-                        for (Participant p:findList)
-                        {
-                           //Insert last position
-                            Beach b=(Beach)beachMap.get(p.getBeachId());//get the Beach details given the ID
-                            String pName;
-                            //insertStr="\""+p.getIdentifier()+"\",\"";
-                            pName=p.getFamilyName()+" "+p.getMiddleName()+" "+p.getGivenName()+" "+p.getNickName();
-                            //insertStr=insertStr+b.getCounty()+"\",\""+b.getName()+"\"";
-                            System.out.println("Testing Stuff"+pName);
-                            model.insertRow(jTable.getRowCount(),new Object[]{p.getIdentifier(),pName.replaceAll("null", ""),b.getCounty(),b.getName()});
-                        }
-                    }
-
+                findTable.insertRow(search);         
+                    
             }
             else
             {
                 JOptionPane.showMessageDialog(null,"Enter atleast three characters then click the search/Find Button");
             }
-            return;
+            
 	}
          
      }

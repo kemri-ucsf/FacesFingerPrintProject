@@ -112,7 +112,7 @@ public class Sql {
                 pst.setString(4, p.getGivenName());
                 pst.setString(5, p.getNickName());
                 pst.setInt(6, p.getAge());
-                pst.setString(6, Character.toString(p.getGender()));//convert xter to string
+                pst.setString(7, Character.toString(p.getGender()));//convert xter to string
                 pst.setInt(8, p.getBeachId());
 		//pst.setBytes(8, p.getlMiddleFmd());
                 pst.setTimestamp(9, timestamp);
@@ -317,7 +317,25 @@ public class Sql {
                 System.out.println(preppedStmtUpdate);
     }
          
-     
+    public void updateParticipant(Participant p) throws SQLException
+     {
+          preppedStmtUpdate="update participant set identifier=?,fname=?,mname=?,gname=?,nname=?,age=?,gender=?,beach=?,dateChanged=? WHERE PTID=?";
+            //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
+        PreparedStatement pst= c.prepareStatement(preppedStmtUpdate);
+	pst.setString(1, p.getIdentifier());
+        pst.setString(2, p.getFamilyName());
+        pst.setString(3, p.getMiddleName());
+        pst.setString(4, p.getGivenName());
+        pst.setString(5, p.getNickName());
+        pst.setInt(6, p.getAge());
+        pst.setString(7, Character.toString(p.getGender()));//convert xter to string           
+        pst.setInt(8, p.getBeachId());
+        pst.setTimestamp(9, timestamp); 
+        pst.setInt(10, p.getParticipant_Id());
+        pst.executeUpdate();
+                
+                //System.out.println(preppedStmtUpdate);
+    } 
     
     public boolean ParticipantExists(int userID) throws SQLException
     {
@@ -342,7 +360,28 @@ public class Sql {
     public Participant getParticipant(int participantID) throws SQLException
     {
         Participant p=new Participant();
-	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beach from participant WHERE " + participantColumn + "=" + participantID + "";
+	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE " + participantColumn + "=" + participantID + "";
+	ResultSet rs=executeQuery(sqlStmt);
+	while (rs.next())
+        {
+              p.setIdentifier(rs.getString("identifier"));  
+              p.setFamilyName(rs.getString("fname"));
+              p.setGivenName(rs.getString("gname"));
+              p.setMiddleName(rs.getString("mname"));
+              p.setNickName(rs.getString("nname"));
+              p.setGender((rs.getString("gender").charAt(0)));//get string from the db and convert to char type
+              p.setAge(rs.getInt("age"));
+              p.setBeachId(rs.getInt("beachid"));
+              p.setParticipant_Id(rs.getInt("PTID"));
+        }
+        
+        return p;
+    }
+    
+    public Participant getParticipant(String identifier) throws SQLException
+    {
+        Participant p=new Participant();
+	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE identifier ='" + identifier + "'";
 	ResultSet rs=executeQuery(sqlStmt);
 	while (rs.next())
         {

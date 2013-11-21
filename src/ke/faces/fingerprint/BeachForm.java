@@ -4,6 +4,7 @@
  */
 package ke.faces.fingerprint;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
@@ -19,7 +20,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -43,8 +46,10 @@ public class BeachForm extends JPanel implements ActionListener{
     private JLabel lbl_Title2;
     private JLabel lbl_County;
     
-    private JTextField txt_Bname;
-    private JTextField txt_Description;
+    private JPanel test;
+    
+    public static JTextField txt_Bname;
+    public static JTextField txt_Description;
     
     public static JButton btnSave;
     public static JButton btnUpdate;
@@ -56,9 +61,10 @@ public class BeachForm extends JPanel implements ActionListener{
     public static List<String> locations;
     public static List<Beach> beachList;
     private Sql db;
-    private Beach beach;
-    private Beach oldBeach;
-    private JComboBox cboCounty;
+    public static Beach beach;
+    public static Beach oldBeach;
+    public static JComboBox cboCounty;
+    private BeachListPanel list;
     
     public static String[] county;
     BeachForm()
@@ -69,6 +75,7 @@ public class BeachForm extends JPanel implements ActionListener{
         dlgBeachForm= new JDialog((JDialog)null, "BEACH DETAILS FORM", true);
         dlgBeachForm.setLayout(null);
         dlgBeachForm.setBounds(200, 0,450, 400);
+        
         
         
         lbl_Title=new JLabel();
@@ -108,7 +115,7 @@ public class BeachForm extends JPanel implements ActionListener{
         //lbl_Fname.setFont(font);
         dlgBeachForm.add(lbl_County);
         
-        cboCounty=new JComboBox(county);
+        cboCounty=new JComboBox(MainMenu.counties.toArray());
         cboCounty.setBounds(100, 120, 170, 25);          
         cboCounty.setFont(font);
         dlgBeachForm.add(cboCounty);
@@ -120,53 +127,9 @@ public class BeachForm extends JPanel implements ActionListener{
         lbl_Title2.setVerticalAlignment(JLabel.BOTTOM);
         dlgBeachForm.add(lbl_Title2);
         
-        lstLocations=new JList(locations.toArray());
-        lstLocations.setBounds(10, 170, 250, 170);          
-        lstLocations.setFont(font);
-        lstLocations.addListSelectionListener(new ListSelectionListener() {
-        public void valueChanged(ListSelectionEvent e)
-        {
-          int indices = lstLocations.getSelectedIndex();
-          Object  selectedItem = lstLocations.getSelectedValue();
-          String display = (String)selectedItem;
-          //get the selected item and split it inot two i.e. beach and county
-          //The split methos splits a string into an array given the regex (i.e. what to look at so as to split)
-          
-          if (!display.isEmpty())
-          {
-             String[] output=display.split("-", 2);
-          
-                for(Beach b: beachList)
-                {
-                    if(output[0].equalsIgnoreCase(b.getName())&& output[1].equalsIgnoreCase(b.getCounty()))
-                    {
-                        oldBeach.setBeachId(b.getBeachId());
-                        oldBeach.setCounty(b.getCounty());
-                        oldBeach.setName(b.getName());
-                        oldBeach.setDescription(b.getDescription());
-                        
-                        txt_Description.setText(b.getDescription());
-                        txt_Bname.setText(b.getName());
-                        //List lstCounty=Arrays.asList(county); //good Idea but failed to work for me
-                        for(int i=0;i<county.length;i++)
-                        {
-                            if (county[i].equalsIgnoreCase(b.getCounty()))
-                            {
-                                cboCounty.setSelectedIndex(i);
-                            }
-                        }
-                                             
-                    }
-                } 
-          }
-          
-             
-        }
-      });
-        ScrollPane pane = new ScrollPane();
-        pane.add(lstLocations);
-        dlgBeachForm.add(pane);
-        dlgBeachForm.add(lstLocations);
+        list=new BeachListPanel();
+        list.setBounds(10, 170, 270, 150);
+        dlgBeachForm.add(list); 
         
         
         btnSave=new JButton("Add");

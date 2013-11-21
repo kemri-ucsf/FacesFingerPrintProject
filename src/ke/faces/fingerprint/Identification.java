@@ -126,6 +126,7 @@ public class Identification {
                            Registration.txt_Fname.setText(p.getFamilyName());
                            Registration.txt_Gname.setText(p.getGivenName());
                            Registration.txt_Mname.setText(p.getMiddleName());
+                           Registration.txt_Nname.setText(p.getNickName());
                            Registration.txt_Age.setText(Integer.toString(p.getAge()));
                            if(p.getGender()=='M')
                            {
@@ -138,13 +139,15 @@ public class Identification {
                            //get the participant beach name and county
                            //the hash map contains the key of the beach and the value which is of type Beach
                            //This allow me to get the be Beach Id and all the related info abt a given beach
-                           Map beachMap=db.getBeachMap();
+                           
                            Beach b;
-                           b=(Beach)beachMap.get(p.getBeachId());
+                           b=(Beach)MainMenu.beachMap.get(p.getBeachId());
                            Registration.cboLocation.setSelectedItem(b.getName());
                            Registration.cboCty.setSelectedItem(b.getCounty());
                            Registration.txt_Identifier.setText(p.getIdentifier());
                            found=true;
+                           String msg="Participant ("+p.getGivenName()+" " + p.getFamilyName()+") is Already Enrolled in the Database";
+                           JOptionPane.showMessageDialog(null, msg);
                        }
                        catch(SQLException ex)
                        {
