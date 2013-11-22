@@ -282,7 +282,7 @@ public class Registration extends JPanel implements ActionListener{
              Beach b=MainMenu.beachMap.get(oldParticipant.getBeachId());
              cboCty.setSelectedItem((Object)b.getCounty());
              cboLocation.setSelectedItem(b.getName());
-             
+             btnDelete.setEnabled(true);
              
          }
          dlgRegistration.setVisible(true);  
@@ -412,12 +412,18 @@ public class Registration extends JPanel implements ActionListener{
         }
         else if(e.getActionCommand().equals(ACT_DELETE))
         {
-            if (participant.getParticipant_Id()>0)
+            if (oldParticipant.getParticipant_Id()>0)
             {
               if(!validateFields())
               {
-                  participant.deleteParticipant();
-                  return;
+                  int dialogResult = JOptionPane.showConfirmDialog (null, "Do you want to delete this Participant?","Warning",JOptionPane.YES_NO_OPTION);
+                    if(dialogResult == JOptionPane.YES_OPTION)
+                    {
+                        oldParticipant.deleteParticipant();
+                        oldParticipant.deleteAuditTrail();
+                        return;
+                    }
+                  
               }
             }
         }

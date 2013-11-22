@@ -115,6 +115,21 @@ public class Beach {
            }           
         
     }
+    public void deleteAuditTrail()
+    {
+        Sql db=new Sql();
+           try
+           {
+               db.Open();//open/create connection to the db               
+               db.voidAuditTrail(this.getClass().getName(), MainMenu.gUser.getUserId(),this.getBeachId());//the valu 5 shld be replaced with the currently logged on user
+               db.Close();
+                              
+           }
+           catch(SQLException e)
+           {
+               e.printStackTrace();
+           }
+    }
     public void deleteBeach()
     {
         //Void Beach

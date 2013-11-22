@@ -408,6 +408,21 @@ public class Participant {
            }           
         
     }
+    public void deleteAuditTrail()
+    {
+        Sql db=new Sql();
+           try
+           {
+               db.Open();//open/create connection to the db               
+               db.voidAuditTrail(this.getClass().getName(), MainMenu.gUser.getUserId(),this.getParticipant_Id());//the valu 5 shld be replaced with the currently logged on user
+               db.Close();
+                              
+           }
+           catch(SQLException e)
+           {
+               e.printStackTrace();
+           }
+    }
      public void updateParticipant()
     {
         

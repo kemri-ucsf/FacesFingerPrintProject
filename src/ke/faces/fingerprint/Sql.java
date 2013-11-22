@@ -172,6 +172,24 @@ public class Sql {
             
         }
     }
+    
+    public void voidAuditTrail(String className,int userId,int rcd_id) throws SQLException
+    {
+        //int i=getLastParticipantId();        
+            preppedStmtInsert="INSERT INTO audittrail (datetime,userid,formname,recordid,fieldname,newvalue) VALUES(?,?,?,?,?,?)";
+            PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+            pst.setTimestamp(1, timestamp);
+            pst.setInt(2, userId);
+            pst.setString(3, className);
+            pst.setInt(4, rcd_id);
+            pst.setString(5, "Record");
+            //pst.setString(6, oldFieldList.get(s));
+            pst.setString(6, "Deactivated");
+            pst.execute();
+            //System.out.println("Field Name: "+ s+" oldValue: "+oldFieldList.get(s)+" oldValue: "+newFieldList.get(s));
+            
+        
+    }
    
     public void insertFingerPrint(Participant p,int ptid) throws SQLException
     {       
@@ -350,14 +368,14 @@ public class Sql {
     public void updateBeach(Beach b) throws SQLException
      {
                     
-         preppedStmtUpdate="update beach set name=?, description=?, county=?, dateChanged=? changedBy=? WHERE beachid=?";
+         preppedStmtUpdate="update beach set name=?, description=?, county=?, dateChanged=?, changedBy=? WHERE beachid=?";
          PreparedStatement pst= c.prepareStatement(preppedStmtUpdate);
 		pst.setString(1,b.getName());
                 pst.setString(2,b.getDescription());
                 pst.setString(3,b.getCounty());	
                 pst.setTimestamp(4, timestamp);
-                pst.setInt(5, b.getBeachId());
-                pst.setInt(6, MainMenu.gUser.getUserId());
+                pst.setInt(5, MainMenu.gUser.getUserId());
+                pst.setInt(6, b.getBeachId());
 		pst.executeUpdate();
                 
                 System.out.println(preppedStmtUpdate);
@@ -365,7 +383,7 @@ public class Sql {
          
     public void updateParticipant(Participant p) throws SQLException
      {
-          preppedStmtUpdate="update participant set identifier=?,fname=?,mname=?,gname=?,nname=?,age=?,gender=?,beachid=?,dateChanged=? changedBy=? WHERE PTID=?";
+          preppedStmtUpdate="update participant set identifier=?,fname=?,mname=?,gname=?,nname=?,age=?,gender=?,beachid=?,dateChanged=?, changedBy=? WHERE PTID=?";
             //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
         PreparedStatement pst= c.prepareStatement(preppedStmtUpdate);
 	pst.setString(1, p.getIdentifier());
@@ -377,8 +395,8 @@ public class Sql {
         pst.setString(7, Character.toString(p.getGender()));//convert xter to string           
         pst.setInt(8, p.getBeachId());
         pst.setTimestamp(9, timestamp); 
-        pst.setInt(10, p.getParticipant_Id());
-        pst.setInt(11, MainMenu.gUser.getUserId());
+        pst.setInt(10, MainMenu.gUser.getUserId());
+        pst.setInt(11, p.getParticipant_Id());
         pst.executeUpdate();
         
          int ptid=p.getParticipant_Id();
@@ -487,7 +505,7 @@ public class Sql {
     public List<Participant> findParticipant(String search) throws SQLException
     {
         List<Participant> pList=new ArrayList<Participant>();
-	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE identifier like '%" + search + "%' or "; //
+	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE voided=0 and identifier like '%" + search + "%' or "; //
         sqlStmt=sqlStmt+" fname like '%" + search + "%' or gname like '%" + search + "%' or mname like '%" + search + "%'  or nname like '%" + search + "%'";
 	ResultSet rs=executeQuery(sqlStmt);
 	while (rs.next())
@@ -512,7 +530,7 @@ public class Sql {
      public void voidParticipant(Participant p) throws SQLException
      {
          
-         String sqlStmt="updated participant set voided=1 WHERE PTID=" + p.getParticipant_Id() + "";
+         String sqlStmt="update participant set voided=1 WHERE PTID=" + p.getParticipant_Id() + "";
          int rs=executeUpdate(sqlStmt);
          
          sqlStmt="updated participant set voided=1 WHERE PTID=" + p.getParticipant_Id() + "";

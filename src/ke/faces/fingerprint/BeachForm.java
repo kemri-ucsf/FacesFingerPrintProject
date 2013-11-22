@@ -266,7 +266,13 @@ public class BeachForm extends JPanel implements ActionListener{
             {
                 if (oldBeach!=null)
                 {
-                    oldBeach.deleteBeach();
+                    int dialogResult = JOptionPane.showConfirmDialog (null, "Do you want to delete this Participant?","Warning",JOptionPane.YES_NO_OPTION);
+                    if(dialogResult == JOptionPane.YES_OPTION)
+                    {
+                        oldBeach.deleteBeach();
+                        oldBeach.deleteAuditTrail();
+                    }
+                    
                 }
             }
                 
