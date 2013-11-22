@@ -41,6 +41,7 @@ public class Enrollment implements Engine.EnrollmentCallback{
                         //capture canceled, return null
 			break;
                     }
+                   
                     else if(null !=m_evt.capture_result.image && Reader.CaptureQuality.GOOD == m_evt.capture_result.quality)
                     {
                         //acquire engine

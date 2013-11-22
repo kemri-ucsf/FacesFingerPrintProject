@@ -4,7 +4,10 @@
  */
 package ke.faces.fingerprint;
 
+import java.lang.reflect.Field;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
@@ -144,6 +147,51 @@ public class Beach {
                e.printStackTrace();
            }
         }
+    
+    public void saveAuditTrail()
+    {
+       //create a hash map of the fields to be inserted
+        Map<String,String> fieldList =new HashMap<String,String>();
+        Class classP=this.getClass(); //create an object of type class to get the class details
+        Field[] fields=classP.getDeclaredFields();//get declared fields in a class
+     
+        for(int i=0;i<fields.length;i++)
+        {
+            try
+             {
+                 Field   field= classP.getDeclaredField(fields[i].getName()); //get field names
+                 fieldList.put(fields[i].getName(), (String)field.get(this));                 
+                 System.out.println("Field Name: "+ fields[i].getName()+" Value: "+(String)field.get(this));                   
+                          
+                 
+             }
+             catch (NoSuchFieldException e) 
+             {
+                System.out.println(e);
+             } 
+             catch (SecurityException e)
+             {
+                System.out.println(e);
+             } 
+             catch (IllegalAccessException e)
+             {
+                System.out.println(e);
+             }
+        }
+           //Save Audit trail
+           Sql db=new Sql();
+           try
+           {
+               db.Open();//open/create connection to the db
+               db.insertTrail(fieldList, this.getClass().getName(), 5);//the valu 5 shld be replaced with the currently logged on user
+               db.Close();
+           }
+           catch(SQLException e)
+           {
+               e.printStackTrace();
+           }           
+        
+    }
     
     public void updateBeach()
     {

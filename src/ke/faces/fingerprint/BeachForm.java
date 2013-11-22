@@ -251,6 +251,7 @@ public class BeachForm extends JPanel implements ActionListener{
                  
                     beach = new Beach(txt_Bname.getText(),txt_Description.getText(),(String)cboCounty.getSelectedItem());
                     beach.saveBeach();
+                    beach.saveAuditTrail();
                     return;
                 
                 }

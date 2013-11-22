@@ -8,6 +8,7 @@ package ke.faces.fingerprint;
  *
  * @author LENOVO USER
  */
+import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -102,7 +103,7 @@ public class Sql {
     
     public void insertParticipant(Participant p) throws SQLException
     {
-            preppedStmtInsert="INSERT INTO participant (identifier,fname,mname,gname,nname,age,gender,beach,dateCreated) VALUES(?,?,?,?,?,?,?,?,?)";
+            preppedStmtInsert="INSERT INTO participant (identifier,fname,mname,gname,nname,age,gender,beachid,dateCreated) VALUES(?,?,?,?,?,?,?,?,?)";
             //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
             
 		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
@@ -128,6 +129,93 @@ public class Sql {
                     insertFingerPrint(p,ptid);
                 }
                 JOptionPane.showMessageDialog(null, "Participant Record Successfully Saved... ");
+                
+                //insert audit trail;
+                p.setParticipant_Id(ptid);
+               // insertParticipantTrail(p);
+    }
+    public void insertTrail(Map<String,String> fieldList,String className,int userId) throws SQLException
+    {
+        int i=getLastParticipantId();
+        for(String s:fieldList.keySet())
+        {
+            preppedStmtInsert="INSERT INTO audittrail (datetime,userid,formname,recordid,fieldname,newvalue) VALUES(?,?,?,?,?,?)";
+            PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+            pst.setTimestamp(1, timestamp);
+            pst.setInt(2, userId);
+            pst.setString(3, className);
+            pst.setInt(4, i);
+            pst.setString(5, s);
+            pst.setString(6, fieldList.get(s));
+            pst.execute();
+            System.out.println("Field Name: "+ s+" Value: "+fieldList.get(s));
+            
+        }
+    }
+    
+    public void updateTrail(Map<String,String> oldFieldList,Map<String,String> newFieldList,String className,int userId,int rcd_id) throws SQLException
+    {
+        //int i=getLastParticipantId();
+        for(String s:oldFieldList.keySet())
+        {
+            preppedStmtInsert="INSERT INTO audittrail (datetime,userid,formname,recordid,fieldname,oldvalue,newvalue) VALUES(?,?,?,?,?,?,?)";
+            PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+            pst.setTimestamp(1, timestamp);
+            pst.setInt(2, userId);
+            pst.setString(3, className);
+            pst.setInt(4, rcd_id);
+            pst.setString(5, s);
+            pst.setString(6, oldFieldList.get(s));
+            pst.setString(7, newFieldList.get(s));
+            pst.execute();
+            System.out.println("Field Name: "+ s+" oldValue: "+oldFieldList.get(s)+" oldValue: "+newFieldList.get(s));
+            
+        }
+    }
+    public void insertParticipantTrail(Participant p) throws SQLException
+    {
+            
+        //Field[] fields=p.getClass().getFields();
+        Class classP=p.getClass(); //create an object of type class to get the class details
+        Field[] fields=classP.getDeclaredFields();//get declared fields in a class
+        for(int i=0;i<fields.length;i++)
+        {
+             System.out.println("Field no. :"+i+1);
+             preppedStmtInsert="INSERT INTO audittrail (datetime,userid,formname,recordid,fieldname,newvalue) VALUES(?,?,?,?,?,?)";
+             PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
+             try
+             {
+                 Field   field= classP.getDeclaredField(fields[i].getName()); //get field names
+                 if(!field.toString().contains("finger")||!field.toString().contains("Finger"))
+                 {                  
+                  pst.setTimestamp(1, timestamp);
+                  pst.setInt(2, 5);
+                  pst.setString(3, p.getClass().getName());
+                  pst.setInt(4, p.getParticipant_Id());
+                  pst.setString(5, fields[i].getName());
+                  pst.setString(6, (String)field.get(p));
+                  pst.execute();
+                  System.out.println("Field Name: "+ fields[i].getName()+" Value: "+(String)field.get(p));
+                   
+                 }         
+                 
+             }
+             catch (NoSuchFieldException e) {
+                System.out.println(e);
+            } 
+            catch (SecurityException e) {
+                System.out.println(e);
+            } 
+            catch (IllegalAccessException e) {
+                System.out.println(e);
+      }
+         
+         }              
+            //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
+         Close();//ensure all records are persisted on the db before saving prints
+         Open();
+            
+		
     }
     
     public void insertFingerPrint(Participant p,int ptid) throws SQLException
@@ -319,7 +407,7 @@ public class Sql {
          
     public void updateParticipant(Participant p) throws SQLException
      {
-          preppedStmtUpdate="update participant set identifier=?,fname=?,mname=?,gname=?,nname=?,age=?,gender=?,beach=?,dateChanged=? WHERE PTID=?";
+          preppedStmtUpdate="update participant set identifier=?,fname=?,mname=?,gname=?,nname=?,age=?,gender=?,beachid=?,dateChanged=? WHERE PTID=?";
             //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
         PreparedStatement pst= c.prepareStatement(preppedStmtUpdate);
 	pst.setString(1, p.getIdentifier());
@@ -333,7 +421,8 @@ public class Sql {
         pst.setTimestamp(9, timestamp); 
         pst.setInt(10, p.getParticipant_Id());
         pst.executeUpdate();
-                
+        
+        JOptionPane.showMessageDialog(null, "Record Updated...");
                 //System.out.println(preppedStmtUpdate);
     } 
     
@@ -394,6 +483,19 @@ public class Sql {
               p.setAge(rs.getInt("age"));
               p.setBeachId(rs.getInt("beachid"));
               p.setParticipant_Id(rs.getInt("PTID"));
+        }
+        
+        return p;
+    }
+    
+    public int validateIdentifier(String identifier) throws SQLException
+    {
+        int p=0;
+	String sqlStmt="Select count(PTID) as idcount from participant WHERE identifier ='" + identifier + "'";
+	ResultSet rs=executeQuery(sqlStmt);
+	while (rs.next())
+        {
+              p=rs.getInt("idcount");
         }
         
         return p;

@@ -263,6 +263,7 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
             if (identify.getFoundStatus()==true)
             {
                 Registration.btnSave.setEnabled(false);
+                Registration.btnCancel.setEnabled(true);
                //close this windo
                StopCaptureThread();
                dlgFingerPrintDialog.setVisible(false);
@@ -283,7 +284,9 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
                 Registration.txt_Fname.setText("");
                 Registration.txt_Gname.setText("");
                 Registration.txt_Mname.setText("");
+                Registration.txt_Nname.setText("");
                 Registration.btnSave.setEnabled(true);
+                Registration.btnCancel.setEnabled(false);
                  
             }
             
@@ -471,7 +474,16 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
             {
                 if(null != evt.capture_result)
                 {
-                    if(null != evt.capture_result.image && Reader.CaptureQuality.GOOD == evt.capture_result.quality)
+                    
+                    if(null !=evt.capture_result.image && Reader.CaptureQuality.FINGER_TOO_HIGH == evt.capture_result.quality)
+                    {
+                        lbl_Quality.setVisible(false);
+                        lbl_Bad.setVisible(true);
+                        imagePanel.showImage(evt.capture_result.image);
+                        return;
+                        
+                    }
+                    else if(null != evt.capture_result.image && Reader.CaptureQuality.GOOD == evt.capture_result.quality)
                     {
                         //enable button
                         btnIdentify.setEnabled(true);

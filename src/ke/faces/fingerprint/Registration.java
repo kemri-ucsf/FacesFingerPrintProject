@@ -69,7 +69,7 @@ public class Registration extends JPanel implements ActionListener{
     public static JButton btnDelete;
     public static JButton btnEnroll;
     private JButton btnBack;
-    public JButton btnCancel;
+    public static JButton btnCancel;
     private JButton btnFind;
     
     //Display panel
@@ -336,6 +336,14 @@ public class Registration extends JPanel implements ActionListener{
              b_ok=false;
              JOptionPane.showMessageDialog(null, "Enter Participant's Id");
          }
+         else
+         {
+             if(participant.getDublicateIdentifier(txt_Identifier.getText())<=0)
+             {
+                 b_ok=false;
+                 JOptionPane.showMessageDialog(null, "This Participant's Id is Already Assigned to Someone else");
+             }
+         }
          
          if (txt_Age.getText()!=null)
          {
@@ -360,14 +368,7 @@ public class Registration extends JPanel implements ActionListener{
             dlgRegistration.setVisible(false);
             return;
 	}
-        else if(e.getActionCommand().equals(ACT_CANCEL))
-        {
-            txt_Identifier.setText("");
-            txt_Age.setText("");
-            txt_Fname.setText("");
-            txt_Gname.setText("");
-            txt_Mname.setText("");
-	}
+       
         else if(e.getActionCommand().equals(ACT_ENROLL))
         {
             reader=getSelectedReader();
@@ -392,6 +393,7 @@ public class Registration extends JPanel implements ActionListener{
                participant.setFamilyName(txt_Fname.getText());
                participant.setGivenName(txt_Gname.getText());
                participant.setMiddleName(txt_Mname.getText());
+               participant.setNickName(txt_Nname.getText());
                if (cboGender.getSelectedIndex()==0)
                {
                    participant.setGender('M');
@@ -403,7 +405,9 @@ public class Registration extends JPanel implements ActionListener{
                participant.setBeachId(accessList.get((String)cboLocation.getSelectedItem()));
                
                participant.saveParticipant();
+               participant.saveAuditTrail();
               // JOptionPane.showMessageDialog(null, "Participant Record Successfully Saved... ");
+              // btnSave.setEnabled(false);
             }
         }
         else if(e.getActionCommand().equals(ACT_DELETE))
@@ -430,6 +434,7 @@ public class Registration extends JPanel implements ActionListener{
                         participant.setFamilyName(txt_Fname.getText());
                         participant.setGivenName(txt_Gname.getText());
                         participant.setMiddleName(txt_Mname.getText());
+                        participant.setNickName(txt_Nname.getText());
                         if (cboGender.getSelectedIndex()==0)
                         {
                             participant.setGender('M');
@@ -440,7 +445,13 @@ public class Registration extends JPanel implements ActionListener{
                         }
                         participant.setBeachId(accessList.get((String)cboLocation.getSelectedItem()));
                         participant.setParticipant_Id(oldParticipant.getParticipant_Id());
-                        participant.updateParticipant();
+                        
+                        if(!participant.equals(oldParticipant))
+                        {
+                           participant.updateParticipant(); 
+                           participant.updateAuditTrail(oldParticipant);
+                        }
+                        
               // JOptionPane.showMessageDialog(null, "Participant Record Successfully Saved... ");
                     }
                 }
@@ -449,6 +460,12 @@ public class Registration extends JPanel implements ActionListener{
             }
             else if(btnCancel.getText()=="Cancel")
             {
+                txt_Identifier.setText("");
+                txt_Age.setText("");
+                txt_Fname.setText("");
+                txt_Gname.setText("");
+                txt_Mname.setText("");
+                txt_Nname.setText("");
                 btnCancel.setText("Update");
                 btnSave.setEnabled(false);
                 return;

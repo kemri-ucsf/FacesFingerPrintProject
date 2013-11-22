@@ -5,9 +5,12 @@
 package ke.faces.fingerprint;
 
 import com.digitalpersona.uareu.Fmd;
+import java.lang.reflect.Field;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -29,7 +32,7 @@ public class Participant {
     private FingerPrint fingerPrint;
     private FingerPrint fingerPrint2;
     public static List<FingerPrint> lstFingerPrints;    
-   
+    private static final Logger LOG = Logger.getLogger(Participant.class.getName());
     public Participant() {
         //fingerPrint=new FingerPrint[10];
         lstFingerPrints=new ArrayList<FingerPrint>();
@@ -151,7 +154,7 @@ public class Participant {
     public String toString() {
         return "Participant{" + "identifier=" + identifier + ", familyName=" + familyName + ", middleName=" + middleName + ", givenName=" + givenName + ", age=" + age + ", beachName=" + beachId + ", gender=" + gender + ", participant_Id=" + participant_Id + '}';
     }
-    private static final Logger LOG = Logger.getLogger(Participant.class.getName());
+    
 
     @Override
     public int hashCode() {
@@ -159,6 +162,7 @@ public class Participant {
         return hash;
     }
 
+    
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
@@ -178,6 +182,9 @@ public class Participant {
             return false;
         }
         if (!Objects.equals(this.givenName, other.givenName)) {
+            return false;
+        }
+        if (!Objects.equals(this.nickName, other.nickName)) {
             return false;
         }
         if (this.age != other.age) {
@@ -226,6 +233,174 @@ public class Participant {
                db.Open();//open/create connection to the db
                db.insertParticipant(this);
                db.Close();
+           }
+           catch(SQLException e)
+           {
+               e.printStackTrace();
+           }           
+        
+    }
+    
+    public void saveAuditTrail()
+    {
+       //create a hash map of the fields to be inserted
+        Map<String,String> fieldList =new HashMap<String,String>();
+        Class classP=this.getClass(); //create an object of type class to get the class details
+        Field[] fields=classP.getDeclaredFields();//get declared fields in a class
+     
+        for(int i=0;i<fields.length;i++)
+        {
+            try
+             {
+                 Field   field= classP.getDeclaredField(fields[i].getName()); //get field names
+                 if(!field.toString().equalsIgnoreCase("lstFingerPrints")||!field.toString().contains("finger")||!field.toString().equalsIgnoreCase("LOG"))
+                 {    
+                     Class typeClass = fields[i].getType();
+                     String fieldType = typeClass.getName();
+                     if(fieldType=="int" && field.get(this)!=null)
+                     {
+                         fieldList.put(fields[i].getName(), Integer.toString((Integer)field.get(this)));                 
+                         System.out.println("Field Name: "+ fields[i].getName()+" Value: "+Integer.toString((Integer)field.get(this)));
+                     }
+                     else if(fieldType=="char" && field.get(this)!=null)
+                     {
+                         fieldList.put(fields[i].getName(), Character.toString((Character)field.get(this)));                 
+                         System.out.println("Field Name: "+ fields[i].getName()+" Value: "+Integer.toString((Character)field.get(this)));
+                     }
+                     else if (field.get(this)!=null)
+                     {
+                         fieldList.put(fields[i].getName(), field.get(this).toString());                 
+                         System.out.println("Field Name: "+ fields[i].getName()+" Value: "+field.get(this).toString());
+                     }
+                    // fieldList.put(fields[i].getName(), field.get(this).toString());                 
+                    // System.out.println("Field Name: "+ fields[i].getName()+" Value: "+(String)field.get(this));                   
+                 }         
+                 
+             }
+             catch (NoSuchFieldException e) 
+             {
+                System.out.println(e);
+             } 
+             catch (SecurityException e)
+             {
+                System.out.println(e);
+             } 
+             catch (IllegalAccessException e)
+             {
+                System.out.println(e);
+             }
+        }
+           //Save Audit trail
+           Sql db=new Sql();
+           try
+           {
+               db.Open();//open/create connection to the db
+               db.insertTrail(fieldList, this.getClass().getName(), 5);//the valu 5 shld be replaced with the currently logged on user
+               db.Close();
+           }
+           catch(SQLException e)
+           {
+               e.printStackTrace();
+           }           
+        
+    }
+    
+    public void updateAuditTrail(Participant old)
+    {
+       //create a hash map of the fields to be inserted
+        Map<String,String> oldFieldList =new HashMap<String,String>();
+        Map<String,String> newFieldList =new HashMap<String,String>();
+        
+        Class classP=this.getClass(); //create an object of type class to get the class details
+        Class classOld=old.getClass(); //create an object of type class to get the class details
+        Field[] fields=classP.getDeclaredFields();//get declared fields in a class
+        Field[] oldFields=classOld.getDeclaredFields();//get declared fields in a class
+     
+        for(int i=0;i<fields.length;i++)
+        {
+            try
+             {
+                 Field   field= classP.getDeclaredField(fields[i].getName()); //get field names
+                 Field   oldField= classOld.getDeclaredField(oldFields[i].getName()); //get field names
+                 
+                 System.out.println("Comparing:"+oldFields[i].getName()+" And "+ fields[i].getName());
+                 //get only updated fields
+                 String oldVal;
+                 String newVal;
+                 if(field.get(this)!=oldField.get(old))
+                 {
+                     if(!field.toString().equalsIgnoreCase("lstFingerPrints")||!field.toString().contains("finger")||!field.toString().equalsIgnoreCase("LOG"))
+                     {    
+                        Class typeClass = fields[i].getType();
+                        String fieldType = typeClass.getName();
+                        if(fieldType=="int" && field.get(this)!=null)
+                        {
+                            oldVal=Integer.toString((Integer)oldField.get(old));
+                            newVal=Integer.toString((Integer)field.get(this));
+                            if(!oldVal.equalsIgnoreCase(newVal))
+                            {
+                                oldFieldList.put(oldFields[i].getName(), oldVal);
+                                newFieldList.put(fields[i].getName(), newVal);
+                                System.out.println("Field Name: "+ fields[i].getName()+" Old Value: "+oldVal+" New Value: "+newVal);                        
+                            }
+                        }
+                        else if(fieldType=="char" && field.get(this)!=null)
+                        {
+                            oldVal=Character.toString((Character)oldField.get(old));
+                            newVal= Character.toString((Character)field.get(this));
+                            if(!oldVal.equalsIgnoreCase(newVal))
+                            {
+                                oldFieldList.put(oldFields[i].getName(), oldVal);
+                                newFieldList.put(fields[i].getName(), newVal);
+                                System.out.println("Field Name: "+ fields[i].getName()+" Old Value: "+oldVal+" New Value: "+newVal);                        
+                            }
+                        }
+                        else if (field.get(this)!=null)
+                        {                         
+                           // oldFieldList.put(oldFields[i].getName(), oldField.get(this).toString());
+                           // newFieldList.put(fields[i].getName(), field.get(this).toString());
+                           // System.out.println("Field Name: "+ fields[i].getName()+" Old Value: "+oldField.get(this).toString()+" New Value: "+field.get(this).toString());
+                            oldVal=oldField.get(old).toString();
+                            newVal= field.get(this).toString();
+                            if(!oldVal.equalsIgnoreCase(newVal))
+                            {
+                                oldFieldList.put(oldFields[i].getName(), oldVal);
+                                newFieldList.put(fields[i].getName(), newVal);
+                                System.out.println("Field Name: "+ fields[i].getName()+" Old Value: "+oldVal+" New Value: "+newVal);                        
+                            }
+                        }
+                    // fieldList.put(fields[i].getName(), field.get(this).toString());                 
+                    // System.out.println("Field Name: "+ fields[i].getName()+" Value: "+(String)field.get(this));                   
+                       }
+                     
+                 }
+                          
+                 
+             }
+             catch (NoSuchFieldException e) 
+             {
+                System.out.println(e);
+             } 
+             catch (SecurityException e)
+             {
+                System.out.println(e);
+             } 
+             catch (IllegalAccessException e)
+             {
+                System.out.println(e);
+             }
+        }
+           //Save Audit trail
+           Sql db=new Sql();
+           try
+           {
+               db.Open();//open/create connection to the db
+               if(oldFieldList.size()>0)
+               {
+                   db.updateTrail(oldFieldList, newFieldList,this.getClass().getName(), 5,old.getParticipant_Id());//the valu 5 shld be replaced with the currently logged on user
+                   db.Close();
+               }
+               
            }
            catch(SQLException e)
            {
@@ -287,6 +462,23 @@ public class Participant {
         {
             e.printStackTrace();
         }
+    }
+    
+    public int getDublicateIdentifier(String identifier)
+    {
+        //Save participant
+        Sql db=new Sql();
+        try
+        {
+            db.Open();//open/create connection to the db
+            return db.validateIdentifier(identifier);
+           // db.Close();
+        }
+        catch(SQLException e)
+        {
+            e.printStackTrace();
+        }
+        return 0;
     }
     
     
