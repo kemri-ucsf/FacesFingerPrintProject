@@ -13,19 +13,23 @@ import java.util.logging.Logger;
 public class User {
     private int userId;
     private String userName;
-    private String password;
-    private String firstName;
-    private String lastName;
+    private String password;    
+    private String name;
     private String designation;
+   
     private static final Logger LOG = Logger.getLogger(User.class.getName());
 
-    public User(String userName, String password, String firstName, String lastName, String designation) {
+    public User()
+    {
+        
+    }
+    public User(String userName, String password,  String name, String designation) {
         this.userName = userName;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.password = password;       
+        this.name = name;
         this.designation = designation;
     }
+    
 
     public int getUserId() {
         return userId;
@@ -51,20 +55,13 @@ public class User {
         this.password = password;
     }
 
-    public String getFirstName() {
-        return firstName;
+   
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String lastName) {
+        this.name = lastName;
     }
 
     public String getDesignation() {
@@ -77,7 +74,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userName=" + userName + ", password=" + password + ", firstName=" + firstName + ", lastName=" + lastName + ", designation=" + designation + '}';
+        return "User{" + "userName=" + userName + ", password=" + password + ",  name=" + name + ", designation=" + designation + '}';
     }
     
     

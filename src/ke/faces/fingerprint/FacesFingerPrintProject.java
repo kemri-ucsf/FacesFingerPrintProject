@@ -22,7 +22,7 @@ public class FacesFingerPrintProject {
         
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {                
-               MainMenu.createAndShowGUI();
+               LoginDialog.createAndShowGUI();
             }
     });
                 

@@ -103,7 +103,7 @@ public class Sql {
     
     public void insertParticipant(Participant p) throws SQLException
     {
-            preppedStmtInsert="INSERT INTO participant (identifier,fname,mname,gname,nname,age,gender,beachid,dateCreated) VALUES(?,?,?,?,?,?,?,?,?)";
+            preppedStmtInsert="INSERT INTO participant (identifier,fname,mname,gname,nname,age,gender,beachid,dateCreated,creator) VALUES(?,?,?,?,?,?,?,?,?)";
             //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
             
 		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
@@ -117,7 +117,7 @@ public class Sql {
                 pst.setInt(8, p.getBeachId());
 		//pst.setBytes(8, p.getlMiddleFmd());
                 pst.setTimestamp(9, timestamp);
-                
+                pst.setInt(10, MainMenu.gUser.getUserId());
 		pst.execute();
                 Close();//ensure all records are persisted on the db before saving prints
                 Open();
@@ -172,52 +172,7 @@ public class Sql {
             
         }
     }
-    public void insertParticipantTrail(Participant p) throws SQLException
-    {
-            
-        //Field[] fields=p.getClass().getFields();
-        Class classP=p.getClass(); //create an object of type class to get the class details
-        Field[] fields=classP.getDeclaredFields();//get declared fields in a class
-        for(int i=0;i<fields.length;i++)
-        {
-             System.out.println("Field no. :"+i+1);
-             preppedStmtInsert="INSERT INTO audittrail (datetime,userid,formname,recordid,fieldname,newvalue) VALUES(?,?,?,?,?,?)";
-             PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
-             try
-             {
-                 Field   field= classP.getDeclaredField(fields[i].getName()); //get field names
-                 if(!field.toString().contains("finger")||!field.toString().contains("Finger"))
-                 {                  
-                  pst.setTimestamp(1, timestamp);
-                  pst.setInt(2, 5);
-                  pst.setString(3, p.getClass().getName());
-                  pst.setInt(4, p.getParticipant_Id());
-                  pst.setString(5, fields[i].getName());
-                  pst.setString(6, (String)field.get(p));
-                  pst.execute();
-                  System.out.println("Field Name: "+ fields[i].getName()+" Value: "+(String)field.get(p));
-                   
-                 }         
-                 
-             }
-             catch (NoSuchFieldException e) {
-                System.out.println(e);
-            } 
-            catch (SecurityException e) {
-                System.out.println(e);
-            } 
-            catch (IllegalAccessException e) {
-                System.out.println(e);
-      }
-         
-         }              
-            //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
-         Close();//ensure all records are persisted on the db before saving prints
-         Open();
-            
-		
-    }
-    
+   
     public void insertFingerPrint(Participant p,int ptid) throws SQLException
     {       
             
@@ -225,7 +180,7 @@ public class Sql {
         {
             for(FingerPrint fp: p.getLstFingerPrints())
             {
-                 preppedStmtInsert="INSERT INTO fingerprint (PTID,print1,printIndex,dateCreated) VALUES(?,?,?,?)";
+                 preppedStmtInsert="INSERT INTO fingerprint (PTID,print1,printIndex,dateCreated,creator) VALUES(?,?,?,?)";
                 //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
                 
 		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
@@ -233,6 +188,7 @@ public class Sql {
                	pst.setBytes(2, fp.getFmd());
                 pst.setInt(3, fp.getIndex());
                 pst.setTimestamp(4, timestamp);
+                pst.setInt(5, MainMenu.gUser.getUserId());
                 pst.execute();
             }
             
@@ -351,13 +307,14 @@ public class Sql {
     
     public void insertBeach(Beach beach)throws SQLException
     {
-        preppedStmtInsert="INSERT INTO beach (name,description,county,dateCreated) VALUES(?,?,?,?)";
+        preppedStmtInsert="INSERT INTO beach (name,description,county,dateCreated,creator) VALUES(?,?,?,?,?)";
             //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
 		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
 		pst.setString(1,beach.getName());
                 pst.setString(2,beach.getDescription());
                 pst.setString(3,beach.getCounty());
                 pst.setTimestamp(4, timestamp);
+                pst.setInt(5, MainMenu.gUser.getUserId());
 		pst.execute();
     }
     
@@ -379,7 +336,7 @@ public class Sql {
     public void voidBeach(Beach b) throws SQLException
      {
          
-         String sqlStmt="updated beach set voided=1,dateVoided=now() WHERE beachid=" + b.getBeachId() + "";
+         String sqlStmt="updated beach set voided=1,dateVoided=now(), voidedBy="+MainMenu.gUser.getUserId()+" WHERE beachid=" + b.getBeachId() + "";
          int rs=executeUpdate(sqlStmt);
          
                   
@@ -393,13 +350,14 @@ public class Sql {
     public void updateBeach(Beach b) throws SQLException
      {
                     
-         preppedStmtUpdate="update beach set name=?, description=?, county=?, dateChanged=? WHERE beachid=?";
+         preppedStmtUpdate="update beach set name=?, description=?, county=?, dateChanged=? changedBy=? WHERE beachid=?";
          PreparedStatement pst= c.prepareStatement(preppedStmtUpdate);
 		pst.setString(1,b.getName());
                 pst.setString(2,b.getDescription());
                 pst.setString(3,b.getCounty());	
                 pst.setTimestamp(4, timestamp);
                 pst.setInt(5, b.getBeachId());
+                pst.setInt(6, MainMenu.gUser.getUserId());
 		pst.executeUpdate();
                 
                 System.out.println(preppedStmtUpdate);
@@ -407,7 +365,7 @@ public class Sql {
          
     public void updateParticipant(Participant p) throws SQLException
      {
-          preppedStmtUpdate="update participant set identifier=?,fname=?,mname=?,gname=?,nname=?,age=?,gender=?,beachid=?,dateChanged=? WHERE PTID=?";
+          preppedStmtUpdate="update participant set identifier=?,fname=?,mname=?,gname=?,nname=?,age=?,gender=?,beachid=?,dateChanged=? changedBy=? WHERE PTID=?";
             //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
         PreparedStatement pst= c.prepareStatement(preppedStmtUpdate);
 	pst.setString(1, p.getIdentifier());
@@ -420,10 +378,17 @@ public class Sql {
         pst.setInt(8, p.getBeachId());
         pst.setTimestamp(9, timestamp); 
         pst.setInt(10, p.getParticipant_Id());
+        pst.setInt(11, MainMenu.gUser.getUserId());
         pst.executeUpdate();
         
+         int ptid=p.getParticipant_Id();
+         if (ptid!=0)
+         {
+           insertFingerPrint(p,ptid);
+         }
         JOptionPane.showMessageDialog(null, "Record Updated...");
                 //System.out.println(preppedStmtUpdate);
+        
     } 
     
     public boolean ParticipantExists(int userID) throws SQLException
@@ -448,11 +413,12 @@ public class Sql {
     
     public Participant getParticipant(int participantID) throws SQLException
     {
-        Participant p=new Participant();
+        Participant p=null;
 	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE " + participantColumn + "=" + participantID + "";
 	ResultSet rs=executeQuery(sqlStmt);
 	while (rs.next())
         {
+              p=new Participant();
               p.setIdentifier(rs.getString("identifier"));  
               p.setFamilyName(rs.getString("fname"));
               p.setGivenName(rs.getString("gname"));
@@ -469,11 +435,12 @@ public class Sql {
     
     public Participant getParticipant(String identifier) throws SQLException
     {
-        Participant p=new Participant();
+        Participant p=null;
 	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE identifier ='" + identifier + "'";
 	ResultSet rs=executeQuery(sqlStmt);
 	while (rs.next())
         {
+              p=new Participant();
               p.setIdentifier(rs.getString("identifier"));  
               p.setFamilyName(rs.getString("fname"));
               p.setGivenName(rs.getString("gname"));
@@ -486,6 +453,22 @@ public class Sql {
         }
         
         return p;
+    }
+    
+     public User getUser(String uName, String pass) throws SQLException
+    {
+        User user=null;
+	String sqlStmt="Select UserID,lname,username from users WHERE username ='" + uName + "' and pass=password('"+ pass + "');";
+	ResultSet rs=executeQuery(sqlStmt);
+	while (rs.next())
+        {
+              user=new User();
+              user.setUserId(rs.getInt("UserID"));  
+              user.setName(rs.getString("lname"));
+              user.setUserName(rs.getString("username"));              
+        }
+        
+        return user;
     }
     
     public int validateIdentifier(String identifier) throws SQLException

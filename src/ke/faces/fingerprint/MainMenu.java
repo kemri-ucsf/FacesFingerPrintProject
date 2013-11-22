@@ -24,6 +24,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
  *
@@ -51,6 +52,7 @@ public class MainMenu extends JFrame implements ActionListener{
     private JButton btnBeach;
     private JButton btnUser;
     private JButton btnReport;
+    private JLabel txt_User;
     private ReaderCollection readerCollection;
     
    public static List<String> counties; //store preloaded county details
@@ -58,9 +60,10 @@ public class MainMenu extends JFrame implements ActionListener{
    public static Map<Integer,Beach> beachMap; // store preloaded beach Map infomation
    public static List<String> locations; // store preloaded beach Map infomation
    private Sql db=new Sql();
-    public MainMenu()
+   public static User gUser;
+    public MainMenu(User user)
     {
-         
+        gUser=user; 
         loadBeach();
         menuDialog= new JDialog((JDialog)null, "FISHERMEN FINGERPRINTING PROJECT", true);        
          menuDialog.setLayout(null);
@@ -121,6 +124,12 @@ public class MainMenu extends JFrame implements ActionListener{
          title2.setVerticalAlignment(JLabel.TOP);
          title2.setIcon(image);         
          menuDialog.add(title2);
+         
+         txt_User=new JLabel();
+         txt_User.setBounds(400,480,200,25);
+         txt_User.setText("User:  "+gUser.getName());
+         txt_User.setFont(titleFont);
+         menuDialog.add(txt_User);
         
         
           menuDialog.setVisible(true);
@@ -177,8 +186,8 @@ public class MainMenu extends JFrame implements ActionListener{
     
     }
     
-    public static void createAndShowGUI() {
-		MainMenu paneContent = new MainMenu();
+    public static void createAndShowGUI(User user) {
+		MainMenu paneContent = new MainMenu(user);
 		
 		//initialize capture library by acquiring reader collection
 		try{

@@ -295,7 +295,7 @@ public class Participant {
            try
            {
                db.Open();//open/create connection to the db
-               db.insertTrail(fieldList, this.getClass().getName(), 5);//the valu 5 shld be replaced with the currently logged on user
+               db.insertTrail(fieldList, this.getClass().getName(), MainMenu.gUser.getUserId());//the valu 5 shld be replaced with the currently logged on user
                db.Close();
            }
            catch(SQLException e)
@@ -397,7 +397,7 @@ public class Participant {
                db.Open();//open/create connection to the db
                if(oldFieldList.size()>0)
                {
-                   db.updateTrail(oldFieldList, newFieldList,this.getClass().getName(), 5,old.getParticipant_Id());//the valu 5 shld be replaced with the currently logged on user
+                   db.updateTrail(oldFieldList, newFieldList,this.getClass().getName(), MainMenu.gUser.getUserId(),old.getParticipant_Id());//the valu 5 shld be replaced with the currently logged on user
                    db.Close();
                }
                
