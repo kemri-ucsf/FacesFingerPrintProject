@@ -253,24 +253,35 @@ public class Participant {
             try
              {
                  Field   field= classP.getDeclaredField(fields[i].getName()); //get field names
+                  String newVal;
                  if(!field.toString().equalsIgnoreCase("lstFingerPrints")||!field.toString().contains("finger")||!field.toString().equalsIgnoreCase("LOG"))
                  {    
                      Class typeClass = fields[i].getType();
                      String fieldType = typeClass.getName();
                      if(fieldType=="int" && field.get(this)!=null)
                      {
-                         fieldList.put(fields[i].getName(), Integer.toString((Integer)field.get(this)));                 
-                         System.out.println("Field Name: "+ fields[i].getName()+" Value: "+Integer.toString((Integer)field.get(this)));
+                         newVal=Integer.toString((Integer)field.get(this));
+                         fieldList.put(fields[i].getName(), newVal);                 
+                         System.out.println("Field Name: "+ fields[i].getName()+" Value: "+newVal);
                      }
                      else if(fieldType=="char" && field.get(this)!=null)
                      {
-                         fieldList.put(fields[i].getName(), Character.toString((Character)field.get(this)));                 
-                         System.out.println("Field Name: "+ fields[i].getName()+" Value: "+Integer.toString((Character)field.get(this)));
+                         newVal=Character.toString((Character)field.get(this));
+                         fieldList.put(fields[i].getName(), newVal);                 
+                         System.out.println("Field Name: "+ fields[i].getName()+" Value: "+newVal);
                      }
                      else if (field.get(this)!=null)
                      {
-                         fieldList.put(fields[i].getName(), field.get(this).toString());                 
-                         System.out.println("Field Name: "+ fields[i].getName()+" Value: "+field.get(this).toString());
+                          if(field.get(this)!=null)
+                            {
+                                 newVal= field.get(this).toString();
+                            }
+                            else
+                            {
+                                newVal="";  
+                            }
+                         fieldList.put(fields[i].getName(), newVal);                 
+                         System.out.println("Field Name: "+ fields[i].getName()+" Value: "+newVal);
                      }
                     // fieldList.put(fields[i].getName(), field.get(this).toString());                 
                     // System.out.println("Field Name: "+ fields[i].getName()+" Value: "+(String)field.get(this));                   
@@ -324,6 +335,7 @@ public class Participant {
                  Field   oldField= classOld.getDeclaredField(oldFields[i].getName()); //get field names
                  
                  System.out.println("Comparing:"+oldFields[i].getName()+" And "+ fields[i].getName());
+                 System.out.println("How shld test this: "+oldField.get(old)+" and " +field.get(this) );
                  //get only updated fields
                  String oldVal;
                  String newVal;
@@ -346,6 +358,8 @@ public class Participant {
                         }
                         else if(fieldType=="char" && field.get(this)!=null)
                         {
+                            
+                            
                             oldVal=Character.toString((Character)oldField.get(old));
                             newVal= Character.toString((Character)field.get(this));
                             if(!oldVal.equalsIgnoreCase(newVal))
@@ -360,8 +374,25 @@ public class Participant {
                            // oldFieldList.put(oldFields[i].getName(), oldField.get(this).toString());
                            // newFieldList.put(fields[i].getName(), field.get(this).toString());
                            // System.out.println("Field Name: "+ fields[i].getName()+" Old Value: "+oldField.get(this).toString()+" New Value: "+field.get(this).toString());
-                            oldVal=oldField.get(old).toString();
-                            newVal= field.get(this).toString();
+                            if(oldField.get(old)!=null)
+                            {
+                                oldVal=oldField.get(old).toString();
+                            }
+                            else
+                            {
+                                oldVal="";  
+                            }
+                            
+                            if(field.get(this)!=null)
+                            {
+                                 newVal= field.get(this).toString();
+                            }
+                            else
+                            {
+                                newVal="";  
+                            }
+                            
+                           
                             if(!oldVal.equalsIgnoreCase(newVal))
                             {
                                 oldFieldList.put(oldFields[i].getName(), oldVal);

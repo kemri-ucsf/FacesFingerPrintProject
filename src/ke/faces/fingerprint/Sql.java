@@ -354,7 +354,7 @@ public class Sql {
     public void voidBeach(Beach b) throws SQLException
      {
          
-         String sqlStmt="updated beach set voided=1,dateVoided=now(), voidedBy="+MainMenu.gUser.getUserId()+" WHERE beachid=" + b.getBeachId() + "";
+         String sqlStmt="update beach set voided=1,dateVoided=now(), voidedBy="+MainMenu.gUser.getUserId()+" WHERE beachid=" + b.getBeachId() + "";
          int rs=executeUpdate(sqlStmt);
          
                   
@@ -505,8 +505,8 @@ public class Sql {
     public List<Participant> findParticipant(String search) throws SQLException
     {
         List<Participant> pList=new ArrayList<Participant>();
-	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE voided=0 and identifier like '%" + search + "%' or "; //
-        sqlStmt=sqlStmt+" fname like '%" + search + "%' or gname like '%" + search + "%' or mname like '%" + search + "%'  or nname like '%" + search + "%'";
+	String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE voided=0 and (identifier like '%" + search + "%' or "; //
+        sqlStmt=sqlStmt+" fname like '%" + search + "%' or gname like '%" + search + "%' or mname like '%" + search + "%'  or nname like '%" + search + "%')";
 	ResultSet rs=executeQuery(sqlStmt);
 	while (rs.next())
         {
@@ -530,11 +530,11 @@ public class Sql {
      public void voidParticipant(Participant p) throws SQLException
      {
          
-         String sqlStmt="update participant set voided=1 WHERE PTID=" + p.getParticipant_Id() + "";
+         String sqlStmt="update participant set voided=1, voidedBy="+MainMenu.gUser.getUserId()+" WHERE PTID=" + p.getParticipant_Id() + "";
          int rs=executeUpdate(sqlStmt);
          
-         sqlStmt="updated participant set voided=1 WHERE PTID=" + p.getParticipant_Id() + "";
-         rs=executeUpdate(sqlStmt);
+        // sqlStmt="update participant set voided=1 WHERE PTID=" + p.getParticipant_Id() + "";
+        // rs=executeUpdate(sqlStmt);
          
          if (rs>0)
          {
