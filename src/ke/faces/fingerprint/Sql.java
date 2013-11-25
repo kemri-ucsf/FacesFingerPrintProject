@@ -103,7 +103,7 @@ public class Sql {
     
     public void insertParticipant(Participant p) throws SQLException
     {
-            preppedStmtInsert="INSERT INTO participant (identifier,fname,mname,gname,nname,age,gender,beachid,dateCreated,creator) VALUES(?,?,?,?,?,?,?,?,?)";
+            preppedStmtInsert="INSERT INTO participant (identifier,fname,mname,gname,nname,age,gender,beachid,dateCreated,creator) VALUES(?,?,?,?,?,?,?,?,?,?)";
             //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
             
 		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
@@ -198,7 +198,7 @@ public class Sql {
         {
             for(FingerPrint fp: p.getLstFingerPrints())
             {
-                 preppedStmtInsert="INSERT INTO fingerprint (PTID,print1,printIndex,dateCreated,creator) VALUES(?,?,?,?)";
+                 preppedStmtInsert="INSERT INTO fingerprint (PTID,print1,printIndex,dateCreated,creator) VALUES(?,?,?,?,?)";
                 //System.out.println("Check if db print has data: "+ p.getlMiddleFmd());
                 
 		PreparedStatement pst= c.prepareStatement(preppedStmtInsert);
@@ -533,8 +533,8 @@ public class Sql {
          String sqlStmt="update participant set voided=1, voidedBy="+MainMenu.gUser.getUserId()+" WHERE PTID=" + p.getParticipant_Id() + "";
          int rs=executeUpdate(sqlStmt);
          
-        // sqlStmt="update participant set voided=1 WHERE PTID=" + p.getParticipant_Id() + "";
-        // rs=executeUpdate(sqlStmt);
+        sqlStmt="update fingerprint set voided=1,voidedBy="+MainMenu.gUser.getUserId()+" WHERE PTID=" + p.getParticipant_Id() + "";
+        rs=executeUpdate(sqlStmt);
          
          if (rs>0)
          {

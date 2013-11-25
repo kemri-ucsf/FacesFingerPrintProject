@@ -310,39 +310,46 @@ public class Registration extends JPanel implements ActionListener{
     
     }
      
-     public boolean validateFields()
+     public boolean validFields()
      {
-         boolean b_ok=true;
+         //boolean b_ok=true;
          
          if (txt_Fname.getText()==null)
          {
-             b_ok=false;
+            // b_ok=false;
              JOptionPane.showMessageDialog(null, "Enter Participant's family name or last name");
+             return false;
          }
          if (txt_Gname.getText()==null)
          {
-             b_ok=false;
+             //b_ok=false;
              JOptionPane.showMessageDialog(null, "Enter Participant's Given name or christian name");
+             return false;
          }
          
          if (txt_Age.getText()==null)
          {
-             b_ok=false;
+            // b_ok=false;
              JOptionPane.showMessageDialog(null, "Enter Participant's Age");
+             return false;
          }
          
          if (txt_Identifier.getText()==null)
          {
-             b_ok=false;
+            // b_ok=false;
              JOptionPane.showMessageDialog(null, "Enter Participant's Id");
+             return false;
          }
          else
          {
-             if(participant.getDublicateIdentifier(txt_Identifier.getText())<=0)
+             
+             if(txt_Identifier.getText().length()>6 || txt_Identifier.getText().length()<6)
              {
-                 b_ok=false;
-                 JOptionPane.showMessageDialog(null, "This Participant's Id is Already Assigned to Someone else");
+                  JOptionPane.showMessageDialog(null, "The Participant Id Must be 6 characters");
+                  return false;
              }
+             
+             
          }
          
          if (txt_Age.getText()!=null)
@@ -352,13 +359,13 @@ public class Registration extends JPanel implements ActionListener{
             }
             catch(NumberFormatException ex)
             {
-                b_ok =false;
                 JOptionPane.showMessageDialog(null, "Enter Numberic value for Age");        
+                return false;
             }
-             b_ok=false;
+            // return false;
              
          }
-         return b_ok;
+         return true;
      }
      
      
@@ -386,8 +393,15 @@ public class Registration extends JPanel implements ActionListener{
 	}
         else if(e.getActionCommand().equals(ACT_SAVE))
         {
-            if(!validateFields())//check if all fields are correctly filled
+            if(participant.getDublicateIdentifier(txt_Identifier.getText())>0)
+             {
+                 //b_ok=false;
+                 JOptionPane.showMessageDialog(null, "This Participant's Id is Already Assigned to Someone else");
+                 return;
+             }
+            if(validFields()==true)//check if all fields are correctly filled
             {
+               
                participant.setIdentifier(txt_Identifier.getText());
                participant.setAge(Integer.parseInt(txt_Age.getText())); 
                participant.setFamilyName(txt_Fname.getText());
@@ -414,7 +428,7 @@ public class Registration extends JPanel implements ActionListener{
         {
             if (oldParticipant.getParticipant_Id()>0)
             {
-              if(!validateFields())
+              if(validFields()==true)
               {
                   int dialogResult = JOptionPane.showConfirmDialog (null, "Do you want to delete this Participant?","Warning",JOptionPane.YES_NO_OPTION);
                     if(dialogResult == JOptionPane.YES_OPTION)
@@ -431,9 +445,10 @@ public class Registration extends JPanel implements ActionListener{
         {
             if(btnCancel.getText()=="Update")
             {
+                
                 if (oldParticipant!=null)
                 {
-                    if(!validateFields())//check if all fields are correctly filled
+                    if(validFields()==true)//check if all fields are correctly filled
                     {
                         participant.setIdentifier(txt_Identifier.getText());
                         participant.setAge(Integer.parseInt(txt_Age.getText())); 
@@ -458,8 +473,16 @@ public class Registration extends JPanel implements ActionListener{
                            participant.updateAuditTrail(oldParticipant);
                         }
                         
-              // JOptionPane.showMessageDialog(null, "Participant Record Successfully Saved... ");
+              // 
                     }
+                    else
+                    {
+                        return;
+                    }
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "There is No Record to Update... ");
                 }
                 return;
                 

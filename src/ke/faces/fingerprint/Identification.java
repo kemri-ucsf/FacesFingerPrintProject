@@ -123,6 +123,7 @@ public class Identification {
                        {
                            //get existing participant details
                            Participant p=db.getParticipant(m_listOfRecords.get(vCandidates[0].fmd_index).getPTID());
+                           Registration.oldParticipant=p;
                            Registration.txt_Fname.setText(p.getFamilyName());
                            Registration.txt_Gname.setText(p.getGivenName());
                            Registration.txt_Mname.setText(p.getMiddleName());
@@ -156,7 +157,7 @@ public class Identification {
                         
                      }
                      else{
-                            String str="Fingerprint was not identified.\n\n\n";
+                            String str="Participant was not identified.\n\n\n";
                             System.out.println(str);
 			}
 		} 

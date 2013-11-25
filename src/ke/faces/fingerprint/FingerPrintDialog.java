@@ -278,15 +278,19 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
             }
             else
             {
-                //clear fields
-                Registration.txt_Identifier.setText("");
-                Registration.txt_Age.setText("");
-                Registration.txt_Fname.setText("");
-                Registration.txt_Gname.setText("");
-                Registration.txt_Mname.setText("");
-                Registration.txt_Nname.setText("");
-                Registration.btnSave.setEnabled(true);
-                Registration.btnCancel.setEnabled(false);
+                if(Registration.oldParticipant==null)
+                {
+                     //clear fields
+                    Registration.txt_Identifier.setText("");
+                    Registration.txt_Age.setText("");
+                    Registration.txt_Fname.setText("");
+                    Registration.txt_Gname.setText("");
+                    Registration.txt_Mname.setText("");
+                    Registration.txt_Nname.setText("");
+                    Registration.btnSave.setEnabled(true);
+                    Registration.btnCancel.setEnabled(false);                    
+                }
+               
                  
             }
             
