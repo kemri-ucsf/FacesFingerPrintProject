@@ -285,6 +285,11 @@ public class Registration extends JPanel implements ActionListener{
              btnDelete.setEnabled(true);
              
          }
+         else
+         {
+             btnDelete.setEnabled(false);
+             btnCancel.setEnabled(false);
+         }
          dlgRegistration.setVisible(true);  
          
          

@@ -290,6 +290,12 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
                     Registration.btnSave.setEnabled(true);
                     Registration.btnCancel.setEnabled(false);                    
                 }
+                else
+                {
+                    Registration.btnDelete.setEnabled(true);
+                    Registration.btnCancel.setEnabled(true);
+                    Registration.btnSave.setEnabled(false);
+                }
                
                  
             }
