@@ -8,8 +8,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -22,7 +20,6 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -58,7 +55,8 @@ public class Reporting {
         
         try{
             String strSql="Select * from participant;";
-            ResultSet rs=Sql.executeQuery(strSql);
+            Sql db=new Sql();
+            ResultSet rs=db.executeQuery(strSql);
             ResultSetMetaData rsMeta = rs.getMetaData();
             
             Row row = sheet.createRow(0);
@@ -105,5 +103,39 @@ public class Reporting {
         fileOut.close();
     }
             
+public void loadBeachLocations()
+{
     
+    try
+        {
+            FileInputStream file = new FileInputStream(new File("FISHERFOLK TEAM DATA SUMMARY.xls"));
+            workbook = new HSSFWorkbook(file);
+            Sheet sheet = workbook.getSheet("BEACH  SUMMARY");
+            Iterator<Row> rowIterator = sheet.iterator();
+        rowIterator.next(); // Skip the header row.
+        while (rowIterator.hasNext()) {
+            Row row = rowIterator.next();
+            String code = row.getCell(1).getStringCellValue().trim();
+            System.out.println(code);
+            if (!code.isEmpty()) {
+               
+                String beachname=row.getCell(1).getStringCellValue().trim();
+                String county=row.getCell(2).getStringCellValue().trim();
+                String description=row.getCell(1).getStringCellValue().trim() + "Beach";
+                System.out.println(beachname+":"+county+":"+description)  ;   
+                
+                 Beach beach=new Beach(beachname,description,county);
+                 beach.saveBeach();
+            }
+                
+            }
+        JOptionPane.showMessageDialog(null, "Done Adding Beaches Locations....");
+        }
+     catch (IOException ex) {
+              ex.printStackTrace();
+            Logger.getLogger(Reporting.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+}
+        
 }

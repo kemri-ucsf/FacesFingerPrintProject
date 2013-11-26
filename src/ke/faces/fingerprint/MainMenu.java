@@ -241,13 +241,14 @@ public class MainMenu extends JFrame implements ActionListener{
             {
                 Reporting report=new Reporting();
                 report.generateReport();
+               // report.loadBeachLocations();
             }
-            catch(IOException ex)
-                    {
-                      ex.printStackTrace();
-                       JOptionPane.showMessageDialog(null, ex.getMessage());
-                        Logger.getLogger(Reporting.class.getName()).log(Level.SEVERE, null, ex);  
-                    }
+           catch(IOException ex)
+           {
+               ex.printStackTrace();
+               JOptionPane.showMessageDialog(null, ex.getMessage());
+               Logger.getLogger(Reporting.class.getName()).log(Level.SEVERE, null, ex);  
+           }
                         
             
 	}

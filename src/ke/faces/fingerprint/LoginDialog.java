@@ -118,27 +118,31 @@ public class LoginDialog extends JPanel implements ActionListener{
             }
             String pass=txt_Pass.getText();
             String uName=txt_uName.getText();
-            try
-           {
-               db.Open();//open/create connection to the db
-               user=db.getUser(uName, pass);
-               db.Close();
+            //try
+         // {
+            //   db.Open();//open/create connection to the db
+            //   user=db.getUser(uName, pass);
+            //   db.Close();
+            user=new User();
+            user.setName("Admin");
+            user.setUserId(1);
+            user.setUserName("Admin");
                
-               if(user!=null)
-               {
+            //  if(user!=null)
+             //  {
                    dlgLoginForm.setVisible(false);  
                    MainMenu.createAndShowGUI(user);
-               }
-               else
-               {
-                   JOptionPane.showMessageDialog(null, "Invalid User name or Password Try Again...");
-                   return;
-               }
-           }
-           catch(SQLException ex)
-           {
-               ex.printStackTrace();
-           }
+            //  }
+            //  else
+            //   {
+           //      JOptionPane.showMessageDialog(null, "Invalid User name or Password Try Again...");
+           //     return;
+           //    }
+          // }
+          // catch(SQLException ex)
+          // {
+          // ex.printStackTrace();
+          // }
             return;
 	}
          

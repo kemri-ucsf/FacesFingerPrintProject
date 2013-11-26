@@ -175,6 +175,7 @@ public class Beach {
             try
              {
                  Field   field= classP.getDeclaredField(fields[i].getName()); //get field names
+                 //System.out.println(field)
                  fieldList.put(fields[i].getName(), (String)field.get(this));                 
                  System.out.println("Field Name: "+ fields[i].getName()+" Value: "+(String)field.get(this));                   
                           
