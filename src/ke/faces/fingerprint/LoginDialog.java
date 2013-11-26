@@ -91,7 +91,7 @@ public class LoginDialog extends JPanel implements ActionListener{
      public static void createAndShowGUI()
      {
          LoginDialog login = new LoginDialog();
-         
+         FacesFingerPrintProject.logger.info("Loading The Log on Page");
          dlgLoginForm.setVisible(true);          
          dlgLoginForm.dispose(); //close the app once soen
      }
@@ -118,31 +118,27 @@ public class LoginDialog extends JPanel implements ActionListener{
             }
             String pass=txt_Pass.getText();
             String uName=txt_uName.getText();
-            //try
-         // {
-            //   db.Open();//open/create connection to the db
-            //   user=db.getUser(uName, pass);
-            //   db.Close();
-            user=new User();
-            user.setName("Admin");
-            user.setUserId(1);
-            user.setUserName("Admin");
+            db.Open();//open/create connection to the db
+            user=db.getUser(uName, pass);
+             db.Close();
+           // user=new User();
+           // user.setName("Admin");
+          //  user.setUserId(1);
+         //   user.setUserName("Admin");
                
-            //  if(user!=null)
-             //  {
+              if(user!=null)
+               {
+                   FacesFingerPrintProject.logger.info("Sucessfull Log on");
                    dlgLoginForm.setVisible(false);  
                    MainMenu.createAndShowGUI(user);
-            //  }
-            //  else
-            //   {
-           //      JOptionPane.showMessageDialog(null, "Invalid User name or Password Try Again...");
-           //     return;
-           //    }
-          // }
-          // catch(SQLException ex)
-          // {
-          // ex.printStackTrace();
-          // }
+              }
+              else
+               {
+                    FacesFingerPrintProject.logger.info("Failled Loging on User: "+txt_uName.getText());
+                    JOptionPane.showMessageDialog(null, "Invalid User name or Password Try Again...");
+                    return;
+               }
+          
             return;
 	}
          

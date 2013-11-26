@@ -145,27 +145,17 @@ public class MainMenu extends JFrame implements ActionListener{
     private void loadBeach()
     {
         locations =new ArrayList<String>();
-        db=new Sql();
-        try
+        db=new Sql();        
+        beachList=db.getAllBeachData();            
+        beachMap=db.getBeachMap();
+        counties=db.getCounty();
+        for(Beach b:beachList)
         {
-            beachList=db.getAllBeachData();            
-            beachMap=db.getBeachMap();
-            counties=db.getCounty();
-        }
-        catch(SQLException ex)
-        {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            ex.printStackTrace();  
-        }
-        
-            for(Beach b:beachList)
+            if(b.getName()!=null)
             {
-                if(b.getName()!=null)
-                {
-                   locations.add(b.getName()+"-"+b.getCounty()); 
-                }
-                
-            }
+                locations.add(b.getName()+"-"+b.getCounty()); 
+            }                
+        }
     }
      
     public Reader getSelectedReader()

@@ -53,11 +53,6 @@ public class Identification {
 		}
 		m_fmdArray=new Fmd[this.m_fmdList.size()];
 		this.m_fmdList.toArray(m_fmdArray);
-	} catch (SQLException e1) 
-        {
-            // TODO Auto-generated catch block
-            MessageBox.DpError("Failed to load FMDs from database.  Please check connection string in code.",null);			
-            return;
 	} catch (UareUException e1)
         {
             // TODO Auto-generated catch block
@@ -119,7 +114,7 @@ public class Identification {
 			str = String.format("false match rate: %e.\n\n\n", (double)(falsematch_rate / Engine.PROBABILITY_ONE));
                         System.out.println(str);
 				//m_text.append(str);
-                       try
+                   //    try
                        {
                            //get existing participant details
                            Participant p=db.getParticipant(m_listOfRecords.get(vCandidates[0].fmd_index).getPTID());
@@ -150,10 +145,10 @@ public class Identification {
                            String msg="Participant ("+p.getGivenName()+" " + p.getFamilyName()+") is Already Enrolled in the Database";
                            JOptionPane.showMessageDialog(null, msg);
                        }
-                       catch(SQLException ex)
-                       {
-                           ex.printStackTrace();
-                       }
+                  //     catch(SQLException ex)
+                  //     {
+                   //        ex.printStackTrace();
+                   //    }
                         
                      }
                      else{

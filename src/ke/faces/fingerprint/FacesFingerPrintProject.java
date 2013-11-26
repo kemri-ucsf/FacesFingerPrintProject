@@ -29,7 +29,7 @@ public class FacesFingerPrintProject {
         try {  
 
             // This block configure the logger with handler and formatter  
-            fh = new FileHandler("FingerPrintProjectLog.log");  
+            fh = new FileHandler("FingerPrintProjectLog.log",true);  //create file if does not exist
             logger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();  
             fh.setFormatter(formatter);  

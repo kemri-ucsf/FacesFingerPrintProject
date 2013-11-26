@@ -103,32 +103,26 @@ public class Beach {
         }
            //Save participant
            Sql db=new Sql();
-           try
-           {
+         //  try
+         //  {
                db.Open();//open/create connection to the db
                db.insertBeach(this);
                db.Close();
-           }
-           catch(SQLException e)
-           {
-               e.printStackTrace();
-           }           
+         //  }
+         //  catch(SQLException e)
+         //  {
+         //      e.printStackTrace();
+          // }           
         
     }
     public void deleteAuditTrail()
     {
         Sql db=new Sql();
-           try
-           {
-               db.Open();//open/create connection to the db               
-               db.voidAuditTrail(this.getClass().getName(), MainMenu.gUser.getUserId(),this.getBeachId());//the valu 5 shld be replaced with the currently logged on user
-               db.Close();
+        db.Open();//open/create connection to the db               
+        db.voidAuditTrail(this.getClass().getName(), MainMenu.gUser.getUserId(),this.getBeachId());//the valu 5 shld be replaced with the currently logged on user
+        db.Close();
                               
-           }
-           catch(SQLException e)
-           {
-               e.printStackTrace();
-           }
+        
     }
     public void deleteBeach()
     {
@@ -151,16 +145,10 @@ public class Beach {
         }
         
         Sql db=new Sql();
-           try
-           {
-               db.Open();//open/create connection to the db
-               db.voidBeach(this);
-               db.Close();
-           }
-           catch(SQLException e)
-           {
-               e.printStackTrace();
-           }
+        db.Open();//open/create connection to the db
+        db.voidBeach(this);
+        db.Close();
+           
         }
     
     public void saveAuditTrail()
@@ -196,16 +184,10 @@ public class Beach {
         }
            //Save Audit trail
            Sql db=new Sql();
-           try
-           {
-               db.Open();//open/create connection to the db
-               db.insertTrail(fieldList, this.getClass().getName(), 5);//the valu 5 shld be replaced with the currently logged on user
-               db.Close();
-           }
-           catch(SQLException e)
-           {
-               e.printStackTrace();
-           }           
+           db.Open();//open/create connection to the db
+           db.insertTrail(fieldList, this.getClass().getName(), 5);//the valu 5 shld be replaced with the currently logged on user
+           db.Close();
+                    
         
     }
     
@@ -230,16 +212,10 @@ public class Beach {
         }
         
         Sql db=new Sql();
-           try
-           {
-               db.Open();//open/create connection to the db
-               db.updateBeach(this);
-               db.Close();
-           }
-           catch(SQLException e)
-           {
-               e.printStackTrace();
-           }
+        db.Open();//open/create connection to the db
+        db.updateBeach(this);
+        db.Close();
+           
         }
     
 }

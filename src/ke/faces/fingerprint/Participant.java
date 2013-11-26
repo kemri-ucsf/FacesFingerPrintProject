@@ -228,16 +228,10 @@ public class Participant {
         }
            //Save participant
            Sql db=new Sql();
-           try
-           {
-               db.Open();//open/create connection to the db
-               db.insertParticipant(this);
-               db.Close();
-           }
-           catch(SQLException e)
-           {
-               e.printStackTrace();
-           }           
+           db.Open();//open/create connection to the db
+           db.insertParticipant(this);
+           db.Close();
+                     
         
     }
     
@@ -303,16 +297,10 @@ public class Participant {
         }
            //Save Audit trail
            Sql db=new Sql();
-           try
-           {
-               db.Open();//open/create connection to the db
-               db.insertTrail(fieldList, this.getClass().getName(), MainMenu.gUser.getUserId());//the valu 5 shld be replaced with the currently logged on user
-               db.Close();
-           }
-           catch(SQLException e)
-           {
-               e.printStackTrace();
-           }           
+           db.Open();//open/create connection to the db
+           db.insertTrail(fieldList, this.getClass().getName(), MainMenu.gUser.getUserId());//the valu 5 shld be replaced with the currently logged on user
+           db.Close();
+                     
         
     }
     
@@ -423,36 +411,24 @@ public class Participant {
         }
            //Save Audit trail
            Sql db=new Sql();
-           try
+           db.Open();//open/create connection to the db
+           if(oldFieldList.size()>0)
            {
-               db.Open();//open/create connection to the db
-               if(oldFieldList.size()>0)
-               {
                    db.updateTrail(oldFieldList, newFieldList,this.getClass().getName(), MainMenu.gUser.getUserId(),old.getParticipant_Id());//the valu 5 shld be replaced with the currently logged on user
                    db.Close();
-               }
-               
            }
-           catch(SQLException e)
-           {
-               e.printStackTrace();
-           }           
+               
+                    
         
     }
     public void deleteAuditTrail()
     {
         Sql db=new Sql();
-           try
-           {
-               db.Open();//open/create connection to the db               
-               db.voidAuditTrail(this.getClass().getName(), MainMenu.gUser.getUserId(),this.getParticipant_Id());//the valu 5 shld be replaced with the currently logged on user
-               db.Close();
+        db.Open();//open/create connection to the db               
+        db.voidAuditTrail(this.getClass().getName(), MainMenu.gUser.getUserId(),this.getParticipant_Id());//the valu 5 shld be replaced with the currently logged on user
+        db.Close();
                               
-           }
-           catch(SQLException e)
-           {
-               e.printStackTrace();
-           }
+           
     }
      public void updateParticipant()
     {
@@ -482,49 +458,30 @@ public class Participant {
         }
            //Save participant
            Sql db=new Sql();
-           try
-           {
-               db.Open();//open/create connection to the db
-               db.updateParticipant(this);
-               db.Close();
-           }
-           catch(SQLException e)
-           {
-               e.printStackTrace();
-           }           
+           db.Open();//open/create connection to the db
+           db.updateParticipant(this);
+           db.Close();
+                    
         
     }
     public void deleteParticipant()
     {
         //Save participant
         Sql db=new Sql();
-        try
-        {
-            db.Open();//open/create connection to the db
-            db.voidParticipant(this);
-            db.Close();
-        }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
+        db.Open();//open/create connection to the db
+        db.voidParticipant(this);
+        db.Close();
+        
     }
     
     public int getDublicateIdentifier(String identifier)
     {
         //Save participant
-        Sql db=new Sql();
-        try
-        {
-            db.Open();//open/create connection to the db
-            return db.validateIdentifier(identifier);
+        Sql db=new Sql();        
+        db.Open();//open/create connection to the db
+        return db.validateIdentifier(identifier);
            // db.Close();
-        }
-        catch(SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return 0;
+        
     }
     
     

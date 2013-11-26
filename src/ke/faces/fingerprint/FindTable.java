@@ -70,17 +70,11 @@ public class FindTable extends JPanel{
         jTable.repaint();   
        // model.getDataVector().
          
-         try
-         {
-            db.Open();//open/create connection to the db
-            findList=  db.findParticipant(search);
-            beachMap=db.getBeachMap();
-            db.Close();
-         }
-         catch(SQLException ex)
-         {
-            ex.printStackTrace();
-         }  
+         db.Open();//open/create connection to the db
+         findList=  db.findParticipant(search);
+         beachMap=db.getBeachMap();
+         db.Close();
+          
                    
          if(!findList.isEmpty())
          {
@@ -123,15 +117,8 @@ public class FindTable extends JPanel{
                             int modelRow = jTable.convertRowIndexToModel(selectedRow);
                             System.out.println(String.format("Selected Row in view: %d. " + "Selected Row in model: %d.", selectedRow, modelRow));
                             System.out.println(String.format("Selected Row in view:  " + data.toString()));
-                            try
-                            {
-                                db.Open();
-                                selectedParticipant=db.getParticipant(data.toString());                                
-                            }
-                            catch(SQLException ex)
-                            {
-                                ex.printStackTrace();
-                            } 
+                            db.Open();
+                            selectedParticipant=db.getParticipant(data.toString());            
                             
                        }
                    }

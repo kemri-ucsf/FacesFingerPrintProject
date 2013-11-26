@@ -163,25 +163,19 @@ public class BeachForm extends JPanel implements ActionListener{
     {
         locations =new ArrayList<String>();
         db=new Sql();
-        try
-        {
-            beachList=db.getAllBeachData();            
-            
-        }
-        catch(SQLException ex)
-        {
-            JOptionPane.showMessageDialog(null, ex.getMessage());
-            ex.printStackTrace();  
-        }
         
-            for(Beach b:beachList)
+        beachList=db.getAllBeachData();  
+        for(Beach b:beachList)
+        {
+            if(b.getName()!=null)
             {
-                if(b.getName()!=null)
-                {
                    locations.add(b.getName()+"-"+b.getCounty()); 
-                }
-                
-            }
+            }             
+        }
+            
+        
+        
+            
     }
     public void createAndShowGUI()
      {
