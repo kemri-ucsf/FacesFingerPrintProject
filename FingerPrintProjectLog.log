@@ -1,0 +1,712 @@
+Nov 26, 2013 7:54:08 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: My first log
+Nov 26, 2013 7:54:08 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: Application Starting...
+Nov 26, 2013 7:54:19 PM ke.faces.fingerprint.Sql Open
+SEVERE: ERROR
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+	at com.mysql.jdbc.Util.getInstance(Util.java:386)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1013)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:987)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:982)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:927)
+	at com.mysql.jdbc.ConnectionImpl.connectWithRetries(ConnectionImpl.java:2237)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2158)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:792)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:381)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:305)
+	at java.sql.DriverManager.getConnection(DriverManager.java:579)
+	at java.sql.DriverManager.getConnection(DriverManager.java:221)
+	at ke.faces.fingerprint.Sql.Open(Sql.java:83)
+	at ke.faces.fingerprint.Sql.getAllBeachData(Sql.java:366)
+	at ke.faces.fingerprint.MainMenu.loadBeach(MainMenu.java:149)
+	at ke.faces.fingerprint.MainMenu.<init>(MainMenu.java:67)
+	at ke.faces.fingerprint.MainMenu.createAndShowGUI(MainMenu.java:180)
+	at ke.faces.fingerprint.LoginDialog.actionPerformed(LoginDialog.java:134)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
+	at ke.faces.fingerprint.LoginDialog.createAndShowGUI(LoginDialog.java:95)
+	at ke.faces.fingerprint.FacesFingerPrintProject$1.run(FacesFingerPrintProject.java:53)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:251)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:721)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:691)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:147)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:139)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:97)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:1116)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:344)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2332)
+	at com.mysql.jdbc.ConnectionImpl.connectWithRetries(ConnectionImpl.java:2176)
+	... 76 more
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:69)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:157)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:391)
+	at java.net.Socket.connect(Socket.java:579)
+	at java.net.Socket.connect(Socket.java:528)
+	at java.net.Socket.<init>(Socket.java:425)
+	at java.net.Socket.<init>(Socket.java:241)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:257)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:294)
+	... 78 more
+
+Nov 26, 2013 7:55:38 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: My first log
+Nov 26, 2013 7:55:38 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: Application Starting...
+Nov 26, 2013 7:55:52 PM ke.faces.fingerprint.Sql Open
+SEVERE: ERROR
+com.mysql.jdbc.exceptions.jdbc4.MySQLNonTransientConnectionException: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+	at com.mysql.jdbc.Util.getInstance(Util.java:386)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1013)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:987)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:982)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:927)
+	at com.mysql.jdbc.ConnectionImpl.connectWithRetries(ConnectionImpl.java:2237)
+	at com.mysql.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:2158)
+	at com.mysql.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:792)
+	at com.mysql.jdbc.JDBC4Connection.<init>(JDBC4Connection.java:47)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+	at com.mysql.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:381)
+	at com.mysql.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:305)
+	at java.sql.DriverManager.getConnection(DriverManager.java:579)
+	at java.sql.DriverManager.getConnection(DriverManager.java:221)
+	at ke.faces.fingerprint.Sql.Open(Sql.java:83)
+	at ke.faces.fingerprint.Sql.getAllBeachData(Sql.java:366)
+	at ke.faces.fingerprint.MainMenu.loadBeach(MainMenu.java:149)
+	at ke.faces.fingerprint.MainMenu.<init>(MainMenu.java:67)
+	at ke.faces.fingerprint.MainMenu.createAndShowGUI(MainMenu.java:180)
+	at ke.faces.fingerprint.LoginDialog.actionPerformed(LoginDialog.java:134)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
+	at ke.faces.fingerprint.LoginDialog.createAndShowGUI(LoginDialog.java:95)
+	at ke.faces.fingerprint.FacesFingerPrintProject$1.run(FacesFingerPrintProject.java:53)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:251)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:721)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:691)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:147)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:139)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:97)
+Caused by: com.mysql.jdbc.exceptions.jdbc4.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+	at com.mysql.jdbc.SQLError.createCommunicationsException(SQLError.java:1116)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:344)
+	at com.mysql.jdbc.ConnectionImpl.coreConnect(ConnectionImpl.java:2332)
+	at com.mysql.jdbc.ConnectionImpl.connectWithRetries(ConnectionImpl.java:2176)
+	... 76 more
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.connect0(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:69)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:339)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:200)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:182)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:157)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:391)
+	at java.net.Socket.connect(Socket.java:579)
+	at java.net.Socket.connect(Socket.java:528)
+	at java.net.Socket.<init>(Socket.java:425)
+	at java.net.Socket.<init>(Socket.java:241)
+	at com.mysql.jdbc.StandardSocketFactory.connect(StandardSocketFactory.java:257)
+	at com.mysql.jdbc.MysqlIO.<init>(MysqlIO.java:294)
+	... 78 more
+
+Nov 26, 2013 8:13:47 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: My first log
+Nov 26, 2013 8:13:47 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: Application Starting...
+Nov 26, 2013 8:13:47 PM ke.faces.fingerprint.LoginDialog createAndShowGUI
+INFO: Loading The Log on Page
+Nov 28, 2013 12:57:05 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: My first log
+Nov 28, 2013 12:57:05 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: Application Starting...
+Nov 28, 2013 12:57:05 PM ke.faces.fingerprint.LoginDialog createAndShowGUI
+INFO: Loading The Log on Page
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.Sql getUser
+INFO: Getting user Details given username and pass... 
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.Sql Close
+INFO: Closing Connection to the Database
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.LoginDialog actionPerformed
+INFO: Sucessfull Log on
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.Sql getAllBeachData
+INFO: Loading all beach data in memory 
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.Sql getBeachMap
+INFO: Loading Beach Map in Memory.... 
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.Sql getCounty
+INFO: Loading County Details in Memory... 
+Nov 28, 2013 12:57:30 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 12:57:33 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Loading Beach Details Dialog form... 
+Nov 28, 2013 12:57:33 PM ke.faces.fingerprint.Sql getAllBeachData
+INFO: Loading all beach data in memory 
+Nov 28, 2013 12:57:33 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 12:57:43 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Loading Participant Registration Dialog form... 
+Nov 28, 2013 12:58:46 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Loading Beach Details Dialog form... 
+Nov 28, 2013 12:58:46 PM ke.faces.fingerprint.Sql getAllBeachData
+INFO: Loading all beach data in memory 
+Nov 28, 2013 12:58:46 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 12:59:00 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Exiting Fingerprint Application... 
+Nov 28, 2013 12:59:00 PM ke.faces.fingerprint.MainMenu createAndShowGUI
+INFO: Loading Connected Fingerprint Reader Details... 
+Nov 28, 2013 1:05:53 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: My first log
+Nov 28, 2013 1:05:53 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: Application Starting...
+Nov 28, 2013 1:05:53 PM ke.faces.fingerprint.LoginDialog createAndShowGUI
+INFO: Loading The Log on Page
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.Sql getUser
+INFO: Getting user Details given username and pass... 
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.Sql Close
+INFO: Closing Connection to the Database
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.LoginDialog actionPerformed
+INFO: Sucessfull Log on
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.Sql getAllBeachData
+INFO: Loading all beach data in memory 
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.Sql getBeachMap
+INFO: Loading Beach Map in Memory.... 
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.Sql getCounty
+INFO: Loading County Details in Memory... 
+Nov 28, 2013 1:06:00 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:06:04 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Loading Participant Registration Dialog form... 
+Nov 28, 2013 1:06:33 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Exiting Fingerprint Application... 
+Nov 28, 2013 1:06:33 PM ke.faces.fingerprint.MainMenu createAndShowGUI
+INFO: Loading Connected Fingerprint Reader Details... 
+Nov 28, 2013 1:08:23 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: My first log
+Nov 28, 2013 1:08:23 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: Application Starting...
+Nov 28, 2013 1:08:24 PM ke.faces.fingerprint.LoginDialog createAndShowGUI
+INFO: Loading The Log on Page
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.Sql getUser
+INFO: Getting user Details given username and pass... 
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.Sql Close
+INFO: Closing Connection to the Database
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.LoginDialog actionPerformed
+INFO: Sucessfull Log on
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.Sql getAllBeachData
+INFO: Loading all beach data in memory 
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.Sql getBeachMap
+INFO: Loading Beach Map in Memory.... 
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.Sql getCounty
+INFO: Loading County Details in Memory... 
+Nov 28, 2013 1:08:31 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:08:33 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Loading Participant Registration Dialog form... 
+Nov 28, 2013 1:09:15 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Exiting Fingerprint Application... 
+Nov 28, 2013 1:09:15 PM ke.faces.fingerprint.MainMenu createAndShowGUI
+INFO: Loading Connected Fingerprint Reader Details... 
+Nov 28, 2013 1:18:33 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: My first log
+Nov 28, 2013 1:18:33 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: Application Starting...
+Nov 28, 2013 1:18:33 PM ke.faces.fingerprint.LoginDialog createAndShowGUI
+INFO: Loading The Log on Page
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.Sql getUser
+INFO: Getting user Details given username and pass... 
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.Sql Close
+INFO: Closing Connection to the Database
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.LoginDialog actionPerformed
+INFO: Sucessfull Log on
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.Sql getAllBeachData
+INFO: Loading all beach data in memory 
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.Sql getBeachMap
+INFO: Loading Beach Map in Memory.... 
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.Sql getCounty
+INFO: Loading County Details in Memory... 
+Nov 28, 2013 1:18:42 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:18:44 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Loading Participant Registration Dialog form... 
+Nov 28, 2013 1:19:30 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Exiting Fingerprint Application... 
+Nov 28, 2013 1:19:30 PM ke.faces.fingerprint.MainMenu createAndShowGUI
+INFO: Loading Connected Fingerprint Reader Details... 
+Nov 28, 2013 1:19:40 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: My first log
+Nov 28, 2013 1:19:40 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: Application Starting...
+Nov 28, 2013 1:19:40 PM ke.faces.fingerprint.LoginDialog createAndShowGUI
+INFO: Loading The Log on Page
+Nov 28, 2013 1:19:52 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:19:52 PM ke.faces.fingerprint.Sql getUser
+INFO: Getting user Details given username and pass... 
+Nov 28, 2013 1:19:52 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:19:52 PM ke.faces.fingerprint.Sql Close
+INFO: Closing Connection to the Database
+Nov 28, 2013 1:19:52 PM ke.faces.fingerprint.LoginDialog actionPerformed
+INFO: Sucessfull Log on
+Nov 28, 2013 1:19:52 PM ke.faces.fingerprint.Sql getAllBeachData
+INFO: Loading all beach data in memory 
+Nov 28, 2013 1:19:52 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:19:52 PM ke.faces.fingerprint.Sql getBeachMap
+INFO: Loading Beach Map in Memory.... 
+Nov 28, 2013 1:19:52 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:19:52 PM ke.faces.fingerprint.Sql getCounty
+INFO: Loading County Details in Memory... 
+Nov 28, 2013 1:19:53 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:19:54 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Loading Beach Details Dialog form... 
+Nov 28, 2013 1:19:54 PM ke.faces.fingerprint.Sql getAllBeachData
+INFO: Loading all beach data in memory 
+Nov 28, 2013 1:19:54 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:20:48 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Loading Find or create participant dialog form... 
+Nov 28, 2013 1:20:54 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Exiting Fingerprint Application... 
+Nov 28, 2013 1:20:54 PM ke.faces.fingerprint.MainMenu createAndShowGUI
+INFO: Loading Connected Fingerprint Reader Details... 
+Nov 28, 2013 1:22:30 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: My first log
+Nov 28, 2013 1:22:30 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: Application Starting...
+Nov 28, 2013 1:22:30 PM ke.faces.fingerprint.LoginDialog createAndShowGUI
+INFO: Loading The Log on Page
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.Sql getUser
+INFO: Getting user Details given username and pass... 
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.Sql Close
+INFO: Closing Connection to the Database
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.LoginDialog actionPerformed
+INFO: Sucessfull Log on
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.Sql getAllBeachData
+INFO: Loading all beach data in memory 
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.Sql getBeachMap
+INFO: Loading Beach Map in Memory.... 
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.Sql getCounty
+INFO: Loading County Details in Memory... 
+Nov 28, 2013 1:22:36 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:22:40 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Loading Find or create participant dialog form... 
+Nov 28, 2013 1:22:56 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:22:56 PM ke.faces.fingerprint.Sql findParticipant
+INFO: Get List of participants given the search criteria... 
+Nov 28, 2013 1:22:56 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:22:57 PM ke.faces.fingerprint.Sql findParticipant
+SEVERE: ERROR
+com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException: Unknown column 'ideentifier' in 'order clause'
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:57)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:525)
+	at com.mysql.jdbc.Util.handleNewInstance(Util.java:411)
+	at com.mysql.jdbc.Util.getInstance(Util.java:386)
+	at com.mysql.jdbc.SQLError.createSQLException(SQLError.java:1052)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3609)
+	at com.mysql.jdbc.MysqlIO.checkErrorPacket(MysqlIO.java:3541)
+	at com.mysql.jdbc.MysqlIO.sendCommand(MysqlIO.java:2002)
+	at com.mysql.jdbc.MysqlIO.sqlQueryDirect(MysqlIO.java:2163)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2618)
+	at com.mysql.jdbc.ConnectionImpl.execSQL(ConnectionImpl.java:2568)
+	at com.mysql.jdbc.StatementImpl.executeQuery(StatementImpl.java:1557)
+	at ke.faces.fingerprint.Sql.findParticipant(Sql.java:990)
+	at ke.faces.fingerprint.FindTable.insertRow(FindTable.java:74)
+	at ke.faces.fingerprint.FindCreateDialog.actionPerformed(FindCreateDialog.java:177)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
+	at ke.faces.fingerprint.FindCreateDialog.createAndShowGUI(FindCreateDialog.java:137)
+	at ke.faces.fingerprint.MainMenu.actionPerformed(MainMenu.java:214)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
+	at ke.faces.fingerprint.MainMenu.<init>(MainMenu.java:133)
+	at ke.faces.fingerprint.MainMenu.createAndShowGUI(MainMenu.java:178)
+	at ke.faces.fingerprint.LoginDialog.actionPerformed(LoginDialog.java:133)
+	at javax.swing.AbstractButton.fireActionPerformed(AbstractButton.java:2018)
+	at javax.swing.AbstractButton$Handler.actionPerformed(AbstractButton.java:2341)
+	at javax.swing.DefaultButtonModel.fireActionPerformed(DefaultButtonModel.java:402)
+	at javax.swing.DefaultButtonModel.setPressed(DefaultButtonModel.java:259)
+	at javax.swing.plaf.basic.BasicButtonListener.mouseReleased(BasicButtonListener.java:252)
+	at java.awt.Component.processMouseEvent(Component.java:6505)
+	at javax.swing.JComponent.processMouseEvent(JComponent.java:3321)
+	at java.awt.Component.processEvent(Component.java:6270)
+	at java.awt.Container.processEvent(Container.java:2229)
+	at java.awt.Component.dispatchEventImpl(Component.java:4861)
+	at java.awt.Container.dispatchEventImpl(Container.java:2287)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.LightweightDispatcher.retargetMouseEvent(Container.java:4832)
+	at java.awt.LightweightDispatcher.processMouseEvent(Container.java:4492)
+	at java.awt.LightweightDispatcher.dispatchEvent(Container.java:4422)
+	at java.awt.Container.dispatchEventImpl(Container.java:2273)
+	at java.awt.Window.dispatchEventImpl(Window.java:2719)
+	at java.awt.Component.dispatchEvent(Component.java:4687)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:723)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:87)
+	at java.awt.EventQueue$4.run(EventQueue.java:696)
+	at java.awt.EventQueue$4.run(EventQueue.java:694)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:693)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:155)
+	at java.awt.WaitDispatchSupport$2.run(WaitDispatchSupport.java:182)
+	at java.awt.WaitDispatchSupport$4.run(WaitDispatchSupport.java:221)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.awt.WaitDispatchSupport.enter(WaitDispatchSupport.java:219)
+	at java.awt.Dialog.show(Dialog.java:1077)
+	at java.awt.Component.show(Component.java:1651)
+	at java.awt.Component.setVisible(Component.java:1603)
+	at java.awt.Window.setVisible(Window.java:1014)
+	at java.awt.Dialog.setVisible(Dialog.java:1003)
+	at ke.faces.fingerprint.LoginDialog.createAndShowGUI(LoginDialog.java:95)
+	at ke.faces.fingerprint.FacesFingerPrintProject$1.run(FacesFingerPrintProject.java:53)
+	at java.awt.event.InvocationEvent.dispatch(InvocationEvent.java:251)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:721)
+	at java.awt.EventQueue.access$200(EventQueue.java:103)
+	at java.awt.EventQueue$3.run(EventQueue.java:682)
+	at java.awt.EventQueue$3.run(EventQueue.java:680)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$1.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:691)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:244)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:163)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:151)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:147)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:139)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:97)
+
+Nov 28, 2013 1:22:57 PM ke.faces.fingerprint.Sql getBeachMap
+INFO: Loading Beach Map in Memory.... 
+Nov 28, 2013 1:22:57 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:22:57 PM ke.faces.fingerprint.Sql Close
+INFO: Closing Connection to the Database
+Nov 28, 2013 1:23:08 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Exiting Fingerprint Application... 
+Nov 28, 2013 1:23:08 PM ke.faces.fingerprint.MainMenu createAndShowGUI
+INFO: Loading Connected Fingerprint Reader Details... 
+Nov 28, 2013 1:23:12 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: My first log
+Nov 28, 2013 1:23:12 PM ke.faces.fingerprint.FacesFingerPrintProject main
+INFO: Application Starting...
+Nov 28, 2013 1:23:12 PM ke.faces.fingerprint.LoginDialog createAndShowGUI
+INFO: Loading The Log on Page
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.Sql getUser
+INFO: Getting user Details given username and pass... 
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.Sql Close
+INFO: Closing Connection to the Database
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.LoginDialog actionPerformed
+INFO: Sucessfull Log on
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.Sql getAllBeachData
+INFO: Loading all beach data in memory 
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.Sql getBeachMap
+INFO: Loading Beach Map in Memory.... 
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.Sql getCounty
+INFO: Loading County Details in Memory... 
+Nov 28, 2013 1:23:22 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:23:24 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Loading Find or create participant dialog form... 
+Nov 28, 2013 1:23:29 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:23:29 PM ke.faces.fingerprint.Sql findParticipant
+INFO: Get List of participants given the search criteria... 
+Nov 28, 2013 1:23:29 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:23:29 PM ke.faces.fingerprint.Sql getBeachMap
+INFO: Loading Beach Map in Memory.... 
+Nov 28, 2013 1:23:29 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:23:29 PM ke.faces.fingerprint.Sql Close
+INFO: Closing Connection to the Database
+Nov 28, 2013 1:24:46 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:24:46 PM ke.faces.fingerprint.Sql getParticipant
+INFO: Getting Participant Details given Identifier... 
+Nov 28, 2013 1:24:46 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:24:46 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:24:46 PM ke.faces.fingerprint.Sql getParticipant
+INFO: Getting Participant Details given Identifier... 
+Nov 28, 2013 1:24:46 PM ke.faces.fingerprint.Sql Open
+INFO: Opening Connection to the Database
+Nov 28, 2013 1:25:34 PM ke.faces.fingerprint.MainMenu actionPerformed
+INFO: Exiting Fingerprint Application... 
+Nov 28, 2013 1:25:34 PM ke.faces.fingerprint.MainMenu createAndShowGUI
+INFO: Loading Connected Fingerprint Reader Details... 

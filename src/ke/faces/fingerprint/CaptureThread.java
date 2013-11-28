@@ -8,10 +8,10 @@ package ke.faces.fingerprint;
  *
  * @author LENOVO USER
  */
+import com.digitalpersona.uareu.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
-import com.digitalpersona.uareu.*;
+import java.util.logging.Level;
 
 public class CaptureThread extends Thread 
 {
@@ -53,147 +53,188 @@ public class CaptureThread extends Thread
 		super.start();
 	}
 	
-	public void join(int milliseconds){
-		try{
-			super.join(milliseconds);
-		} 
-		catch(InterruptedException e){ e.printStackTrace(); }
+	public void join(int milliseconds)
+        {
+            try
+            {
+                super.join(milliseconds);
+            } 
+            catch(InterruptedException e){ 
+                e.printStackTrace();
+                 //log error
+                 FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
+            }
 	}
 	
 	public CaptureEvent getLastCaptureEvent(){
 		return m_last_capture;
 	}
 	
-	private void Capture(){
-		try{
-			//wait for reader to become ready
-			boolean bReady = false;
-			while(!bReady && !m_bCancel){
-				Reader.Status rs = m_reader.GetStatus();
-				if(Reader.ReaderStatus.BUSY == rs.status){
-					//if busy, wait a bit
-					try{
-						Thread.sleep(100);
-					} 
-					catch(InterruptedException e) {
-						e.printStackTrace();
-						break; 
-					}
-				}
-				else if(Reader.ReaderStatus.READY == rs.status || Reader.ReaderStatus.NEED_CALIBRATION == rs.status){
-					//ready for capture
-					bReady = true;
-					break;
-				}
-				else{
-					//reader failure
-					NotifyListener(ACT_CAPTURE, null, rs, null);
-					break;
-				}
-			}
-			if(m_bCancel){
-				Reader.CaptureResult cr = new Reader.CaptureResult();
-				cr.quality = Reader.CaptureQuality.CANCELED;
-				NotifyListener(ACT_CAPTURE, cr, null, null);
-			}
+	private void Capture()
+        {
+            try
+            {
+                //wait for reader to become ready
+		boolean bReady = false;
+		while(!bReady && !m_bCancel)
+                {
+                    Reader.Status rs = m_reader.GetStatus();
+                    if(Reader.ReaderStatus.BUSY == rs.status)
+                    {
+                        //if busy, wait a bit
+                        try
+                        {
+                            Thread.sleep(100);
+                        } 
+                        catch(InterruptedException e) 
+                        {
+                            e.printStackTrace();
+                            //log error
+                            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
+                            break; 
+                         }
+                    }
+                    else if(Reader.ReaderStatus.READY == rs.status || Reader.ReaderStatus.NEED_CALIBRATION == rs.status)
+                    {
+                        //ready for capture
+			bReady = true;
+			break;
+                    }
+                    else
+                    {
+                        //reader failure
+			NotifyListener(ACT_CAPTURE, null, rs, null);
+			break;
+                    }
+		}
+		if(m_bCancel)
+                {
+                    Reader.CaptureResult cr = new Reader.CaptureResult();
+                    cr.quality = Reader.CaptureQuality.CANCELED;
+                    NotifyListener(ACT_CAPTURE, cr, null, null);
+		}
 
 			
-			if(bReady){
-				//capture
-				Reader.CaptureResult cr = m_reader.Capture(m_format, m_proc, 500, -1);
-				NotifyListener(ACT_CAPTURE, cr, null, null);
-			}
+		if(bReady)
+                {
+                    //capture
+                    Reader.CaptureResult cr = m_reader.Capture(m_format, m_proc, 500, -1);
+                    NotifyListener(ACT_CAPTURE, cr, null, null);
 		}
-		catch(UareUException e){
-			NotifyListener(ACT_CAPTURE, null, null, e);
-		}
+            }
+            catch(UareUException e)
+            {
+		NotifyListener(ACT_CAPTURE, null, null, e);
+                //log error
+                FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
+            }
 	}
 	
-	private void Stream(){
-		try{
-			//wait for reader to become ready
-			boolean bReady = false;
-			while(!bReady && !m_bCancel){
-				Reader.Status rs = m_reader.GetStatus();
-				if(Reader.ReaderStatus.BUSY == rs.status){
-					//if busy, wait a bit
-					try{
-						Thread.sleep(100);
-					} 
-					catch(InterruptedException e) {
-						e.printStackTrace();
-						break; 
-					}
-				}
-				else if(Reader.ReaderStatus.READY == rs.status || Reader.ReaderStatus.NEED_CALIBRATION == rs.status){
-					//ready for capture
-					bReady = true;
-					break;
-				}
-				else{
-					//reader failure
-					NotifyListener(ACT_CAPTURE, null, rs, null);
-					break;
-				}
+	private void Stream()
+        {
+            try
+            {
+                //wait for reader to become ready
+		boolean bReady = false;
+		while(!bReady && !m_bCancel)
+                {
+                    Reader.Status rs = m_reader.GetStatus();
+                    if(Reader.ReaderStatus.BUSY == rs.status)
+                    {
+                        //if busy, wait a bit
+			try
+                        {
+                            Thread.sleep(100);
+			} 
+			catch(InterruptedException e) 
+                        {
+                            e.printStackTrace();
+                            //log error
+                            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
+                            break; 
 			}
+                      }
+                      else if(Reader.ReaderStatus.READY == rs.status || Reader.ReaderStatus.NEED_CALIBRATION == rs.status)
+                      {
+                            //ready for capture
+                            bReady = true;
+                            break;
+                      }
+                      else
+                      {
+                            //reader failure
+                            NotifyListener(ACT_CAPTURE, null, rs, null);
+                            break;
+                        }
+		}
 			
-			if(bReady){
-				//start streaming
-				m_reader.StartStreaming();
+		if(bReady)
+                {
+                    //start streaming
+                    m_reader.StartStreaming();
 		
-				//get images
-				while(!m_bCancel){
-					Reader.CaptureResult cr = m_reader.GetStreamImage(m_format, m_proc, 500);
-					NotifyListener(ACT_CAPTURE, cr, null, null);
-				}
-				
-				//stop streaming
-				m_reader.StopStreaming();
-			}
-		}
-		catch(UareUException e){
-			NotifyListener(ACT_CAPTURE, null, null, e);
-		}
-
-		if(m_bCancel){
-			Reader.CaptureResult cr = new Reader.CaptureResult();
-			cr.quality = Reader.CaptureQuality.CANCELED;
+                    //get images
+                    while(!m_bCancel)
+                    {
+                        Reader.CaptureResult cr = m_reader.GetStreamImage(m_format, m_proc, 500);
 			NotifyListener(ACT_CAPTURE, cr, null, null);
+                    }
+				
+                    //stop streaming
+                    m_reader.StopStreaming();
 		}
 	}
-	
-	private void NotifyListener(String action, Reader.CaptureResult cr, Reader.Status st, UareUException ex){
-		final CaptureEvent evt = new CaptureEvent(this, action, cr, st, ex);
-		
-		//store last capture event
-		m_last_capture = evt; 
+	catch(UareUException e){
+            NotifyListener(ACT_CAPTURE, null, null, e);
+            //log error
+            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
+		}
 
-		if(null == m_listener || null == action || action.equals("")) return;
+	if(m_bCancel){
+            Reader.CaptureResult cr = new Reader.CaptureResult();
+            cr.quality = Reader.CaptureQuality.CANCELED;
+            NotifyListener(ACT_CAPTURE, cr, null, null);
+	}
+}
+	
+private void NotifyListener(String action, Reader.CaptureResult cr, Reader.Status st, UareUException ex)
+{
+    final CaptureEvent evt = new CaptureEvent(this, action, cr, st, ex);
+    
+    //store last capture event
+    m_last_capture = evt; 
+
+    if(null == m_listener || null == action || action.equals("")) return;
 		
-		//invoke listener on EDT thread
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				m_listener.actionPerformed(evt);
-			}
-		});
+    //invoke listener on EDT thread
+    javax.swing.SwingUtilities.invokeLater(new Runnable() {
+        public void run() {
+            m_listener.actionPerformed(evt);
 	}
+    });
+}
 	
-	public void cancel(){
-		m_bCancel = true;
-		try{
-			if(!m_bStream) m_reader.CancelCapture();
-		}
-		catch(UareUException e){}
-	} 
+public void cancel()
+{
+    m_bCancel = true;
+    try
+    {
+        if(!m_bStream) m_reader.CancelCapture();
+    }
+    catch(UareUException e){}
+} 
 	
-	public void run(){
-		if(m_bStream){
-			Stream();
-		}
-		else{
-			Capture();
-		}
-	}
+public void run()
+{
+    if(m_bStream)
+    {
+        Stream();
+    }
+    else
+    {
+        Capture();
+    }
+}
 }
 
 

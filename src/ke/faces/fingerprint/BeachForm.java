@@ -7,7 +7,6 @@ package ke.faces.fingerprint;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -62,6 +61,8 @@ public class BeachForm extends JPanel implements ActionListener{
     public static String[] county;
     BeachForm()
     {
+        //log info
+        FacesFingerPrintProject.logger.info("Creating Beach Form UI...");
         oldBeach = new Beach();
         county=new String[]{"Select County","Kisumu","Homa Bay","Migori","Busia","Siaya"};
         loadBeach();

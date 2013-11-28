@@ -7,7 +7,6 @@ package ke.faces.fingerprint;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -39,6 +38,8 @@ public class LoginDialog extends JPanel implements ActionListener{
     private Sql db;
     public LoginDialog()
     {
+        //log info
+        FacesFingerPrintProject.logger.info("Application User Log on UI...");
         user =new User();
         db=new Sql();
         dlgLoginForm= new JDialog((JDialog)null, "LOGIN", true);
@@ -128,7 +129,7 @@ public class LoginDialog extends JPanel implements ActionListener{
                
               if(user!=null)
                {
-                   FacesFingerPrintProject.logger.info("Sucessfull Log on");
+                   FacesFingerPrintProject.logger.info("Sucessfull Log on... Loading Main Menu");
                    dlgLoginForm.setVisible(false);  
                    MainMenu.createAndShowGUI(user);
               }

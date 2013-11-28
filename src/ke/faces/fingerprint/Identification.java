@@ -9,12 +9,9 @@ import com.digitalpersona.uareu.Fmd;
 import com.digitalpersona.uareu.Reader;
 import com.digitalpersona.uareu.UareUException;
 import com.digitalpersona.uareu.UareUGlobal;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import com.digitalpersona.uareu.*;
 import java.util.List;
-import java.util.Map;
+import java.util.logging.Level;
 import javax.swing.JOptionPane;
 /**
  *
@@ -41,21 +38,30 @@ public class Identification {
    public void loadFingerPrints()
    {
        //return m_fmds and participant Ids;
-       try {
-                this.m_listOfRecords=db.GetAllFPData();
-		for(Sql.Record record:this.m_listOfRecords)
-		{
-                    
-                    Fmd fmd = UareUGlobal.GetImporter().ImportFmd(record.fmdBinary,Fmd.Format.DP_REG_FEATURES,Fmd.Format.DP_REG_FEATURES);
-                   // Fmd fmd = UareUGlobal.GetImporter().ImportFmd(record.fmdBinary,Fmd.Format.ANSI_378_2004,Fmd.Format.ANSI_378_2004);
-                    this.m_fmdList.add(fmd);
-                    System.out.println("Memory Load Sucess");
-		}
-		m_fmdArray=new Fmd[this.m_fmdList.size()];
-		this.m_fmdList.toArray(m_fmdArray);
+       try 
+       {
+           //get all fingerprint data from the db and them in an array
+           //log info
+           FacesFingerPrintProject.logger.info("get all fingerprint data from the db and put them in an array... ");
+           this.m_listOfRecords=db.GetAllFPData();
+           for(Sql.Record record:this.m_listOfRecords)
+           {
+               //convert the prints into fmd formart
+               Fmd fmd = UareUGlobal.GetImporter().ImportFmd(record.fmdBinary,Fmd.Format.DP_REG_FEATURES,Fmd.Format.DP_REG_FEATURES);
+               // Fmd fmd = UareUGlobal.GetImporter().ImportFmd(record.fmdBinary,Fmd.Format.ANSI_378_2004,Fmd.Format.ANSI_378_2004);
+               this.m_fmdList.add(fmd);
+               System.out.println("Memory Load Sucess");
+            }
+           
+           //create an array of fmds for matching
+           //log info
+           FacesFingerPrintProject.logger.info("create an array of fmds for matching/Identification... ");
+            m_fmdArray=new Fmd[this.m_fmdList.size()];
+            this.m_fmdList.toArray(m_fmdArray);
 	} catch (UareUException e1)
         {
             // TODO Auto-generated catch block
+            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e1);
             JOptionPane.showMessageDialog(null, "Error importing fmd data.");
             return;
 	}
@@ -74,18 +80,23 @@ public class Identification {
                System.out.println("Extracted Image Quality "+evt.capture_result.quality);
                //extract features
                Fmd fmdToIdentify = null;               
-                Engine engine = UareUGlobal.GetEngine();
-		try{
+               Engine engine = UareUGlobal.GetEngine();
+                try
+                {
                     //m_imagePanel.showImage(evt.capture_result.image);
                     //we use DP_VER_FEATURES - I guess this verifers to finger print verication features
-			fmdToIdentify = engine.CreateFmd(evt.capture_result.image, Fmd.Format.DP_VER_FEATURES);
-                         System.out.println("Identify Image Captured size "+fmdToIdentify.getData().length);
-                         
+                    //log info
+                    FacesFingerPrintProject.logger.info("Create fmd for identification... ");
+                    fmdToIdentify = engine.CreateFmd(evt.capture_result.image, Fmd.Format.DP_VER_FEATURES);
+                    
+                    System.out.println("Identify Image Captured size "+fmdToIdentify.getData().length);                         
 		}
 		catch(UareUException e)
                 { 
                     e.printStackTrace();
                     MessageBox.DpError("Engine.CreateFmd()", e); 
+                    //log error
+                    FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
                 }
                 found=false;				
 		
@@ -97,13 +108,18 @@ public class Identification {
                     //get the matching finger print
                     //Engine.Candidate[] vCandidates = engine.Identify(fmdToIdentify, 0, m_fmds, falsepositive_rate,m_fmds.length);
                     //Perform identification            
-                            
+                     
+                     //log info
+                    FacesFingerPrintProject.logger.info("Performing identification... ");
                     Engine.Candidate[] vCandidates = engine.Identify(fmdToIdentify, 0, m_fmdArray, falsepositive_rate,m_fmdArray.length);
                     if(0 != vCandidates.length)
                     {
+                        //Get the participant details once the matching print is identified
+                        
                         //optional: to get false match rate compare with the top candidate
 			int falsematch_rate = engine.Compare(fmdToIdentify, 0, m_fmdArray[vCandidates[0].fmd_index], vCandidates[0].view_index);
-								
+			
+                        //log for testing
 			String str = String.format("Fingerprint identified, %s\n", vCandidates[0].fmd_index);
                         System.out.println("Identified Participant Id: "+ m_listOfRecords.get(vCandidates[0].fmd_index).getPTID());        
                         System.out.println(str);
@@ -113,9 +129,7 @@ public class Identification {
 				//m_text.append(str);
 			str = String.format("false match rate: %e.\n\n\n", (double)(falsematch_rate / Engine.PROBABILITY_ONE));
                         System.out.println(str);
-				//m_text.append(str);
-                   //    try
-                       {
+		        {
                            //get existing participant details
                            Participant p=db.getParticipant(m_listOfRecords.get(vCandidates[0].fmd_index).getPTID());
                            Registration.oldParticipant=p;
@@ -145,47 +159,54 @@ public class Identification {
                            String msg="Participant ("+p.getGivenName()+" " + p.getFamilyName()+") is Already Enrolled in the Database";
                            JOptionPane.showMessageDialog(null, msg);
                        }
-                  //     catch(SQLException ex)
-                  //     {
-                   //        ex.printStackTrace();
-                   //    }
+                 
                         
                      }
-                     else{
-                            String str="Participant was not identified.\n\n\n";
-                            System.out.println(str);
-			}
+                    else
+                    {
+                        String str="Participant was not identified.\n\n\n";
+                        System.out.println(str);
+                        //log info
+                        FacesFingerPrintProject.logger.info(str);
+                    }
 		} 
                 catch(UareUException ex)
-                    { 
-                        ex.printStackTrace();
-                        MessageBox.DpError("Engine.Identify()", ex);
-                    }
+                { 
+                    ex.printStackTrace();
+                    MessageBox.DpError("Engine.Identify()", ex);
+                    //log error
+                    FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", ex);                        
+                }
 						
            }
            else if(Reader.CaptureQuality.CANCELED == evt.capture_result.quality)
            {
                //capture or streaming was canceled, just quit
 		bCanceled = true;
-            }
-            else{
-                	//bad quality
-			MessageBox.BadQuality(evt.capture_result.quality);
-		}
+           }
+           else
+           {
+               //bad quality
+               MessageBox.BadQuality(evt.capture_result.quality);
+           }
 	}
-	else if(null != evt.exception){
+	else if(null != evt.exception)
+        {
             //exception during capture
             MessageBox.DpError("Capture", evt.exception);
+            //log error
+            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", evt.exception);
             bCanceled = true;
-		}
-	else if(null != evt.reader_status){
+	}
+	else if(null != evt.reader_status)
+        {
             //reader failure
             MessageBox.BadStatus(evt.reader_status);
             bCanceled = true;
 	}
 
-		return !bCanceled;
-	}
+	return !bCanceled;
+}
    
    public boolean identifyParticipant(Fmd fmdToIdentify)
    {
@@ -194,50 +215,52 @@ public class Identification {
         
        if(null != fmdToIdentify)
        {              
-            Engine engine = UareUGlobal.GetEngine();             				
-		
-                try{
-                    //target false positive identification rate: 0.00001
-                    //for a discussion of setting the threshold as well as the statistical validity of the dissimilarity score and error rates, consult the Developer Guide.
-                    int falsepositive_rate = Engine.PROBABILITY_ONE / 100000; 
+            Engine engine = UareUGlobal.GetEngine();
+            		
+            try
+            {
+                //target false positive identification rate: 0.00001
+                //for a discussion of setting the threshold as well as the statistical validity of the dissimilarity score and error rates, consult the Developer Guide.
+                int falsepositive_rate = Engine.PROBABILITY_ONE / 100000; 
 			
-                    //get the matching finger print
-                    //Engine.Candidate[] vCandidates = engine.Identify(fmdToIdentify, 0, m_fmds, falsepositive_rate,m_fmds.length);
-                    //Perform identification            
+                //get the matching finger print
+                //Engine.Candidate[] vCandidates = engine.Identify(fmdToIdentify, 0, m_fmds, falsepositive_rate,m_fmds.length);
+                //Perform identification            
                             
-                    Engine.Candidate[] vCandidates = engine.Identify(fmdToIdentify, 0, m_fmdArray, falsepositive_rate,m_fmdArray.length);
-                    if(0 != vCandidates.length)
-                    {
-                        //optional: to get false match rate compare with the top candidate
-                        bFound=true;
-			int falsematch_rate = engine.Compare(fmdToIdentify, 0, m_fmdArray[vCandidates[0].fmd_index], vCandidates[0].view_index);
+                Engine.Candidate[] vCandidates = engine.Identify(fmdToIdentify, 0, m_fmdArray, falsepositive_rate,m_fmdArray.length);
+                if(0 != vCandidates.length)
+                {
+                    //optional: to get false match rate compare with the top candidate
+                    bFound=true;
+                    int falsematch_rate = engine.Compare(fmdToIdentify, 0, m_fmdArray[vCandidates[0].fmd_index], vCandidates[0].view_index);
 								
-			String str = String.format("Fingerprint identified, %s\n", vCandidates[0].fmd_index);
-                        System.out.println("Identified Participant Id: "+ m_listOfRecords.get(vCandidates[0].fmd_index).getPTID());        
-                        System.out.println(str);
-			//m_text.append(str);
-			str = String.format("dissimilarity score: 0x%x.\n", falsematch_rate);
-                        System.out.println(str);
-				//m_text.append(str);
-			str = String.format("false match rate: %e.\n\n\n", (double)(falsematch_rate / Engine.PROBABILITY_ONE));
-                        System.out.println(str);
-				//m_text.append(str);
-                     }
-                     else{
-                            String str="Fingerprint was not identified.\n\n\n";
-                            System.out.println(str);
-                            JOptionPane.showMessageDialog(null, str);
-			}
-		} 
-                catch(UareUException ex)
-                    { 
-                        ex.printStackTrace();
-                        MessageBox.DpError("Engine.Identify()", ex);
-                    }
+                    String str = String.format("Fingerprint identified, %s\n", vCandidates[0].fmd_index);
+                    System.out.println("Identified Participant Id: "+ m_listOfRecords.get(vCandidates[0].fmd_index).getPTID());        
+                    System.out.println(str);
+                    //m_text.append(str);
+                    str = String.format("dissimilarity score: 0x%x.\n", falsematch_rate);
+                    System.out.println(str);
+                    //m_text.append(str);
+                    str = String.format("false match rate: %e.\n\n\n", (double)(falsematch_rate / Engine.PROBABILITY_ONE));
+                    System.out.println(str);
+                    //m_text.append(str);
+               }
+               else
+               {
+                   String str="Fingerprint was not identified.\n\n\n";
+                   System.out.println(str);
+                   JOptionPane.showMessageDialog(null, str);
+               }
+            } 
+            catch(UareUException ex)
+            { 
+                ex.printStackTrace();
+                MessageBox.DpError("Engine.Identify()", ex);
+            }
        }
 						
-           return bFound;
-	}
+       return bFound;
+}
    
    public boolean getFoundStatus()
    {

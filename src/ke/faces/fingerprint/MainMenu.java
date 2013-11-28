@@ -12,7 +12,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 /**
  *
@@ -164,8 +162,8 @@ public class MainMenu extends JFrame implements ActionListener{
         */
    
         try{
-        readerCollection = UareUGlobal.GetReaderCollection();
-        readerCollection.GetReaders();
+            readerCollection = UareUGlobal.GetReaderCollection();
+            readerCollection.GetReaders();
 	} 
 	catch(UareUException e) { 
             MessageBox.DpError("ReaderCollection.GetReaders()", e);
@@ -181,16 +179,16 @@ public class MainMenu extends JFrame implements ActionListener{
 		
 		//initialize capture library by acquiring reader collection
 		try{
-			paneContent.readerCollection = UareUGlobal.GetReaderCollection();
+                    //log info
+                    FacesFingerPrintProject.logger.info("Loading Connected Fingerprint Reader Details... ");
+                    paneContent.readerCollection = UareUGlobal.GetReaderCollection();
 		}
 		catch(UareUException e) {
 			MessageBox.DpError("UareUGlobal.getReaderCollection()", e);
+                        FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
 			return;
 		}
 
-		//run dialog
-		//JDialog dlg = new JDialog((JDialog)null, "UareU SDK 2.x Java sample application", true);
-		//paneContent.doModal(dlg);
 		
 		//release capture library by destroying reader collection
 		try{
@@ -198,37 +196,47 @@ public class MainMenu extends JFrame implements ActionListener{
 		}
 		catch(UareUException e) {
 			MessageBox.DpError("UareUGlobal.destroyReaderCollection()", e);
+                        FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
 		}
     }
     
     public void actionPerformed(ActionEvent e){
         if(e.getActionCommand().equals(ACT_EXIT)){
+            //log info
+            FacesFingerPrintProject.logger.info("Exiting Fingerprint Application... ");
             menuDialog.setVisible(false);
 	}
         else if(e.getActionCommand().equals(ACT_ENROLL)){
-                        
-               // Registration registration=new Registration();
-              //  registration.createAndShowGUI();   
+            
+            //log info
+            FacesFingerPrintProject.logger.info("Loading Find or create participant dialog form... ");
             FindCreateDialog find=new FindCreateDialog();
             find.createAndShowGUI();
             
 	}
         else if(e.getActionCommand().equals(ACT_IDENTIFY)){
-                FindTable.selectedParticipant=null;         
-                Registration registration=new Registration();
-                registration.createAndShowGUI();            
+            
+            //log info
+             FacesFingerPrintProject.logger.info("Loading Participant Registration Dialog form... ");
+             FindTable.selectedParticipant=null;         
+             Registration registration=new Registration();
+             registration.createAndShowGUI();            
             
 	}
         else if(e.getActionCommand().equals(ACT_BEACH)){
+            //log info
+            FacesFingerPrintProject.logger.info("Loading Beach Details Dialog form... ");
                         
-                BeachForm beach=new BeachForm ();
-                beach.createAndShowGUI();            
+            BeachForm beach=new BeachForm ();
+            beach.createAndShowGUI();            
             
 	}
         else if(e.getActionCommand().equals(ACT_REPORT)){
                         
             try
             {
+                //log info
+                FacesFingerPrintProject.logger.info("Loading Reporting Dialog Form... ");
                 Reporting report=new Reporting();
                 report.generateReport();
                // report.loadBeachLocations();
@@ -237,9 +245,9 @@ public class MainMenu extends JFrame implements ActionListener{
            {
                ex.printStackTrace();
                JOptionPane.showMessageDialog(null, ex.getMessage());
-               Logger.getLogger(Reporting.class.getName()).log(Level.SEVERE, null, ex);  
-           }
-                        
+               //Logger.getLogger(Reporting.class.getName()).log(Level.SEVERE, null, ex);  
+               FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", ex);
+           }                        
             
 	}
     }

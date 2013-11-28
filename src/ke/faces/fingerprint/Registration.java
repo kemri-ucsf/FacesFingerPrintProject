@@ -5,24 +5,23 @@
 package ke.faces.fingerprint;
 
 import com.digitalpersona.uareu.Reader;
+import com.digitalpersona.uareu.ReaderCollection;
 import com.digitalpersona.uareu.UareUException;
 import com.digitalpersona.uareu.UareUGlobal;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import com.digitalpersona.uareu.ReaderCollection;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 /**
  *
  * @author LENOVO USER
@@ -88,6 +87,8 @@ public class Registration extends JPanel implements ActionListener{
     
     public Registration()
     {
+        //log info
+        FacesFingerPrintProject.logger.info("Creating Register Participant UI...");
         gender=new String[]{"Male","Female"}; //iniatialize an array
         dlgRegistration= new JDialog((JDialog)null, "PARTICIPANT REGISTRATION", true);
         dlgRegistration.setLayout(null);
@@ -201,8 +202,10 @@ public class Registration extends JPanel implements ActionListener{
         dlgRegistration.add(lbl_Beachname);
         
         cboLocation=new JComboBox();
-        cboLocation.setBounds(200, 360, 200, 25);            
+        cboLocation.setBounds(200, 360, 200, 25); 
+        //cboLocation.setEditable(true);
         cboLocation.setFont(font);
+        //cboLocation.sets
         dlgRegistration.add(cboLocation);
         
         lbl_FingerTaken=new JLabel();

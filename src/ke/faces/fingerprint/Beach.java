@@ -5,7 +5,6 @@
 package ke.faces.fingerprint;
 
 import java.lang.reflect.Field;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -119,7 +118,7 @@ public class Beach {
     {
         Sql db=new Sql();
         db.Open();//open/create connection to the db               
-        db.voidAuditTrail(this.getClass().getName(), MainMenu.gUser.getUserId(),this.getBeachId());//the valu 5 shld be replaced with the currently logged on user
+        db.voidAuditTrail(this.getClass().getName(), MainMenu.gUser.getUserId(),this.getBeachId());
         db.Close();
                               
         

@@ -23,11 +23,11 @@ public class FindCreateDialog extends JPanel implements ActionListener{
     public static final String ACT_FIND="find_search";
     public static final String ACT_CREATE="creat_new";
     public static final String ACT_BACK="exit";
-     public static final String ACT_VIEW="view_participant";
+    public static final String ACT_VIEW="view_participant";
     
     public static JDialog dlgFindCreate;
     public static final Font font = new Font("Times New Roman", Font.BOLD, 14);
-     public static final Font font2 = new Font("Times New Roman", Font.PLAIN, 14);
+    public static final Font font2 = new Font("Times New Roman", Font.PLAIN, 14);
     private JTextField txt_Name;
     private JTextField txt_Identifier;
     private JTextField txt_County;
@@ -40,13 +40,15 @@ public class FindCreateDialog extends JPanel implements ActionListener{
     private JButton btnBack;
     private JButton btnFind;
     private JButton btnCreate;
-     private JButton btnView;
+    private JButton btnView;
    
    
     
     FindTable findTable;
     FindCreateDialog()
     {
+        //log info
+        FacesFingerPrintProject.logger.info("Creating Find/Create UI...");
         dlgFindCreate= new JDialog((JDialog)null, "FIND/CREATE PARTICIPANT FORM", true);
         dlgFindCreate.setLayout(null);
         dlgFindCreate.setBounds(200, 0,600, 500);

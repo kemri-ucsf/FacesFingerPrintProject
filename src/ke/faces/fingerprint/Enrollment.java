@@ -9,6 +9,7 @@ import com.digitalpersona.uareu.Fmd;
 import com.digitalpersona.uareu.Reader;
 import com.digitalpersona.uareu.UareUException;
 import com.digitalpersona.uareu.UareUGlobal;
+import java.util.logging.Level;
 
 /**
  *
@@ -47,7 +48,8 @@ public class Enrollment implements Engine.EnrollmentCallback{
                         //acquire engine
 			Engine engine = UareUGlobal.GetEngine();
 			
-			try{
+			try
+                        {
                             //extract features
                             Fmd fmd = engine.CreateFmd(m_evt.capture_result.image, Fmd.Format.DP_PRE_REG_FEATURES);
 								
@@ -61,69 +63,74 @@ public class Enrollment implements Engine.EnrollmentCallback{
                             }
 			catch(UareUException e)
                         { 
-                                //send extraction error
-				//SendToListener(ACT_FEATURES, null, null, null, e);
-                                e.printStackTrace();
+                            //send extraction error
+                            //SendToListener(ACT_FEATURES, null, null, null, e);
+                            e.printStackTrace();
+                            //log error
+                            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
+                                
                           }
                     }
-                    else
-                    {
-			//send quality result
-			//SendToListener(ACT_CAPTURE, null, evt.capture_result, evt.reader_status, evt.exception);
-                    }
+                    
 		}
-		else{
-			//send capture error
-			//SendToListener(ACT_CAPTURE, null, evt.capture_result, evt.reader_status, evt.exception);
-                    }
+		
               } // end of the while loop
 			
             return prefmd;
         } //end of Get FMD function
     
     public void cancel()
-        {
-            m_bCancel = true;
-            if(null != m_capture) m_capture.cancel();
-	}
+    {
+        m_bCancel = true;
+        if(null != m_capture) m_capture.cancel();
+    }
    public Fmd getEnrollmentFmd()
    {
        return enroll_fmd;
    }
    
+   /**
+    * Creates the enrollment fmd (fingerprint data)
+    */
     public void run()
-        {
-            //acquire engine
-            Engine engine = UareUGlobal.GetEngine();
-			
-            try{
-                    m_bCancel = false;
-                    while(!m_bCancel)
-                    {
-			//run enrollment
-			Fmd fmd = engine.CreateEnrollmentFmd(Fmd.Format.DP_REG_FEATURES, this);
+    {
+       //acquire engine
+       Engine engine = UareUGlobal.GetEngine();
+       			
+       try
+       {
+           m_bCancel = false;
+           while(!m_bCancel)
+           {
+               //run enrollment
+		Fmd fmd = engine.CreateEnrollmentFmd(Fmd.Format.DP_REG_FEATURES, this);
 					
-			//send result
-			if(null != fmd)
-                        {
-                            //SendToListener(ACT_DONE, fmd, null, null, null);
-                            enroll_fmd=fmd;
-                            System.out.println(fmd.getData());                          
-                            System.out.println("FMD Ready for Enrollment");
-                            System.out.println("Size of the FMD: "+ fmd.getData().length);
-                            m_bCancel=true;
-			}
-			else
-                        {
-                           // SendToListener(ACT_CANCELED, null, null, null, null);
-                           
-                            break;
-			}
-                    }//end of the while loop
+		//send result
+		if(null != fmd)
+                {
+                    //SendToListener(ACT_DONE, fmd, null, null, null);
+                    //log info
+                    FacesFingerPrintProject.logger.info("Fingerprint Enrollment Image successfully Captured... ");
+                    enroll_fmd=fmd;
+                    //log for testing
+                    System.out.println(fmd.getData());                          
+                    System.out.println("FMD Ready for Enrollment");
+                    System.out.println("Size of the FMD: "+ fmd.getData().length);
+                    m_bCancel=true;
 		}
-		catch(UareUException e){ 
-                   // SendToListener(ACT_DONE, null, null, null, e);
-                    e.printStackTrace();
+		else
+                {
+                    // SendToListener(ACT_CANCELED, null, null, null, null);
+                    break;
 		}
+           }//end of the while loop
+        }
+	catch(UareUException e)
+        { 
+            // SendToListener(ACT_DONE, null, null, null, e);
+            e.printStackTrace();            
+            //log error
+            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
 	}
+    }
 }

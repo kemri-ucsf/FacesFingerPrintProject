@@ -5,7 +5,6 @@
 package ke.faces.fingerprint;
 
 import java.awt.Dimension;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
@@ -24,6 +23,7 @@ import javax.swing.table.TableColumn;
  * @author LENOVO USER
  */
 public class FindTable extends JPanel{
+     
     JTable jTable;
     String[] columnTitle=new String[]{"Identifier","Name","County","Beach"};
     private static DefaultTableModel model ;
@@ -32,8 +32,11 @@ public class FindTable extends JPanel{
     private Map beachMap;
     Sql db=new Sql();
     public static Participant selectedParticipant;
+    
     public FindTable()
     {
+        //log info
+        FacesFingerPrintProject.logger.info("Creating Find Table UI...");
         model = new DefaultTableModel(data,columnTitle);
         jTable = new JTable(model);
         jTable.setBounds(10, 80, 500, 300); 
@@ -56,7 +59,7 @@ public class FindTable extends JPanel{
         column = jTable.getColumnModel().getColumn(1); //Name column
         column.setPreferredWidth(150);
         
-         column = jTable.getColumnModel().getColumn(2); //County column
+        column = jTable.getColumnModel().getColumn(2); //County column
         column.setPreferredWidth(40);
        
         add(scrollPane);

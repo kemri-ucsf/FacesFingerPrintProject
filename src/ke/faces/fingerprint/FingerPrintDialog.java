@@ -10,6 +10,7 @@ import com.digitalpersona.uareu.Reader;
 import com.digitalpersona.uareu.UareUException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.logging.Level;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
@@ -54,7 +55,7 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
     private static final int RIGHTTHUMB = 10;
     
     public FingerPrint selectedPrint;
-    public FingerPrint capturedPrints[];
+    
     //selected finger
     public static int finger;
     private Identification identify;
@@ -95,9 +96,8 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
     
     FingerPrintDialog(Reader reader)
     {
-        //store an array of captured prints
-        //load all the exi
-        capturedPrints=new FingerPrint[10];
+         //log info
+         FacesFingerPrintProject.logger.info("Creating Fingerprint UI...");
         identify=new Identification();
         this.reader = reader;
 	bStreaming = false;
@@ -248,39 +248,51 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
             {
                 reader.Close();
             }
-            catch(UareUException ex){ MessageBox.DpError("Reader.Close()", ex); }
+            catch(UareUException ex){ 
+                
+                MessageBox.DpError("Reader.Close()", ex); 
+                FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", ex);
+            }
             
             return;
 	}
         else if(e.getActionCommand().equals(ACT_ENROLL))
         {
             //Call method to create enrollment image
+             //log info
+            FacesFingerPrintProject.logger.info("Call method to create enrollment image... ");
             Enrollment enrollment = new Enrollment(evt1);
             
             //check if this participant is already enrolled
+            //log info
+            FacesFingerPrintProject.logger.info("check if this participant is already enrolled... ");
             identify.loadFingerPrints();
             identify.ProcessCaptureResult(evt1);
             if (identify.getFoundStatus()==true)
             {
+                
                 Registration.btnSave.setEnabled(false);
                 Registration.btnCancel.setEnabled(true);
-               //close this windo
-               StopCaptureThread();
-               dlgFingerPrintDialog.setVisible(false);
+                //close this windo
+                StopCaptureThread();
+                dlgFingerPrintDialog.setVisible(false);
                
-               //close reader
-               try
+                //close reader
+                try
                 {
-                reader.Close();
+                    reader.Close();
                 }
-                catch(UareUException ex){ MessageBox.DpError("Reader.Close()", ex); }
+                catch(UareUException ex){ 
+                    MessageBox.DpError("Reader.Close()", ex); 
+                    FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", ex);
+                }
               
             }
             else
             {
                 if(Registration.oldParticipant==null)
                 {
-                     //clear fields
+                     //clear fields if no participant is found
                     Registration.txt_Identifier.setText("");
                     Registration.txt_Age.setText("");
                     Registration.txt_Fname.setText("");
@@ -292,6 +304,7 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
                 }
                 else
                 {
+                    //all update of details and disable saving of the record
                     Registration.btnDelete.setEnabled(true);
                     Registration.btnCancel.setEnabled(true);
                     Registration.btnSave.setEnabled(false);
@@ -300,7 +313,9 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
                  
             }
             
-            //Test fmd
+            //Get fmd for enrollment
+            //log info
+            FacesFingerPrintProject.logger.info("Get fmd for enrollment... ");
             enrollment.GetFmd(Fmd.Format.DP_PRE_REG_FEATURES);
             enrollment.run();
             Fmd fmd=enrollment.getEnrollmentFmd();
@@ -310,32 +325,18 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
                 selectedPrint=new FingerPrint();
                 selectedPrint.setIndex(finger);
                 selectedPrint.setFmd(fmd.getData());
-                Registration.participant.lstFingerPrints.add(selectedPrint);
-                 
-                //if (finger==1)
-                //{
-                 //   selectedPrint.setIndex(finger);                    
-                  //  Registration.participant.setFingerPrint(selectedPrint);
-               // }
-                //else if(finger !=1)
-                //{
-                 //   selectedPrint.setIndex(finger);                    
-                  //  Registration.participant.setFingerPrint2(selectedPrint);  
-                //}
-               
-                System.out.println("Fmd Enrolled Size "+ selectedPrint.getFmd());
-                System.out.println("Select Finger "+ selectedPrint.getIndex());              
-                         
+                Registration.participant.lstFingerPrints.add(selectedPrint);                 
                 
-               JOptionPane.showMessageDialog(null, "Finger Sucessfully Enrolled");
+               //logging for test purposes
+                System.out.println("Fmd Enrolled Size "+ selectedPrint.getFmd());
+                System.out.println("Selected Finger "+ selectedPrint.getIndex());              
+                         
+               //log info
+                FacesFingerPrintProject.logger.info("Participant's Fingerprint Sucessfully Scanned... "); 
+               JOptionPane.showMessageDialog(null, "Participant's Fingerprint Sucessfully Scanned");
                
             }
-            //close reader
-             //  try
-             //   {
-              //  reader.Close();
-                //}
-                //catch(UareUException ex){ MessageBox.DpError("Reader.Close()", ex); }
+            
 	}
         else if(e.getActionCommand().equals(ACT_IDENTIFY))
         {
@@ -348,28 +349,35 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
             if (identify.getFoundStatus()==true)
             {
                 Registration.btnSave.setEnabled(false);
-               //close this windo
-               ///StopCaptureThread();
-               dlgFingerPrintDialog.setVisible(false);
+                //close this windo
+                //StopCaptureThread();
+                dlgFingerPrintDialog.setVisible(false);
                
-               //close reader
-               try
+                //close reader
+                try
                 {
                 reader.Close();
                 }
-                catch(UareUException ex){ MessageBox.DpError("Reader.Close()", ex); }
+                catch(UareUException ex){ 
+                    MessageBox.DpError("Reader.Close()", ex); 
+                    FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", ex);
+                }
               
             }
             else
             {
-                JOptionPane.showMessageDialog(null, "Finger Not Found....");
+                JOptionPane.showMessageDialog(null, "Participants Fingerprint Not Found in the Database....");
             }
 	}
         else if(e.getActionCommand().equals(ACT_LEFTTHUMB))
         {            
             finger=1;
             lbl_Prompt.setText("Put your Left Thumb finger on the reader");
+            //log for test
             System.out.println("Selected Finger: "+ finger);
+            //log info
+            FacesFingerPrintProject.logger.info("Selected Finger: "+ finger);
+            
             //hide quality check image display
             lbl_Bad.setVisible(false);
             lbl_Quality.setVisible(false);
@@ -380,7 +388,10 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
         {           
             finger=2;
             lbl_Prompt.setText("Put your Left Index finger on the reader");
-             System.out.println("Selected Finger: "+ finger);
+            //log for test
+            System.out.println("Selected Finger: "+ finger);
+             //log info
+            FacesFingerPrintProject.logger.info("Selected Finger: "+ finger);
             //hide quality check image display
             lbl_Bad.setVisible(false);
             lbl_Quality.setVisible(false);
@@ -391,7 +402,10 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
         {           
             finger=3;
             lbl_Prompt.setText("Put your Left Middle finger on the reader");
-             System.out.println("Selected Finger: "+ finger);
+            //log for test 
+            System.out.println("Selected Finger: "+ finger);
+             //log info
+            FacesFingerPrintProject.logger.info("Selected Finger: "+ finger);
             //hide quality check image display
             lbl_Bad.setVisible(false);
             lbl_Quality.setVisible(false);
@@ -402,7 +416,10 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
         {           
             finger=4;
             lbl_Prompt.setText("Put your Left Ring finger on the reader");
-             System.out.println("Selected Finger: "+ finger);
+            //log for test 
+            System.out.println("Selected Finger: "+ finger);
+             //log info
+            FacesFingerPrintProject.logger.info("Selected Finger: "+ finger);
             //hide quality check image display
             lbl_Bad.setVisible(false);
             lbl_Quality.setVisible(false);
@@ -413,7 +430,11 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
         {           
             finger=5;
             lbl_Prompt.setText("Put your Left Little finger on the reader");
-             System.out.println("Selected Finger: "+ finger);
+            
+            //log for test
+            System.out.println("Selected Finger: "+ finger);
+             //log info
+            FacesFingerPrintProject.logger.info("Selected Finger: "+ finger);
             //hide quality check image display
             lbl_Bad.setVisible(false);
             lbl_Quality.setVisible(false);
@@ -424,7 +445,10 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
         {           
             finger=6;
             lbl_Prompt.setText("Put your Right Little finger on the reader");
-             System.out.println("Selected Finger: "+ finger);
+            //log for test 
+            System.out.println("Selected Finger: "+ finger);
+             //log info
+            FacesFingerPrintProject.logger.info("Selected Finger: "+ finger);
             //hide quality check image display
             lbl_Bad.setVisible(false);
             lbl_Quality.setVisible(false);
@@ -435,7 +459,10 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
         {           
             finger=7;
             lbl_Prompt.setText("Put your Right Ring finger on the reader");
-             System.out.println("Selected Finger: "+ finger);
+            //log for test 
+            System.out.println("Selected Finger: "+ finger);
+             //log info
+            FacesFingerPrintProject.logger.info("Selected Finger: "+ finger);
             //hide quality check image display
             lbl_Bad.setVisible(false);
             lbl_Quality.setVisible(false);
@@ -446,7 +473,10 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
         {           
             finger=8;
             lbl_Prompt.setText("Put your Right Middle finger on the reader");
-             System.out.println("Selected Finger: "+ finger);
+            //log for test 
+            System.out.println("Selected Finger: "+ finger);
+             //log info
+            FacesFingerPrintProject.logger.info("Selected Finger: "+ finger);
             //hide quality check image display
             lbl_Bad.setVisible(false);
             lbl_Quality.setVisible(false);
@@ -457,7 +487,10 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
         {           
             finger=9;
             lbl_Prompt.setText("Put your Right Index finger on the reader");
-             System.out.println("Selected Finger: "+ finger);
+            //log for test 
+            System.out.println("Selected Finger: "+ finger);
+             //log info
+            FacesFingerPrintProject.logger.info("Selected Finger: "+ finger);
             //hide quality check image display
             lbl_Bad.setVisible(false);
             lbl_Quality.setVisible(false);
@@ -468,7 +501,10 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
         {           
             finger=10;
             lbl_Prompt.setText("Put your Right Thumb finger on the reader");
-             System.out.println("Selected Finger: "+ finger);
+            //log for test 
+            System.out.println("Selected Finger: "+ finger);
+             //log info
+            FacesFingerPrintProject.logger.info("Selected Finger: "+ finger);
             lbl_Quality.setVisible(false);
             lbl_Bad.setVisible(false);
             btnIdentify.setEnabled(false);
@@ -476,16 +512,55 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
 	}
         else
         {
+            //call finger print capture thread to get the print 
+             //log info
+            FacesFingerPrintProject.logger.info("call finger print capture thread to get the print....");
             CaptureThread.CaptureEvent evt = (CaptureThread.CaptureEvent)e;
+            
+            //create a copy of the thread event for subsequent enrollment
             evt1=evt;
             boolean bCanceled = false;
             //imagePanel.showImage(evt.capture_result.image);
+            //log info
+             FacesFingerPrintProject.logger.info("Checking Image Quality....");
             if(e.getActionCommand().equals(CaptureThread.ACT_CAPTURE))
             {
+                //start the finngerprint capture thread
                 if(null != evt.capture_result)
-                {
-                    
+                {                    
                     if(null !=evt.capture_result.image && Reader.CaptureQuality.FINGER_TOO_HIGH == evt.capture_result.quality)
+                    {
+                        lbl_Quality.setVisible(false);
+                        lbl_Bad.setVisible(true);
+                        imagePanel.showImage(evt.capture_result.image);
+                        return;
+                        
+                    }
+                    else if(null !=evt.capture_result.image && Reader.CaptureQuality.FINGER_OFF_CENTER == evt.capture_result.quality)
+                    {
+                        lbl_Quality.setVisible(false);
+                        lbl_Bad.setVisible(true);
+                        imagePanel.showImage(evt.capture_result.image);
+                        return;
+                        
+                    }
+                    else if(null !=evt.capture_result.image && Reader.CaptureQuality.FINGER_TOO_LEFT == evt.capture_result.quality)
+                    {
+                        lbl_Quality.setVisible(false);
+                        lbl_Bad.setVisible(true);
+                        imagePanel.showImage(evt.capture_result.image);
+                        return;
+                        
+                    }
+                    else if(null !=evt.capture_result.image && Reader.CaptureQuality.FINGER_TOO_LOW == evt.capture_result.quality)
+                    {
+                        lbl_Quality.setVisible(false);
+                        lbl_Bad.setVisible(true);
+                        imagePanel.showImage(evt.capture_result.image);
+                        return;
+                        
+                    }
+                    else if(null !=evt.capture_result.image && Reader.CaptureQuality.FINGER_TOO_RIGHT == evt.capture_result.quality)
                     {
                         lbl_Quality.setVisible(false);
                         lbl_Bad.setVisible(true);
@@ -516,9 +591,9 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
                     else
                     {
                         //bad quality
-			MessageBox.BadQuality(evt.capture_result.quality);
-                        lbl_Bad.setVisible(true);
+			MessageBox.BadQuality(evt.capture_result.quality);                        
                         lbl_Quality.setVisible(false);
+                        lbl_Bad.setVisible(true);
                     }				
 		
                 }
@@ -557,12 +632,16 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
     private void StartCaptureThread()
     {
         m_capture = new CaptureThread(reader, bStreaming, Fid.Format.ANSI_381_2004, Reader.ImageProcessing.IMG_PROC_DEFAULT);
+        //log info
+        FacesFingerPrintProject.logger.info("Starting Capture Print Thread....");
 	m_capture.start(this);
     }
 
     private void StopCaptureThread()
     {
         if(null != m_capture) m_capture.cancel();
+        //log info
+        FacesFingerPrintProject.logger.info("Stopping Capture Print Thread....");
     }
 	
     private void WaitForCaptureThread()
@@ -573,10 +652,14 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
     public void startReader()
     {
         try{
-            
+            //log info
+            FacesFingerPrintProject.logger.info("Openning Reader....");
             reader.Open(Reader.Priority.COOPERATIVE);
 	}
-	catch(UareUException e){ MessageBox.DpError("Reader.Open()", e); }
+	catch(UareUException e){ 
+            MessageBox.DpError("Reader.Open()", e); 
+             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
+        }
 		
 	//m_enrollment.start();
         boolean bOk = true;

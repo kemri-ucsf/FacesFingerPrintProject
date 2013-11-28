@@ -4,9 +4,7 @@
  */
 package ke.faces.fingerprint;
 
-import com.digitalpersona.uareu.Fmd;
 import java.lang.reflect.Field;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
