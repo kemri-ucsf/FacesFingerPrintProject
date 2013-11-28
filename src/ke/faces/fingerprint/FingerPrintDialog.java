@@ -349,6 +349,8 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
             if (identify.getFoundStatus()==true)
             {
                 Registration.btnSave.setEnabled(false);
+                Registration.btnCancel.setEnabled(true);
+                Registration.btnDelete.setEnabled(true);
                 //close this windo
                 //StopCaptureThread();
                 dlgFingerPrintDialog.setVisible(false);

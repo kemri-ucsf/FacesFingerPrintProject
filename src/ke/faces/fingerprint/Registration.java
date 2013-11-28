@@ -69,7 +69,7 @@ public class Registration extends JPanel implements ActionListener{
     public static JButton btnEnroll;
     private JButton btnBack;
     public static JButton btnCancel;
-    private JButton btnFind;
+    
     
     //Display panel
     JDialog dlgRegistration;

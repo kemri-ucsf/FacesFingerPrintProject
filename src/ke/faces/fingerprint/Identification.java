@@ -152,8 +152,8 @@ public class Identification {
                            
                            Beach b;
                            b=(Beach)MainMenu.beachMap.get(p.getBeachId());
-                           Registration.cboLocation.setSelectedItem(b.getName());
                            Registration.cboCty.setSelectedItem(b.getCounty());
+                           Registration.cboLocation.setSelectedItem(b.getName());                           
                            Registration.txt_Identifier.setText(p.getIdentifier());
                            found=true;
                            String msg="Participant ("+p.getGivenName()+" " + p.getFamilyName()+") is Already Enrolled in the Database";
