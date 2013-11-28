@@ -15,9 +15,8 @@ public class User {
     private String userName;
     private String password;    
     private String name;
-    private String designation;
-   
-    private static final Logger LOG = Logger.getLogger(User.class.getName());
+    private String designation;   
+    
 
     public User()
     {

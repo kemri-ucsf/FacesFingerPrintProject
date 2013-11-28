@@ -144,7 +144,7 @@ public class MainMenu extends JFrame implements ActionListener{
     private void loadBeach()
     {
         locations =new ArrayList<String>();
-        db=new Sql();        
+        //db=new Sql();        
         beachList=db.getAllBeachData();            
         beachMap=db.getBeachMap();
         counties=db.getCounty();
@@ -206,6 +206,14 @@ public class MainMenu extends JFrame implements ActionListener{
             //log info
             FacesFingerPrintProject.logger.info("Exiting Fingerprint Application... ");
             menuDialog.setVisible(false);
+            return;
+	}
+        else  if(e.getActionCommand().equals(ACT_USER)){
+            //log info
+            FacesFingerPrintProject.logger.info("Loading User Management menu... ");
+           // menuDialog.setVisible(false);
+            JOptionPane.showMessageDialog(null, "This link is still Under development....");
+            return;
 	}
         else if(e.getActionCommand().equals(ACT_ENROLL)){
             
@@ -216,8 +224,7 @@ public class MainMenu extends JFrame implements ActionListener{
             
 	}
         else if(e.getActionCommand().equals(ACT_IDENTIFY)){
-            
-            //log info
+             //log info
              FacesFingerPrintProject.logger.info("Loading Participant Registration Dialog form... ");
              FindTable.selectedParticipant=null;         
              Registration registration=new Registration();

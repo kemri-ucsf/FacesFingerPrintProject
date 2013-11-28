@@ -74,10 +74,10 @@ public class FindTable extends JPanel{
         jTable.repaint();   
        // model.getDataVector().
          
-         db.Open();//open/create connection to the db
+        // db.Open();//open/create connection to the db
          findList=  db.findParticipant(search);
          beachMap=db.getBeachMap();
-         db.Close();
+       //  db.Close();
           
                    
          if(!findList.isEmpty())

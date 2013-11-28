@@ -87,7 +87,8 @@ public class Sql {
         catch(SQLException ex)
         {
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
-            //Loga Error messages to the log file
+            JOptionPane.showMessageDialog(null, ex);
+            //Log Error messages to the log file
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", ex);
         }
         
@@ -109,6 +110,7 @@ public class Sql {
         catch(SQLException ex)
         {
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, ex);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", ex);
         }
         return statement;
@@ -119,12 +121,23 @@ public class Sql {
      * @param String query 
      * @return ResultSet
      */
-    public  ResultSet executeQuery(String query) throws SQLException {
-        Statement statement = createStatement();
-        //FacesFingerPrintProject.logger.info("Executing Query: " + query);
-        ResultSet rs=statement.executeQuery(query);
-        //statement.
-        //rs.next();
+    public  ResultSet executeQuery(String query){
+        ResultSet rs=null;
+        try
+        {
+             Statement statement = createStatement();
+            //FacesFingerPrintProject.logger.info("Executing Query: " + query);
+            rs=statement.executeQuery(query);            //statement.
+            //rs.next();
+            
+        }
+        catch(SQLException ex)
+        {
+            //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, ex);
+             JOptionPane.showMessageDialog(null, ex);
+            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", ex);
+        }
+       
         return rs;
     }
     
@@ -154,6 +167,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }	
     }
@@ -169,6 +183,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }
         
@@ -223,6 +238,7 @@ public class Sql {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
                 //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+                JOptionPane.showMessageDialog(null, e);
                 FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
             }
 		
@@ -263,6 +279,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }
         
@@ -305,6 +322,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }
         
@@ -341,6 +359,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }            
         
@@ -383,6 +402,7 @@ public class Sql {
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, "ERROR", e);
             //Log Error
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }        
 		
@@ -414,6 +434,7 @@ public class Sql {
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, "ERROR", e);
             //log Error
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }
         
@@ -445,6 +466,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }
         
@@ -480,6 +502,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }
 		
@@ -518,6 +541,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }
         	
@@ -556,6 +580,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }
         	
@@ -591,6 +616,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }
         	
@@ -623,6 +649,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }
        
@@ -656,6 +683,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }   
         
@@ -684,6 +712,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
         }         
          
@@ -718,6 +747,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
          }  
          
@@ -788,7 +818,10 @@ public class Sql {
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
-            Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
+            //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+             //Log error
+            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
          } 
         
 	return found;
@@ -815,6 +848,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
          }
         
@@ -856,6 +890,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
          }
 	
@@ -898,6 +933,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
          }        
         return p;
@@ -933,6 +969,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
          }
 	
@@ -964,6 +1001,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
          }	
         
@@ -1007,6 +1045,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
             //Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
          }
 	
@@ -1032,7 +1071,7 @@ public class Sql {
          
             if (rs>0)
             {
-                JOptionPane.showMessageDialog(null, "Participant Record delete...");
+                JOptionPane.showMessageDialog(null, "Participant Record deleted...");
             }
          }
          catch (SQLException e) 
@@ -1040,6 +1079,7 @@ public class Sql {
             // TODO Auto-generated catch block
             e.printStackTrace();
            // Logger.getLogger(Sql.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, e);
             FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", e);
          }        
          

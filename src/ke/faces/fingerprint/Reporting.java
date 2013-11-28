@@ -43,7 +43,9 @@ public class Reporting {
         }
          catch (IOException ex) {
               ex.printStackTrace();
-            Logger.getLogger(Reporting.class.getName()).log(Level.SEVERE, null, ex);
+              JOptionPane.showMessageDialog(null, ex);
+             //log Error
+            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", ex);
         }
                
     }
@@ -91,6 +93,8 @@ public class Reporting {
         catch(SQLException ex)
         {
             ex.printStackTrace();
+            //log Error
+            FacesFingerPrintProject.logger.log(Level.SEVERE, "ERROR", ex);
         }
         
       
