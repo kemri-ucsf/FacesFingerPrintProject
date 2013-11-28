@@ -5,13 +5,8 @@
 package ke.faces.fingerprint;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JList;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;

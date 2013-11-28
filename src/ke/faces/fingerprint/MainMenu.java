@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -57,85 +56,87 @@ public class MainMenu extends JFrame implements ActionListener{
    public static List<Beach> beachList; // store preloaded beach infomation
    public static Map<Integer,Beach> beachMap; // store preloaded beach Map infomation
    public static List<String> locations; // store preloaded beach Map infomation
-   private Sql db=new Sql();
+   private Sql db;
    public static User gUser;
-    public MainMenu(User user)
-    {
-        gUser=user; 
-        loadBeach();
-        menuDialog= new JDialog((JDialog)null, "FISHERMEN FINGERPRINTING PROJECT", true);        
-         menuDialog.setLayout(null);
-         menuDialog.setBounds(200, 0,750, 600);
+    
+   public MainMenu(User user)
+   {
+       db=new Sql();
+       gUser=user; 
+       loadBeach();
+       menuDialog= new JDialog((JDialog)null, "FISHERMEN FINGERPRINTING PROJECT", true);        
+       menuDialog.setLayout(null);
+       menuDialog.setBounds(200, 0,750, 600);
 //        identify=new Identification();
          
-         title=new JLabel();
-         title.setBounds(150, 10, 300, 20);         
-         title.setText("APPLICATION'S MAIN MENU");
-         title.setFont(titleFont);
+       title=new JLabel();
+       title.setBounds(150, 10, 300, 20);         
+       title.setText("APPLICATION'S MAIN MENU");
+       title.setFont(titleFont);
          //title.setAlignmentX(TOP_ALIGNMENT);
-         menuDialog.add(title);
+       menuDialog.add(title);
          
-         btnEnroll=new JButton("Find/Create Participant");
-         btnEnroll.setBounds(10, 50, 200, 60);
-         btnEnroll.setActionCommand(ACT_ENROLL);
-         btnEnroll.addActionListener(this);
-         menuDialog.add(btnEnroll);
-         
-         
-         btnIdentify=new JButton("Identify Participant");
-         btnIdentify.setBounds(10, 130, 200, 60);
-         btnIdentify.setActionCommand(ACT_IDENTIFY);
-         btnIdentify.addActionListener(this);
-         menuDialog.add(btnIdentify);
-         
-         btnBeach=new JButton("Add/Edit Beach");
-         btnBeach.setBounds(10, 210, 200, 60);
-         btnBeach.setActionCommand(ACT_BEACH);
-         btnBeach.addActionListener(this);
-         menuDialog.add( btnBeach);
+       btnEnroll=new JButton("Find/Create Participant");
+       btnEnroll.setBounds(10, 50, 200, 60);
+       btnEnroll.setActionCommand(ACT_ENROLL);
+       btnEnroll.addActionListener(this);
+       menuDialog.add(btnEnroll);
          
          
-         btnReport=new JButton("View Reports");
-         btnReport.setBounds(10, 290, 200, 60);
-         btnReport.setActionCommand(ACT_REPORT);
-         btnReport.addActionListener(this);
-         menuDialog.add( btnReport);
+       btnIdentify=new JButton("Identify Participant");
+       btnIdentify.setBounds(10, 130, 200, 60);
+       btnIdentify.setActionCommand(ACT_IDENTIFY);
+       btnIdentify.addActionListener(this);
+       menuDialog.add(btnIdentify);
          
-         btnUser=new JButton("User Management");
-         btnUser.setBounds(10, 370, 200, 60);
-         btnUser.setActionCommand(ACT_USER);
-         btnUser.addActionListener(this);
-         menuDialog.add( btnUser);
+       btnBeach=new JButton("Add/Edit Beach");
+       btnBeach.setBounds(10, 210, 200, 60);
+       btnBeach.setActionCommand(ACT_BEACH);
+       btnBeach.addActionListener(this);
+       menuDialog.add( btnBeach);
          
          
-         btnExit=new JButton("Exit");
-         btnExit.setBounds(10, 460, 200, 60);
-         btnExit.setActionCommand(ACT_EXIT);
-         btnExit.addActionListener(this);
-         menuDialog.add(btnExit);
+       btnReport=new JButton("View Reports");
+       btnReport.setBounds(10, 290, 200, 60);
+       btnReport.setActionCommand(ACT_REPORT);
+       btnReport.addActionListener(this);
+       menuDialog.add( btnReport);
+         
+       btnUser=new JButton("User Management");
+       btnUser.setBounds(10, 370, 200, 60);
+       btnUser.setActionCommand(ACT_USER);
+       btnUser.addActionListener(this);
+       menuDialog.add( btnUser);
+         
+         
+       btnExit=new JButton("Exit");
+       btnExit.setBounds(10, 460, 200, 60);
+       btnExit.setActionCommand(ACT_EXIT);
+       btnExit.addActionListener(this);
+       menuDialog.add(btnExit);
          
          //load/display image in a label
-         ImageIcon image=new ImageIcon("images\\fingerprintImageSmall.jpg");
-         title2 = new JLabel();
-         title2.setBounds(300,100,350,350);//some random value that I know is in my dialog
-         title2.setHorizontalAlignment(JLabel.CENTER);
-         title2.setVerticalAlignment(JLabel.TOP);
-         title2.setIcon(image);         
-         menuDialog.add(title2);
+       ImageIcon image=new ImageIcon("images\\fingerprintImageSmall.jpg");
+       title2 = new JLabel();
+       title2.setBounds(300,100,350,350);//some random value that I know is in my dialog
+       title2.setHorizontalAlignment(JLabel.CENTER);
+       title2.setVerticalAlignment(JLabel.TOP);
+       title2.setIcon(image);         
+       menuDialog.add(title2);
          
-         txt_User=new JLabel();
-         txt_User.setBounds(400,480,200,25);
-         txt_User.setText("User:  "+gUser.getName());
-         txt_User.setFont(titleFont);
-         menuDialog.add(txt_User);
+       txt_User=new JLabel();
+       txt_User.setBounds(400,480,200,25);
+       txt_User.setText("User:  "+gUser.getName());
+       txt_User.setFont(titleFont);
+       menuDialog.add(txt_User);
         
         
-          menuDialog.setVisible(true);
+       menuDialog.setVisible(true);
           
-          menuDialog.dispose(); //close the app once soen
-          validate(); //ensure that Image is loaded
+       menuDialog.dispose(); //close the app once soen
+       validate(); //ensure that Image is loaded
     }
-    private static final Logger LOG = Logger.getLogger(MainMenu.class.getName());
+   
     
     /*
      * Load all beach details and count information into memory

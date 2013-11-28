@@ -97,7 +97,7 @@ public class FingerPrintDialog extends JPanel implements ActionListener{
     FingerPrintDialog(Reader reader)
     {
          //log info
-         FacesFingerPrintProject.logger.info("Creating Fingerprint UI...");
+        FacesFingerPrintProject.logger.info("Creating Fingerprint UI...");
         identify=new Identification();
         this.reader = reader;
 	bStreaming = false;

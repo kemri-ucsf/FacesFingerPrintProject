@@ -8,7 +8,6 @@ package ke.faces.fingerprint;
  *
  * @author LENOVO USER
  */
-import java.lang.reflect.Field;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -24,10 +23,10 @@ import javax.swing.JOptionPane;
  * Manage All database access calls
  */
 public class Sql {
-    private static final String tableName="users";
+    
     private static final String participantColumn="PTID";
     private static final String print1Column="print1"; 
-    private static final String familyNameColumn="lName";
+   
     
     //Developement Credentials
     
@@ -78,7 +77,7 @@ public class Sql {
     /**
      * Open connection to the database
      */
-    public static void Open() 
+    public  void Open() 
     {
 	try
         {
@@ -105,7 +104,7 @@ public class Sql {
         try{
             FacesFingerPrintProject.logger.info("Creating Statement");
             Open();            
-             statement = c.createStatement();
+            statement = c.createStatement();
         }
         catch(SQLException ex)
         {
@@ -122,7 +121,7 @@ public class Sql {
      */
     public  ResultSet executeQuery(String query) throws SQLException {
         Statement statement = createStatement();
-        FacesFingerPrintProject.logger.info("Executing Query: " + query);
+        //FacesFingerPrintProject.logger.info("Executing Query: " + query);
         ResultSet rs=statement.executeQuery(query);
         //statement.
         //rs.next();
@@ -500,9 +499,9 @@ public class Sql {
             FacesFingerPrintProject.logger.info("Loading all beach data in memory ");
             //String sqlStmt="Select * from fingerprint";
             String sqlStmt="Select beachid,name,county,description from beach where voided=0 order by name asc;"; //for testing first
-            Open();
-            Statement statement = c.createStatement();
-            ResultSet rs = statement.executeQuery(sqlStmt);
+           // Open();
+          //  Statement statement = c.createStatement();
+            ResultSet rs = executeQuery(sqlStmt);
             while(rs.next())
             {
                 System.out.println("DB Read sucess: Loading Beach names");
@@ -539,9 +538,9 @@ public class Sql {
             FacesFingerPrintProject.logger.info("Loading Beach Map in Memory.... ");
             //String sqlStmt="Select * from fingerprint";
             String sqlStmt="Select beachid,name,county from beach where voided=0"; //for testing first
-            Open();
-            Statement st = c.createStatement();
-            ResultSet rs = st.executeQuery(sqlStmt);
+           // Open();
+           // Statement st = c.createStatement();
+            ResultSet rs = executeQuery(sqlStmt);
             while(rs.next())
             {
                     System.out.println("DB Read sucess: Loading Beach names Map");
@@ -578,9 +577,9 @@ public class Sql {
             FacesFingerPrintProject.logger.info("Loading County Details in Memory... ");
             //String sqlStmt="Select * from fingerprint";
             String sqlStmt="Select distinct county from beach where voided=0"; //for testing first
-            Open();
-            Statement st = c.createStatement();
-            ResultSet rs = st.executeQuery(sqlStmt);
+            //Open();
+           // Statement st = c.createStatement();
+            ResultSet rs = executeQuery(sqlStmt);
             while(rs.next())
             {
                 System.out.println("DB Read sucess: Loading County names");
@@ -803,9 +802,9 @@ public class Sql {
             //log info
             FacesFingerPrintProject.logger.info("Geting the Last Participant Internal Id... ");
             String sqlStmt="Select max(PTID) as ptid from participant;";
-            Open();
-            Statement st = c.createStatement();
-            ResultSet rs=st.executeQuery(sqlStmt);
+           // Open();
+           // Statement st = c.createStatement();
+            ResultSet rs=executeQuery(sqlStmt);
             while (rs.next())
             {
                 ptid=rs.getInt("ptid");
@@ -835,9 +834,9 @@ public class Sql {
             //log info
             FacesFingerPrintProject.logger.info("Getting Participant Details given the internal DB id... ");
             String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE " + participantColumn + "=" + participantID + "";
-            Open();
-            Statement st = c.createStatement();
-            ResultSet rs=st.executeQuery(sqlStmt);
+            //Open();
+           // Statement st = c.createStatement();
+            ResultSet rs=executeQuery(sqlStmt);
             while (rs.next())
             {
                 p=new Participant();
@@ -877,9 +876,9 @@ public class Sql {
             //log info
             FacesFingerPrintProject.logger.info("Getting Participant Details given Identifier... ");
             String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE identifier ='" + identifier + "'";
-            Open();
-            Statement st = c.createStatement();
-            ResultSet rs=st.executeQuery(sqlStmt);
+           // Open();
+            //Statement st = c.createStatement();
+            ResultSet rs=executeQuery(sqlStmt);
             while (rs.next())
             {
                 p=new Participant();
@@ -918,9 +917,9 @@ public class Sql {
             //log info
             FacesFingerPrintProject.logger.info("Getting user Details given username and pass... ");
             String sqlStmt="Select UserID,lname,username from users WHERE username ='" + uName + "' and pass=password('"+ pass + "');";
-            Open();
-            Statement statement = c.createStatement();
-            ResultSet rs2=statement.executeQuery(sqlStmt);
+           // Open();
+           // Statement statement = c.createStatement();
+            ResultSet rs2=executeQuery(sqlStmt);
             while (rs2.next())
             {
                 user=new User();
@@ -985,9 +984,9 @@ public class Sql {
             FacesFingerPrintProject.logger.info("Get List of participants given the search criteria... ");
             String sqlStmt="Select PTID,fname,mname,gname,nname, gender, age, identifier, beachid from participant WHERE voided=0 and (identifier like '%" + search + "%' or "; //
             sqlStmt=sqlStmt+" fname like '%" + search + "%' or gname like '%" + search + "%' or mname like '%" + search + "%'  or nname like '%" + search + "%') order by identifier asc;";
-            Open();
-            Statement st = c.createStatement();
-            ResultSet rs=st.executeQuery(sqlStmt);
+           // Open();
+           // Statement st = c.createStatement();
+            ResultSet rs=executeQuery(sqlStmt);
             while (rs.next())
             {
                 Participant p = new Participant();

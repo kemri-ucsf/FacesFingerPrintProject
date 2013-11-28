@@ -28,10 +28,7 @@ public class FindCreateDialog extends JPanel implements ActionListener{
     public static JDialog dlgFindCreate;
     public static final Font font = new Font("Times New Roman", Font.BOLD, 14);
     public static final Font font2 = new Font("Times New Roman", Font.PLAIN, 14);
-    private JTextField txt_Name;
-    private JTextField txt_Identifier;
-    private JTextField txt_County;
-    private JTextField txt_Beach;
+    
     private JLabel lbl_Search;
     private JLabel lbl_Title;
     
@@ -149,6 +146,7 @@ public class FindCreateDialog extends JPanel implements ActionListener{
         else if(e.getActionCommand().equals(ACT_CREATE))
         {
               FindTable.selectedParticipant=null;       
+              //load registration form
               Registration registration=new Registration();
               registration.createAndShowGUI();
 	}
@@ -162,6 +160,7 @@ public class FindCreateDialog extends JPanel implements ActionListener{
              {
                     if(FindTable.selectedParticipant!=null)
                     {
+                        //Load the registration form
                         FindCreateDialog.dlgFindCreate.setVisible(false); //close find create dialog
                         Registration registration=new Registration();
                         registration.createAndShowGUI();                                    
@@ -182,6 +181,7 @@ public class FindCreateDialog extends JPanel implements ActionListener{
             else
             {
                 JOptionPane.showMessageDialog(null,"Enter atleast three characters then click the search/Find Button");
+                FacesFingerPrintProject.logger.info("Enter atleast three characters then click the search/Find Button...");
             }
             
 	}

@@ -518,8 +518,7 @@ public class Registration extends JPanel implements ActionListener{
             for(Beach b:MainMenu.beachList)
             {
                 if(b.getCounty().equalsIgnoreCase((String)cboCty.getSelectedItem()))
-                {
-                   // cboLocation.addI
+                {                   
                     selectLocations.add(b.getName());
                     accessList.put(b.getName(), b.getBeachId());
                 }

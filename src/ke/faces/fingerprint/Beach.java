@@ -20,8 +20,7 @@ public class Beach {
     private String name;
     private String description;
     private String county;
-
-    private static final Logger LOG = Logger.getLogger(Beach.class.getName());
+   
     
      public Beach()
      {

@@ -38,7 +38,7 @@ public class BeachForm extends JPanel implements ActionListener{
     private JLabel lbl_Title2;
     private JLabel lbl_County;
     
-    private JPanel test;
+    
     
     public static JTextField txt_Bname;
     public static JTextField txt_Description;
@@ -49,7 +49,7 @@ public class BeachForm extends JPanel implements ActionListener{
     private JButton btnBack;
     public JButton btnCancel;    
     private JDialog dlgBeachForm;
-    private JList lstLocations;
+    
     public static List<String> locations;
     public static List<Beach> beachList;
     private Sql db;

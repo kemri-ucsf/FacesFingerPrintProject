@@ -30,13 +30,14 @@ public class FindTable extends JPanel{
     private Object[][] data;
     private List<Participant> findList;
     private Map beachMap;
-    Sql db=new Sql();
+    private Sql db;
     public static Participant selectedParticipant;
     
     public FindTable()
     {
         //log info
         FacesFingerPrintProject.logger.info("Creating Find Table UI...");
+        db=new Sql();
         model = new DefaultTableModel(data,columnTitle);
         jTable = new JTable(model);
         jTable.setBounds(10, 80, 500, 300); 

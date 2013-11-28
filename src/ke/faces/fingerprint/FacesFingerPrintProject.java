@@ -22,9 +22,10 @@ public class FacesFingerPrintProject {
      * @param args the command line arguments
      */
     
-    public static Logger logger = Logger.getLogger(FacesFingerPrintProject.class.getName());  
+    public static final Logger logger = Logger.getLogger(FacesFingerPrintProject.class.getName());  
     public static FileHandler fh;
     public static void main(String[] args) {
+        
         // TODO code application logic here
         try {  
 
@@ -35,15 +36,16 @@ public class FacesFingerPrintProject {
             fh.setFormatter(formatter);  
 
             // the following statement is used to log any messages  
-            logger.info("My first log");  
+            logger.info("Fingerpint Application logs...");  
 
             } catch (SecurityException e) {  
                 e.printStackTrace();  
-                Logger.getLogger(FacesFingerPrintProject.class.getName()).log(Level.SEVERE, null, e);
+                //Logger.getLogger(FacesFingerPrintProject.class.getName()).log(Level.SEVERE, "ERROR", e);
+                logger.log(Level.SEVERE, "ERROR", e);
                 //logger.w
             } catch (IOException e) {  
                 e.printStackTrace();
-                Logger.getLogger(FacesFingerPrintProject.class.getName()).log(Level.SEVERE, null, e);
+                logger.log(Level.SEVERE, "ERROR", e);
             }  
 
             logger.info("Application Starting..."); 
